@@ -16,8 +16,8 @@ class ProductsTable
     {
         return $table
             ->columns([
-                ImageColumn::make('featured_image')
-                    ->defaultImageUrl(asset('images/product-placeholder.png'))
+                ImageColumn::make('thumbnail')
+                    ->defaultImageUrl(url('/images/product-placeholder.png'))
                     ->circular(),
 
                 TextColumn::make('name')
@@ -41,8 +41,7 @@ class ProductsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-           
-           
+
             ->filters([
                 //
             ])

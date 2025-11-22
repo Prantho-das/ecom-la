@@ -10,8 +10,8 @@ class Product extends Model
 
     protected $casts = [
         'published_at' => 'datetime',
-        'metafields'   => 'array',
-        'tags'         => 'array',
+        'metafields' => 'array',
+        'tags' => 'array',
     ];
 
     /*
@@ -30,8 +30,7 @@ class Product extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_product')
-            ->withPivot('position')
-            ;
+            ->withPivot('position');
     }
 
     /** Product has many Options (e.g. Color, Size) */
@@ -39,13 +38,17 @@ class Product extends Model
     {
         return $this->hasMany(Option::class);
     }
-    
-
 
     /** Product has many Variants */
     public function variants()
     {
         return $this->hasMany(ProductVariant::class);
+    }
+
+    /** Product has many Images */
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
     }
 
     /** Get all option values through options */
@@ -61,7 +64,7 @@ class Product extends Model
             OptionValue::class,
             ProductVariant::class,
             'product_id',
-             'id'
+            'id'
         );
     }
 }
