@@ -11,12 +11,11 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -27,7 +26,7 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-tag';
 
     public static function form(Schema $schema): Schema
     {
@@ -35,13 +34,11 @@ class CategoryResource extends Resource
             ->components([
                 Select::make('parent_id')
 
-                    ->relationship('parent', 'name')
-                    ,
+                    ->relationship('parent', 'name'),
                 TextInput::make('name')
-                ->required()
-                ->live(onBlur: true)
-                ->afterStateUpdated(fn($set, ?string $state) => $set('slug', Str::slug($state)))
-                    ,
+                    ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', Str::slug($state))),
                 TextInput::make('slug')
                     ->required(),
                 Textarea::make('description')

@@ -10,22 +10,20 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\ToggleButtons;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
 class BrandResource extends Resource
 {
     protected static ?string $model = Brand::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-building-storefront';
 
     public static function form(Schema $schema): Schema
     {
@@ -33,7 +31,7 @@ class BrandResource extends Resource
             ->components([
                 TextInput::make('name')->required()
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn($set, ?string $state) => $set('slug', Str::slug($state))),
+                    ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', Str::slug($state))),
                 TextInput::make('slug')->required(),
                 TextInput::make('description'),
                 FileUpload::make('logo_path'),

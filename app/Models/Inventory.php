@@ -3,15 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Inventory extends Model
 {
-    public $incrementing = false; // because primary key is composite
+    protected $table = 'inventories';
 
-    protected $primaryKey = ['variant_id', 'location_id'];
+    public $incrementing = false;
 
     public $timestamps = false;
+
+    protected $primaryKey = null;
+
+    protected $keyType = 'string';
 
     protected $fillable = [
         'variant_id',
@@ -24,18 +27,22 @@ class Inventory extends Model
     protected $casts = [
         'quantity' => 'integer',
         'reserved_quantity' => 'integer',
+        'available' => 'integer',
         'reorder_level' => 'integer',
     ];
 
-    // Available is computed in DB as generated column
-
-    public function variant(): BelongsTo
+    public function variant()
     {
         return $this->belongsTo(ProductVariant::class, 'variant_id');
     }
 
-    public function location(): BelongsTo
+    public function location()
     {
         return $this->belongsTo(InventoryLocation::class, 'location_id');
+    }
+
+    public function movements()
+    {
+        return $this->hasMany(StockMovement::class, 'variant_id', 'variant_id');
     }
 }

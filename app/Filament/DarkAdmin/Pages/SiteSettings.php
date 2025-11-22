@@ -9,22 +9,30 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Illuminate\Support\Facades\DB;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\DB;
 
 class SiteSettings extends Page
 {
     use InteractsWithForms;
+
     protected string $view = 'volt-livewire::filament.dark-admin.pages.site-settings';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public $site_title;
+
     public $site_name;
+
     public $site_email;
+
     public $meta_title;
+
     public $meta_description;
+
     public $logo; // will store file path
+
+    public $current_logo; // will store file path
 
     public function mount(): void
     {
@@ -35,6 +43,7 @@ class SiteSettings extends Page
         $this->meta_title = $this->getSetting('general', 'meta_title') ?? '';
         $this->meta_description = $this->getSetting('general', 'meta_description') ?? '';
         $this->logo = $this->getSetting('general', 'logo') ?? '';
+        $this->current_logo = $this->getSetting('general', 'logo') ?? '';
 
         $this->form->fill([
             'site_title' => $this->site_title,
@@ -75,8 +84,9 @@ class SiteSettings extends Page
                 ->directory('site-logos')
                 ->nullable()
                 ->preserveFilenames()
+                ->disk('public')
                 ->maxSize(1024) // max 1MB
-                ->hint('Upload site logo image')
+                ->hint('Upload site logo image'),
         ];
     }
 
@@ -92,7 +102,8 @@ class SiteSettings extends Page
         $this->setSetting('general', 'meta_description', $data['meta_description']);
 
         // Handle logo upload path save
-        if (!empty($data['logo'])) {
+        if (! empty($data['logo'])) {
+
             $logoPath = is_string($data['logo']) ? $data['logo'] : $data['logo']->store('site-logos');
             $this->setSetting('general', 'logo', $logoPath);
         }
