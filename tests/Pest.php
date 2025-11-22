@@ -1,0 +1,58 @@
+<?php
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use App\Providers\Filament\DarkAdminPanelProvider;
+
+/*
+|--------------------------------------------------------------------------
+| Test Case
+|--------------------------------------------------------------------------
+|
+| The closure you provide to your test functions is always bound to a specific PHPUnit test
+| case class. By default, it's going to be `PHPUnit\Framework\TestCase`. Of course, you may
+| need to change that to a custom base test case class or even to a Laravel specific one.
+|
+| For example, when you want to use `RefreshDatabase` trait you may make a method like this:
+|
+| uses(RefreshDatabase::class)->in('Feature');
+|
+| You can also use a custom test case with the `uses()` function:
+|
+| uses(TestCase::class)->in('Feature');
+|
+*/
+
+uses(TestCase::class, RefreshDatabase::class)->in('Feature');
+uses(DarkAdminPanelProvider::class)->in('tests/Feature');
+
+/*
+|--------------------------------------------------------------------------
+| Expectations
+|--------------------------------------------------------------------------
+|
+| When you're writing tests, you often need to check that values meet certain conditions. The
+| "expect()" function gives you access to a set of "expectations" methods that you can use
+| to assert different things. Of course, you may extend the Expectation API at any time.
+|
+*/
+
+expect()->extend('toBeOne', function () {
+    return $this->toBe(1);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Functions
+|--------------------------------------------------------------------------
+|
+| While Pest is very powerful out-of-the-box, you may have some testing code specific to your
+| project that you don't want to repeat in every file. Here you can also expose helpers as
+| global functions to help you to reduce the number of lines of code in your test files.
+|
+*/
+
+function something()
+{
+    // ..
+}
