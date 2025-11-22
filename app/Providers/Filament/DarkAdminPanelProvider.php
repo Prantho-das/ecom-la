@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\DarkAdmin\Pages\SiteSettings;
+use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -19,6 +21,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Navigation\NavigationItem;
 
 class DarkAdminPanelProvider extends PanelProvider
 {
@@ -51,10 +54,20 @@ class DarkAdminPanelProvider extends PanelProvider
             ->profile()
             ->maxContentWidth(Width::Full)
             ->sidebarWidth("14rem")
+            ->navigationItems([
+               
+
+                NavigationItem::make()
+                    ->label('Clear Cache')
+                    ->icon('heroicon-o-trash')
+                    ->url(url: url('clear-cache'))
+                    ->sort(999),
+            ])
             ->discoverResources(in: app_path('Filament/DarkAdmin/Resources'), for: 'App\Filament\DarkAdmin\Resources')
             ->discoverPages(in: app_path('Filament/DarkAdmin/Pages'), for: 'App\Filament\DarkAdmin\Pages')
             ->pages([
                 Dashboard::class,
+            SiteSettings::class,
             ])
             ->discoverWidgets(in: app_path('Filament/DarkAdmin/Widgets'), for: 'App\Filament\DarkAdmin\Widgets')
             ->widgets([
@@ -75,4 +88,5 @@ class DarkAdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ]);
     }
+    
 }

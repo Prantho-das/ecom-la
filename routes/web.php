@@ -3,11 +3,24 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
-
+use Illuminate\Support\Facades\Artisan;
+use Filament\Notifications\Notification;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
 
+    Notification::make()
+        ->title('Cache cleared successfully!')
+        ->success()
+        ->send();
+
+    return redirect()->back();
+})->name('clear-cache');
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
