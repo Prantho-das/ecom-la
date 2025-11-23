@@ -12,12 +12,14 @@ use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
-
+use UnitEnum;
 class CountryResource extends Resource
 {
     protected static ?string $model = Country::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-flag';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Settings';
 
     protected static ?string $recordTitleAttribute = 'name';
 

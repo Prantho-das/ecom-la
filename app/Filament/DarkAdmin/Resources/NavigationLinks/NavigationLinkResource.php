@@ -11,14 +11,15 @@ use App\Models\NavigationLink;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-
+use UnitEnum;
 class NavigationLinkResource extends Resource
 {
     protected static ?string $model = NavigationLink::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-link';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Navigation';
 
     public static function form(Schema $schema): Schema
     {
