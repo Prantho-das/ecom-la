@@ -16,7 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-
+use Illuminate\Support\Arr;
 class ProductForm
 {
     public static function configure(Schema $schema): Schema
@@ -200,6 +200,88 @@ class ProductForm
                             ->defaultItems(0),
                     ]),
 
+            Section::make('Custom Sections')
+                ->description('Create as many sections as you want. Example: Home, Office, Specifications, Contact, etc.')
+                ->icon('heroicon-o-folder-open')
+                ->collapsible()
+                ->collapsed() // collapsed by default to save space
+                ->schema([
+                    Repeater::make('custom_sections')
+                        ->label(false) // hide the "custom_sections" label
+                        ->schema([
+
+                            // Section Title (e.g., "Home", "Office", "Warranty")
+                            TextInput::make('title')
+                                ->label('Section Title')
+                                ->placeholder('e.g., Home, Office, Contact Info')
+                                ->required()
+                                ->maxLength(255)
+                                ->columnSpanFull(),
+
+                            // Key-Value pairs inside this section
+                            Repeater::make('fields')
+                                ->label('Fields')
+                                ->schema([
+                                    TextInput::make('key')
+                                        ->label('Key')
+                                        ->placeholder('e.g., Location, Phone, Built Year')
+                                        ->required()
+                                        ->maxLength(255),
+
+                                    TextInput::make('value')
+                                        ->label('Value')
+                                        ->placeholder('e.g., Dubai, +971...', '2020')
+                                        ->required()
+                                        ->maxLength(1000)
+                                        ->columnSpan(1),
+                                    
+                                ])
+                                ->columns(2)
+                                ->defaultItems(1)
+                                ->addActionLabel('Add Another Field')
+                                ->collapsible()
+                                ->cloneable()
+                                ->reorderableWithButtons(),
+                        ])
+                        ->columns(1)
+                        ->collapsible()
+                        ->cloneable()
+                        ->reorderableWithButtons()
+                        ->addActionLabel('Add New Section')
+                        ->defaultItems(0)
+                        ->itemLabel(fn(array $state): ?string => $state['title'] ?? null),
+                ]),
+
+
             ])->columns(2);
+    }
+    
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $sections = Arr::get($data, 'custom_sections', []);
+
+        if (is_string($sections)) {
+            $sections = json_decode($sections, true) ?? [];
+        }
+
+        if (!is_array($sections)) {
+            $sections = [];
+        }
+
+        // Ensure proper structure for nested repeater
+        $data['custom_sections'] = collect($sections)->map(function ($section) {
+            return [
+                'title'  => $section['title'] ?? 'Untitled Section',
+                'fields' => collect($section['fields'] ?? [])->map(function ($field) {
+                    return [
+                        'key'   => $field['key'] ?? '',
+                        'value' => $field['value'] ?? '',
+                    ];
+                })->toArray(),
+            ];
+        })->toArray();
+
+        return $data;
     }
 }

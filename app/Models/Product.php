@@ -12,6 +12,8 @@ class Product extends Model
         'published_at' => 'datetime',
         'metafields' => 'array',
         'tags' => 'array',
+        'custom_sections' => 'array', 
+        
     ];
 
     /*
