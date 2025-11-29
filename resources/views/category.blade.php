@@ -127,8 +127,7 @@
                     </div>
 
                     <!-- Product Container -->
-                    <div id="productContainer"
-                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
+                    <div id="productContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
                     </div>
 
                     <!-- Pagination -->

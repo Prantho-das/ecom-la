@@ -56,3 +56,15 @@ Route::get('/', function () {
 Route::get('/category', function () {
     return view('category'); // Returns the 'about.blade.php' view
 });
+
+Route::get('/contact', function () {
+    return view('contact'); // Returns the 'about.blade.php' view
+});
+
+Route::get('/reseller-partner', function () {
+    return view('reseller-partner'); // Returns the 'about.blade.php' view
+});
+
+Route::get('/details', function () {
+    return view('details'); // Returns the 'about.blade.php' view
+});
