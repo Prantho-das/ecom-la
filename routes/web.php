@@ -5,9 +5,12 @@ use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 use Illuminate\Support\Facades\Artisan;
 use Filament\Notifications\Notification;
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+
+// Route::get('/', function () {
+//     return view('welcome');
+// })->name('home');
+
+
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
@@ -43,3 +46,9 @@ Route::middleware(['auth'])->group(function () {
         )
         ->name('two-factor.show');
 });
+
+
+
+ Route::get('/', function () {
+        return view('home'); // Returns the 'about.blade.php' view
+    });
