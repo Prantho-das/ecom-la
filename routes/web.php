@@ -49,6 +49,10 @@ Route::middleware(['auth'])->group(function () {
 
 
 
- Route::get('/', function () {
-        return view('home'); // Returns the 'about.blade.php' view
-    });
+Route::get('/', function () {
+    return view('home'); // Returns the 'about.blade.php' view
+});
+
+Route::get('/category', function () {
+    return view('category'); // Returns the 'about.blade.php' view
+});
