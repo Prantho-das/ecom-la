@@ -56,7 +56,7 @@ class ManageFeaturesSettings extends Page
                     TextInput::make('icon')
                         ->label('Icon (Emoji or Icon Class)')
                         ->required()
-                        ->maxLength(255),
+                        ,
                     TextInput::make('title')
                         ->label('Title')
                         ->required()
