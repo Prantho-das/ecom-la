@@ -4,10 +4,11 @@ namespace App\Filament\DarkAdmin\Resources\Posts\Schemas;
 
 use App\Models\User;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Set;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
@@ -28,6 +29,7 @@ class PostForm
                     ->unique(ignoreRecord: true),
                 FileUpload::make('thumbnail')
                     ->image()
+                    ->disk('public')
                     ->directory('thumbnails')
                     ->nullable(),
                 RichEditor::make('content')
