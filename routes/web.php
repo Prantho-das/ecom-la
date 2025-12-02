@@ -5,16 +5,15 @@ use App\Livewire\Frontend\Contact;
 use App\Livewire\Frontend\Details;
 use App\Livewire\Frontend\Home;
 use App\Livewire\Frontend\ResellerPartner;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
-use Illuminate\Support\Facades\Artisan;
-use Filament\Notifications\Notification;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // })->name('home');
-
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
@@ -52,8 +51,6 @@ Route::middleware(['auth'])->group(function () {
         ->name('two-factor.show');
 });
 
-
-
 // Route::get('/', function () {
 //     return view('home'); // Returns the 'about.blade.php' view
 // });
@@ -74,8 +71,6 @@ Route::middleware(['auth'])->group(function () {
 //     return view('details'); // Returns the 'about.blade.php' view
 // });
 
-
-
 // HOME
 Route::get('/', Home::class)->name('home');
 
@@ -89,4 +84,7 @@ Route::get('/contact', Contact::class)->name('contact');
 Route::get('/reseller-partner', ResellerPartner::class)->name('reseller.partner');
 
 // PRODUCT DETAILS (Dynamic Route)
-Route::get('/details/{slug}', Details::class)->name('details');
+Route::get('/details/{product:slug}', Details::class)->name('details');
+
+// BLOG POST DETAILS (Dynamic Route)
+Route::get('/blog/{post:slug}', App\Livewire\Frontend\BlogPostDetail::class)->name('blog.show');

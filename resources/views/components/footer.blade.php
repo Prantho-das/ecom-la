@@ -50,6 +50,8 @@
       </div>
     </div>
 
+    <x-social-media />
+
     <!-- Footer Bottom -->
     <div class="border-t border-slate-700 lg:pt-8 pt-4 text-center text-sm">
       <p>DatoHall © 2025. All Rights Reserved.</p>

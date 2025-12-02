@@ -1,57 +1,58 @@
 
 <section>
-<div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-
+<div class="max-w-screen-xl px-4 mx-auto sm:px-6 lg:px-8">
     <!-- Breadcrumb -->
-    <nav class="text-sm py-4 text-gray-500">
+    <nav class="py-4 text-sm text-gray-500">
         <a href="/" class="hover:underline">Home</a> &gt;
         <a href="/products" class="hover:underline">Products</a> &gt;
-        <span>OffGrid Portable Power Station</span>
+        <span>{{ $product->name }}</span>
     </nav>
 
     <!-- Product Hero -->
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 py-8">
+    <section class="grid grid-cols-1 gap-8 py-8 lg:grid-cols-2" wire:ignore>
         <!-- Left Column - Image Gallery -->
         <div>
-            <div class="swiper mySwiper2 w-full border border-gray-200 rounded-lg mb-4">
+            <div class="w-full mb-4 border border-gray-200 rounded-lg swiper mySwiper2">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide"><img src="/assets/images/server-rack.png" class="w-full object-contain" alt="Server Rack"></div>
-                    <div class="swiper-slide"><img src="/assets/images/server-rack.png" class="w-full object-contain" alt="Server Rack"></div>
-                    <div class="swiper-slide"><img src="/assets/images/server-rack.png" class="w-full object-contain" alt="Server Rack"></div>
+                    @foreach($images as $image)
+                    <div class="swiper-slide"><img src="{{asset('storage/'.$image)}}" class="object-contain w-full" alt="Server Rack"></div>
+                    @endforeach
                 </div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
 
-            <div class="swiper mySwiper mt-4">
+            <div class="mt-4 swiper mySwiper">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide w-24 h-24 border border-gray-200 rounded-lg overflow-hidden"><img src="/assets/images/server-rack.png" class="w-full h-full object-cover" alt="Server Rack Thumbnail"></div>
-                    <div class="swiper-slide w-24 h-24 border border-gray-200 rounded-lg overflow-hidden"><img src="/assets/images/server-rack.png" class="w-full h-full object-cover" alt="Server Rack Thumbnail"></div>
-                    <div class="swiper-slide w-24 h-24 border border-gray-200 rounded-lg overflow-hidden"><img src="/assets/images/server-rack.png" class="w-full h-full object-cover" alt="Server Rack Thumbnail"></div>
+                    @foreach($images as $image)
+                    <div class="w-24 h-24 overflow-hidden border border-gray-200 rounded-lg swiper-slide"><img src="{{asset('storage/'.$image)}}" class="object-cover w-full h-full" alt="Server Rack Thumbnail"></div>
+                    
+                    @endforeach
                 </div>
             </div>
         </div>
 
         <!-- Right Column - Details -->
         <div>
-            <div class="mb-2">
-                <img src="https://via.placeholder.com/100x50" alt="Brand Logo">
+            <div class="w-12 h-12 mb-2">
+                <img src="{{ $product->brand->logo_path ? asset('storage/'.$product->brand->logo_path):'https://placehold.co/600x400?text='.$product->name }}" alt="{{$product->brand->name}}">
             </div>
-            <h1 class="text-3xl font-light mb-2">OffGrid Portable Power Station</h1>
-            <p class="text-sm text-gray-500 mb-4">SKU: OPPS-1234</p>
-            <button class="bg-green-600 hover:bg-green-800 text-white font-semibold py-2 px-6 rounded mb-6">Add to My Quotation</button>
+           
+            <h1 class="mb-2 text-3xl font-light">{{$product->name}}</h1>
+            <p class="mb-4 text-sm text-gray-500">SKU: {{$product->sku}}</p>
+            <button class="px-6 py-2 mb-6 font-semibold text-white bg-green-600 rounded hover:bg-green-800">Add to My Quotation</button>
 
-            <ul class="space-y-2 mb-6">
-                <li class="flex items-start"><span class="text-green-600 mr-2">&#10003;</span> 2 pure sine wave AC outlets</li>
-                <li class="flex items-start"><span class="text-green-600 mr-2">&#10003;</span> 3 USB-A and 1 USB-C PD60W</li>
-                <li class="flex items-start"><span class="text-green-600 mr-2">&#10003;</span> Recharge via wall, solar, and car</li>
+            <ul class="mb-6 space-y-2">
+                <li class="flex items-start"><span class="mr-2 text-green-600">&#10003;</span> 2 pure sine wave AC outlets</li>
+                <li class="flex items-start"><span class="mr-2 text-green-600">&#10003;</span> 3 USB-A and 1 USB-C PD60W</li>
+                <li class="flex items-start"><span class="mr-2 text-green-600">&#10003;</span> Recharge via wall, solar, and car</li>
             </ul>
 
             <div class="space-y-2">
-                <a href="/reseller-partner" class="flex items-center text-green-600 hover:text-green-800 text-sm font-semibold">
+                <a href="/reseller-partner" class="flex items-center text-sm font-semibold text-green-600 hover:text-green-800">
                     <span class="mr-2">&#x1F4CD;</span> Find a reseller
                 </a>
-                <a href="mailto:sales@example.com" class="flex items-center text-green-600 hover:text-green-800 text-sm font-semibold">
+                <a href="mailto:sales@example.com" class="flex items-center text-sm font-semibold text-green-600 hover:text-green-800">
                     <span class="mr-2">&#x2709;</span> Contact Sales
                 </a>
             </div>
@@ -60,143 +61,113 @@
 
     <!-- Main Documents -->
     <section class="py-8">
-        <h2 class="text-2xl font-light mb-6">Main Documents</h2>
-        <div class="border border-gray-200 rounded-lg p-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <a href="#" class="flex items-center text-gray-700 hover:text-green-600 group">
-                    <span class="mr-2">&#128196;</span> Datasheet.pdf
+        <h2 class="mb-6 text-2xl font-light">Main Documents</h2>
+        <div class="p-6 border border-gray-200 rounded-lg">
+            @if(!empty($product->pdf_files))
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                @foreach($product->pdf_files as $pdf_file)
+                <a href="{{ asset('storage/' . $pdf_file) }}" target="_blank" class="flex items-center text-gray-700 hover:text-green-600 group">
+                    <span class="mr-2">&#128196;</span> {{ basename($pdf_file) }}
                 </a>
-                <a href="#" class="flex items-center text-gray-700 hover:text-green-600 group">
-                    <span class="mr-2">&#128196;</span> User Manual.pdf
-                </a>
-                <a href="#" class="flex items-center text-gray-700 hover:text-green-600 group">
-                    <span class="mr-2">&#128196;</span> Installation Guide.pdf
-                </a>
+                @endforeach
             </div>
-            <div class="mt-6">
-                <a href="#" class="text-sm font-semibold text-green-600 hover:text-green-800 hover:underline">See all documents</a>
-            </div>
+            @else
+            <p class="text-gray-500">No main documents available.</p>
+            @endif
         </div>
     </section>
 
     <!-- Description -->
     <section class="py-8">
-        <h2 class="text-2xl font-light mb-4">Description</h2>
-        <p class="text-gray-600 mb-2 line-clamp-3">
-            Schneider Electric's OffGrid Portable Power Station is designed for outdoor enthusiasts and home users...
-        </p>
-        <button class="text-sm font-semibold text-green-600 hover:text-green-800 mt-2 flex items-center">
-            Read more
-        </button>
+        <h2 class="mb-4 text-2xl font-light">Description</h2>
+        <div x-data="{ expanded: false }" class="relative">
+            <div x-show="expanded" class="prose max-w-none">
+                {!! $product->description !!}
+            </div>
+            <div x-show="!expanded" class="prose max-w-none line-clamp-3">
+                {!! $product->description !!}
+            </div>
+            @if(strlen(strip_tags($product->description)) > 200) {{-- Adjust character limit as needed --}}
+            <button x-on:click="expanded = !expanded" class="flex items-center mt-2 text-sm font-semibold text-green-600 hover:text-green-800">
+                <span x-show="!expanded">Read more</span>
+                <span x-show="expanded">Read less</span>
+            </button>
+            @endif
+        </div>
     </section>
 
     <!-- Specifications -->
     <section class="py-8">
-        <h2 class="text-2xl font-light mb-4">Specifications</h2>
-        <div class="border border-gray-200 rounded-lg p-6 space-y-4">
-            <div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">Overview</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 py-1 border-b border-gray-100">
-                    <dt class="font-medium text-gray-600">Power Output</dt>
-                    <dd class="text-gray-800 md:col-span-2">600W</dd>
+        <h2 class="mb-4 text-2xl font-light">Specifications</h2>
+        <div class="p-6 space-y-4 border border-gray-200 rounded-lg">
+            @forelse($product->custom_sections ?? [] as $section)
+                <div>
+                    <h3 class="mb-2 text-lg font-semibold text-gray-800">{{ $section['title'] }}</h3>
+                    @foreach($section['fields'] ?? [] as $field)
+                        <div class="grid grid-cols-1 gap-2 py-1 border-b border-gray-100 md:grid-cols-3">
+                            <dt class="font-medium text-gray-600">{{ $field['key'] }}</dt>
+                            <dd class="text-gray-800 md:col-span-2">{{ $field['value'] }}</dd>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 py-1 border-b border-gray-100">
-                    <dt class="font-medium text-gray-600">Battery Capacity</dt>
-                    <dd class="text-gray-800 md:col-span-2">1500Wh</dd>
-                </div>
-            </div>
+            @empty
+                <p class="text-gray-500">No specifications available.</p>
+            @endforelse
         </div>
-        <button class="text-sm font-semibold text-green-600 hover:text-green-800 mt-4 flex items-center">
-            Show more specifications
-        </button>
     </section>
 
     <!-- Gallery -->
     <section class="py-8">
-        <h2 class="text-2xl font-light mb-4">Gallery</h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <img src="/assets/images/server-rack.png" class="w-full h-full object-cover rounded-lg" alt="Gallery 1">
-            <img src="/assets/images/server-rack.png" class="w-full h-full object-cover rounded-lg" alt="Gallery 2">
-            <img src="/assets/images/server-rack.png" class="w-full h-full object-cover rounded-lg" alt="Gallery 3">
+        <h2 class="mb-4 text-2xl font-light">Gallery</h2>
+        <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
+            @foreach($images as $image)
+                <img src="{{ asset('storage/' . $image) }}" class="object-cover w-full h-full rounded-lg" alt="Gallery Image">
+            @endforeach
         </div>
     </section>
 
     <!-- FAQ -->
     <section class="py-8">
-        <h2 class="text-2xl font-light mb-4">FAQ</h2>
+        <h2 class="mb-4 text-2xl font-light">FAQ</h2>
         <div class="space-y-2">
-            <div class="border border-gray-200 rounded-lg">
-                <button class="w-full text-left px-4 py-2 faq-question flex justify-between font-semibold">
-                    What is the warranty period?
-                    <span>&#9660;</span>
-                </button>
-                <div class="px-4 py-2 hidden faq-answer text-gray-600">2 years warranty included.</div>
-            </div>
-            <div class="border border-gray-200 rounded-lg">
-                <button class="w-full text-left px-4 py-2 faq-question flex justify-between font-semibold">
-                    How long to charge via solar?
-                    <span>&#9660;</span>
-                </button>
-                <div class="px-4 py-2 hidden faq-answer text-gray-600">Approx. 3 hours with 200W panel.</div>
-            </div>
+            @php
+                $faqSection = collect($product->custom_sections ?? [])->firstWhere('title', 'FAQ');
+            @endphp
+
+            @if($faqSection && !empty($faqSection['fields']))
+                @foreach($faqSection['fields'] ?? [] as $faqItem)
+                    <div class="border border-gray-200 rounded-lg">
+                        <button class="flex justify-between w-full px-4 py-2 font-semibold text-left faq-question">
+                            {{ $faqItem['key'] }}
+                            <span>&#9660;</span>
+                        </button>
+                        <div class="hidden px-4 py-2 text-gray-600 faq-answer">{{ $faqItem['value'] }}</div>
+                    </div>
+                @endforeach
+            @else
+                <p class="text-gray-500">No FAQs available.</p>
+            @endif
         </div>
     </section>
 
     <!-- Related Products Swiper -->
-    <section class="py-8">
-        <h2 class="text-2xl font-light mb-4">Related Products</h2>
+    <section class="py-8" wire:ignore>
+        <h2 class="mb-4 text-2xl font-light">Related Products</h2>
         <div class="swiper relatedSwiper">
             <div class="swiper-wrapper">
+                @foreach($relatedProducts as $relatedProduct)
                 <div class="swiper-slide">
-                    <div class="bg-white p-6 flex flex-col items-center text-center h-full border border-gray-200 rounded-lg">
-                        <img src="/assets/images/server-rack.png" alt="APC NetShelter SX" class="w-40 h-40 object-contain my-4" />
-                        <p class="text-sm text-gray-500 mb-2">AR3003</p>
-                        <h3 class="text-base text-gray-800 font-medium">APC NetShelter SX, Server Rack Enclosure, 12U</h3>
-                        <a href="#" class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
+                    <div class="flex flex-col items-center h-full p-6 text-center bg-white border border-gray-200 rounded-lg">
+                        <img src="{{ $relatedProduct->logo_path ? asset('storage/'.$relatedProduct->thumbnail):'https://placehold.co/600x400?text='.$relatedProduct->name }}" alt="{{ $relatedProduct->name }}" class="object-contain w-40 h-40 my-4" />
+                        <p class="mb-2 text-sm text-gray-500">AR3003</p>
+                        <h3 class="text-base font-medium text-gray-800">{{ $relatedProduct->name }}</h3>
+                        <a href="{{ route('details',$relatedProduct->slug) }}" class="inline-block w-full px-4 py-2 mt-6 border border-gray-300 rounded-md hover:bg-gray-100">
                             View Details
                         </a>
                     </div>
                 </div>
-                <div class="swiper-slide">
-                    <div class="bg-white p-6 flex flex-col items-center text-center h-full border border-gray-200 rounded-lg">
-                        <img src="/assets/images/server-rack.png" alt="APC NetShelter SX" class="w-40 h-40 object-contain my-4" />
-                        <p class="text-sm text-gray-500 mb-2">AR3105</p>
-                        <h3 class="text-base text-gray-800 font-medium">APC NetShelter SX, Server Rack Enclosure, 45U</h3>
-                        <a href="#" class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
-                            View Details
-                        </a>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="bg-white p-6 flex flex-col items-center text-center h-full border border-gray-200 rounded-lg">
-                        <img src="/assets/images/server-rack.png" alt="APC NetShelter SX" class="w-40 h-40 object-contain my-4" />
-                        <p class="text-sm text-gray-500 mb-2">AR3300</p>
-                        <h3 class="text-base text-gray-800 font-medium">APC NetShelter SX, Server Rack Enclosure, 42U</h3>
-                        <a href="#" class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
-                            View Details
-                        </a>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="bg-white p-6 flex flex-col items-center text-center h-full border border-gray-200 rounded-lg">
-                        <img src="/assets/images/server-rack.png" alt="APC NetShelter SX" class="w-40 h-40 object-contain my-4" />
-                        <p class="text-sm text-gray-500 mb-2">AR3140</p>
-                        <h3 class="text-base text-gray-800 font-medium">APC NetShelter SX, Networking Rack Enclosure, 42U</h3>
-                        <a href="#" class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
-                            View Details
-                        </a>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="bg-white p-6 flex flex-col items-center text-center h-full border border-gray-200 rounded-lg">
-                        <img src="/assets/images/server-rack.png" alt="APC NetShelter SX" class="w-40 h-40 object-contain my-4" />
-                        <p class="text-sm text-gray-500 mb-2">AR3350</p>
-                        <h3 class="text-base text-gray-800 font-medium">APC NetShelter SX, Server Rack Enclosure, 42U</h3>
-                        <a href="#" class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
-                            View Details
-                        </a>
-                    </div>
-                </div>
+                @endforeach
+    
             </div>
             <!-- Optional navigation -->
             <div class="swiper-button-next"></div>
@@ -207,43 +178,55 @@
 </div>
 </section>
 @push('scripts')
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-
 <script>
-    // Main product image swiper
-    var swiperThumbs = new Swiper(".mySwiper", {
-        spaceBetween: 10,
-        slidesPerView: 3,
-        freeMode: true,
-        watchSlidesProgress: true,
-    });
-    var swiperMain = new Swiper(".mySwiper2", {
-        spaceBetween: 10,
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-        thumbs: {
-            swiper: swiperThumbs,
-        },
-    });
-
-    // Related products swiper
-    var relatedSwiper = new Swiper(".relatedSwiper", {
-        slidesPerView: 2,
-        spaceBetween: 16,
-        navigation: {
-            nextEl: ".relatedSwiper .swiper-button-next",
-            prevEl: ".relatedSwiper .swiper-button-prev",
-        },
-        breakpoints: {
-            640: { slidesPerView: 3 },
-            1024: { slidesPerView: 4 },
-        },
-    });
-
-    // FAQ toggle
+    function initializeSwipers() {
+        console.log("Swiper Init");
+    
+        // destroy existing swiper
+        document.querySelectorAll('.swiper').forEach(swiperEl => {
+            if (swiperEl.swiper) {
+                swiperEl.swiper.destroy(true, true);
+            }
+        });
+    
+        // Thumbs
+        const swiperThumbs = new Swiper(".mySwiper", {
+            spaceBetween: 10,
+            slidesPerView: 3,
+            freeMode: true,
+            watchSlidesProgress: true,
+            touchStartPreventDefault:false
+        });
+    
+        // Main Slider
+        const swiperMain = new Swiper(".mySwiper2", {
+            spaceBetween: 10,
+            touchStartPreventDefault:false
+            navigation: {
+                nextEl: ".mySwiper2 .swiper-button-next",
+                prevEl: ".mySwiper2 .swiper-button-prev",
+            },
+            thumbs: { swiper: swiperThumbs },
+        });
+    
+        // Related slider
+        const relatedSwiper = new Swiper(".relatedSwiper", {
+            slidesPerView: 2,
+            spaceBetween: 16,
+            touchStartPreventDefault:false
+            navigation: {
+                nextEl: ".relatedSwiper .swiper-button-next",
+                prevEl: ".relatedSwiper .swiper-button-prev",
+            },
+            breakpoints: {
+                640: { slidesPerView: 3 },
+                1024: { slidesPerView: 4 }
+            }
+        });
+    }
+    
+    document.addEventListener("DOMContentLoaded", initializeSwipers);
+    document.addEventListener("livewire:navigated", initializeSwipers);
     document.querySelectorAll('.faq-question').forEach(q => {
         q.addEventListener('click', () => {
             const answer = q.nextElementSibling;

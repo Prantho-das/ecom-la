@@ -8,15 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+
+    protected $guarded = [
+        'sku',
+    ];
 
     protected $casts = [
         'published_at' => 'datetime',
         'metafields' => 'array',
         'tags' => 'array',
         'custom_sections' => 'array',
-
+        'pdf_files' => 'array',
     ];
+
+    public function getHasPdfFilesAttribute(): bool
+    {
+        return ! empty($this->pdf_files);
+    }
 
     /*
     |--------------------------------------------------------------------------

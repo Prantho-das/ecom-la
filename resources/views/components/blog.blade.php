@@ -9,64 +9,27 @@
 
     <!-- Blog Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-      <!-- Blog Card 1 -->
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-shadow duration-300">
-        <div class="relative overflow-hidden">
-          <img src="https://picsum.photos/seed/blog1/400/250" alt="How sustainable hydropower can promote biodiversity" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
-          <div class="absolute bottom-[-20px] right-6 bg-slate-900 text-white text-center rounded-md p-2 w-16">
-            <span class="text-2xl font-bold block">16</span>
-            <span class="text-xs font-semibold block">NOV</span>
-          </div>
-        </div>
-        <div class="p-8">
-          <p class="text-sm text-slate-500 mb-2">
-            <span class="text-[#27ad4c] font-semibold">HYDROPOWER</span> • 0 Comments
-          </p>
-          <h3 class="text-xl font-bold text-slate-900 leading-tight group-hover:text-[#27ad4c] transition-colors">
-            How sustainable hydropower can promote biodiversity
-          </h3>
-        </div>
-      </div>
-
-      <!-- Blog Card 2 -->
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-shadow duration-300">
-        <div class="relative overflow-hidden">
-          <img src="https://picsum.photos/seed/blog2/400/250" alt="What is the potential of hydroelectric power" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
-          <div class="absolute bottom-[-20px] right-6 bg-slate-900 text-white text-center rounded-md p-2 w-16">
-            <span class="text-2xl font-bold block">16</span>
-            <span class="text-xs font-semibold block">NOV</span>
-          </div>
-        </div>
-        <div class="p-8">
-          <p class="text-sm text-slate-500 mb-2">
-            <span class="text-[#27ad4c] font-semibold">HYDROPOWER</span> • 0 Comments
-          </p>
-          <h3 class="text-xl font-bold text-slate-900 leading-tight group-hover:text-[#27ad4c] transition-colors">
-            What is the potential of hydroelectric power
-          </h3>
-        </div>
-      </div>
-
-      <!-- Blog Card 3 -->
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-shadow duration-300">
-        <div class="relative overflow-hidden">
-          <img src="https://picsum.photos/seed/blog3/400/250" alt="What effects does hydropower have on the environment?" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
-          <div class="absolute bottom-[-20px] right-6 bg-slate-900 text-white text-center rounded-md p-2 w-16">
-            <span class="text-2xl font-bold block">16</span>
-            <span class="text-xs font-semibold block">NOV</span>
-          </div>
-        </div>
-        <div class="p-8">
-          <p class="text-sm text-slate-500 mb-2">
-            <span class="text-[#27ad4c] font-semibold">HYDROPOWER</span> • 0 Comments
-          </p>
-          <h3 class="text-xl font-bold text-slate-900 leading-tight group-hover:text-[#27ad4c] transition-colors">
-            What effects does hydropower have on the environment?
-          </h3>
-        </div>
-      </div>
-
+        @forelse($posts as $post)
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden group hover:shadow-2xl transition-shadow duration-300">
+                <div class="relative overflow-hidden">
+                    <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="{{ $post->title }}" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute bottom-[-20px] right-6 bg-slate-900 text-white text-center rounded-md p-2 w-16">
+                        <span class="text-2xl font-bold block">{{ $post->published_at->format('d') }}</span>
+                        <span class="text-xs font-semibold block">{{ $post->published_at->format('M') }}</span>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <p class="text-sm text-slate-500 mb-2">
+                        <span class="text-[#27ad4c] font-semibold">BLOG</span> • 0 Comments
+                    </p>
+                    <h3 class="text-xl font-bold text-slate-900 leading-tight group-hover:text-[#27ad4c] transition-colors">
+                        <a href="{{ route('blog.show', $post->slug) }}">{{ $post->title }}</a>
+                    </h3>
+                </div>
+            </div>
+        @empty
+            <p class="text-gray-500 col-span-full text-center">No latest news available.</p>
+        @endforelse
     </div>
 
     <!-- Read More Button -->

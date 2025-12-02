@@ -2,7 +2,7 @@
     <!-- Top Bar -->
     <div class="bg-[#27ad4c] text-white text-sm">
         <div class="container lg:max-w-[1780px] mx-auto px-4">
-            <div class="py-2 flex justify-between items-center">
+            <div class="flex items-center justify-between py-2">
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-1">
                         <svg class="w-4 h-4" fill="currentColor">
@@ -11,7 +11,7 @@
                         <span>Mon – Fri 8:00 – 18:00 / Sunday 8:00 – 14:00</span>
                     </div>
 
-                    <div class="hidden md:flex items-center space-x-1">
+                    <div class="items-center hidden space-x-1 md:flex">
                         <svg class="w-4 h-4" fill="currentColor">
                             <!-- MailIcon -->
                         </svg>
@@ -19,7 +19,7 @@
                     </div>
                 </div>
 
-                <div class="hidden md:flex items-center space-x-3">
+                <div class="items-center hidden space-x-3 md:flex">
                     <a href="#">
                         <!-- Facebook -->
                     </a>
@@ -38,19 +38,22 @@
     </div>
 
     <!-- Main Navigation -->
-    <div class="bg-white sticky top-0 z-50 shadow-sm lg:shadow-none">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center md:py-6 py-3">
+    <div class="sticky top-0 z-50 bg-white shadow-sm lg:shadow-none">
+        <div class="container px-4 mx-auto">
+            <div class="flex items-center justify-between py-3 md:py-6">
 
                 <!-- Logo -->
                 <div class="lg:w-[180px] md:w-[150px] w-[120px]">
                     <a href="{{ route('home') }}" wire:navigate>
-                        <img src="/assets/images/logo.svg" alt="Logo" />
+                        @php
+                        $site_logo = getSetting('logo');
+                        @endphp
+                        <img src="{{ $site_logo?asset('storage/' . $site_logo):asset('assets/images/logo.svg') }}" alt="Logo" />
                     </a>
                 </div>
 
                 <!-- Search Box -->
-                <div class="relative w-5/10 hidden sm:block">
+                <div class="relative hidden w-5/10 sm:block">
                     <input type="text" placeholder="Search"
                         class="border border-gray-400 py-1.5 px-3 w-full focus:outline-none focus:ring-1 focus:ring-[#27ad4c]" />
                     <button class="absolute right-0 top-0 h-full px-2 text-white bg-[#27ad4c]">
@@ -59,7 +62,7 @@
                 </div>
 
                 <!-- Desktop Links -->
-                <div class="hidden lg:flex items-center space-x-4">
+                <div class="items-center hidden space-x-4 lg:flex">
                     <a href="#" class="font-medium text-slate-700 hover:text-[#27ad4c]">Login</a>
                     <a href="#"
                         class="bg-[#27ad4c] text-white font-bold py-2 px-4 rounded-md hover:bg-[#27ad4c] transition-colors">
@@ -76,7 +79,7 @@
             </div>
 
             <!-- Desktop Navigation -->
-            <nav class="hidden lg:flex items-center space-x-6 text-black font-semibold">
+            <nav class="items-center hidden space-x-6 font-semibold text-black lg:flex">
                 <a href="{{ route('home') }}" wire:navigate
                     class="pb-2 {{ request()->routeIs('home') ? 'text-[#27ad4c] border-b-2 border-[#27ad4c]' : 'hover:text-[#27ad4c]' }}">
                     Home
@@ -92,9 +95,9 @@
                 <a href="{{ route('contact') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
                     Contact
                 </a>
-                <a href="{{ route('details',10) }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
+                {{-- <a href="{{ route('details',10) }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
                     Product Details
-                </a>
+                </a> --}}
 
                 {{-- <a href="#" class="pb-2 hover:text-[#27ad4c]">Software</a>
                 <a href="#" class="pb-2 hover:text-[#27ad4c]">Services</a>
@@ -105,9 +108,9 @@
             </nav>
 
             <!-- Mobile Navigation -->
-            <div class="lg:hidden hidden bg-white py-4 px-4 shadow-lg">
+            <div class="hidden px-4 py-4 bg-white shadow-lg lg:hidden">
 
-                <div class="relative w-full sm:hidden mb-4">
+                <div class="relative w-full mb-4 sm:hidden">
                     <input type="text" placeholder="Search"
                         class="border border-gray-400 py-1.5 px-3 w-full focus:outline-none focus:ring-1 focus:ring-[#27ad4c]" />
                     <button class="absolute right-0 top-0 h-full px-2 text-white bg-[#27ad4c]">
@@ -115,7 +118,7 @@
                     </button>
                 </div>
 
-                <nav class="flex flex-col space-y-4 text-slate-700 font-medium">
+                <nav class="flex flex-col space-y-4 font-medium text-slate-700">
 
                     <a href="{{ route('home') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
                         Home
@@ -136,7 +139,7 @@
                     <a href="#" class="pb-2 hover:text-[#27ad4c]">Support</a>
                     <a href="#" class="pb-2 hover:text-[#27ad4c]">Company</a>
 
-                    <div class="flex flex-col space-y-4 pt-4">
+                    <div class="flex flex-col pt-4 space-y-4">
                         <a href="#" class="font-medium text-slate-700 hover:text-[#27ad4c]">Login</a>
                         <a href="#"
                             class="bg-[#27ad4c] text-white text-center font-bold py-2 px-4 rounded-md hover:bg-[#27ad4c]">
