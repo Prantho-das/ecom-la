@@ -7,11 +7,14 @@ use App\Models\Setting;
 use BackedEnum;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
 use UnitEnum;
 
-class ManageFeaturesSettings extends SiteSettings
+class ManageFeaturesSettings extends Page
 {
+    use InteractsWithForms;
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
@@ -21,10 +24,32 @@ class ManageFeaturesSettings extends SiteSettings
     protected static ?string $title = 'Features Section Settings';
 
     protected static ?string $slug = 'features-settings';
+    protected string $view = 'volt-livewire::filament.dark-admin.pages.settings.common-settings';
 
-    protected function getFormSchema(): array
+    public ?array $data = [];
+
+    public function mount(): void
     {
-        return [
+        // Default values (prevents validation errors)
+        $default = [
+            'icon' => '',
+            'title' => '',
+            'description' => '',
+        ];
+
+        // Load settings from DB
+        $settings = Setting::where('group', static::$settings)
+            ->pluck('value', 'key')
+            ->toArray();
+
+        // Merge defaults + DB values
+        $this->form->fill(array_merge($default, $settings));
+    }
+    public function form($form)
+    {
+        return $form
+            ->statePath('data')
+            ->schema([
             Repeater::make('features_list')
                 ->label('Features')
                 ->schema([
@@ -44,7 +69,7 @@ class ManageFeaturesSettings extends SiteSettings
                 ->defaultItems(4)
                 ->columns(3)
                 ->columnSpanFull(),
-        ];
+        ]);
     }
 
     protected function mutateFormDataBeforeFill(array $data): array
@@ -66,5 +91,16 @@ class ManageFeaturesSettings extends SiteSettings
         }
 
         return []; // Return empty to prevent Filament from trying to save the data in its default way
+    }
+    public function save(): void
+    {
+        $data = $this->form->getState();
+
+       $this->mutateFormDataBeforeSave($data);
+        \Filament\Notifications\Notification::make()
+            ->title('Saved Successfully')
+            ->body('Features section settings updated.')
+            ->success()
+            ->send();
     }
 }

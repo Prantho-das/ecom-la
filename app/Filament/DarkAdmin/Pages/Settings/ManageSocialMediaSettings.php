@@ -9,9 +9,13 @@ use Filament\Forms\Components\TextInput;
 use Filament\Support\Icons\Heroicon;
 use UnitEnum;
 use App\Filament\DarkAdmin\Pages\SiteSettings;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Notifications\Notification;
+use Filament\Pages\Page;
 
-class ManageSocialMediaSettings extends SiteSettings
+class ManageSocialMediaSettings extends Page
 {
+    use InteractsWithForms;
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
@@ -22,9 +26,33 @@ class ManageSocialMediaSettings extends SiteSettings
 
     protected static ?string $slug = 'social-media-settings';
 
-    protected function getFormSchema(): array
+    protected string $view = 'volt-livewire::filament.dark-admin.pages.settings.common-settings';
+
+
+    public ?array $data = [];
+
+    public function mount(): void
     {
-        return [
+        // Default values (prevents validation errors)
+        $default = [
+            'platform' => '',
+            'url' => '',
+            'icon' => '',
+        ];
+
+        // Load settings from DB
+        $settings = Setting::where('group', static::$settings)
+            ->pluck('value', 'key')
+            ->toArray();
+
+        // Merge defaults + DB values
+        $this->form->fill(array_merge($default, $settings));
+    }
+    public function form($form)
+    {
+        return $form
+            ->statePath('data')
+            ->schema([
             Repeater::make('social_media_links')
                 ->label('Social Media Links')
                 ->schema([
@@ -44,7 +72,7 @@ class ManageSocialMediaSettings extends SiteSettings
                 ])
                 ->defaultItems(0)
                 ->columnSpanFull(),
-        ];
+        ]);
     }
 
     protected function mutateFormDataBeforeFill(array $data): array
@@ -66,5 +94,27 @@ class ManageSocialMediaSettings extends SiteSettings
         }
 
         return [];
+    }
+    public function save(): void
+    {
+        $data = $this->form->getState();
+
+        foreach ($data as $key => $value) {
+            Setting::updateOrCreate(
+                [
+                    'group' => static::$settings,
+                    'key' => $key
+                ],
+                [
+                    'value' => $value
+                ]
+            );
+        }
+
+        Notification::make()
+            ->title('Saved Successfully')
+            ->body('Hero section settings updated.')
+            ->success()
+            ->send();
     }
 }

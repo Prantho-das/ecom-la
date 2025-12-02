@@ -31,6 +31,8 @@ class DarkAdminPanelProvider extends PanelProvider
         return $panel
             ->id('dark-admin')
             ->path('dark-admin')
+            ->login()
+            ->default()
             ->colors([
                 'primary' => Color::Green,
             ])->spa()->sidebarCollapsibleOnDesktop()
@@ -52,7 +54,7 @@ class DarkAdminPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->sidebarWidth("14rem")
             ->navigationItems([
-               
+
 
                 NavigationItem::make()
                     ->label('Clear Cache')
@@ -85,5 +87,5 @@ StatsOverview::class
                 Authenticate::class,
             ]);
     }
-    
+
 }

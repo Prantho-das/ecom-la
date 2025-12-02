@@ -2,73 +2,99 @@
 
 namespace App\Filament\DarkAdmin\Pages\Settings;
 
-use App\Filament\DarkAdmin\Pages\SiteSettings;
 use App\Models\Setting;
-use BackedEnum;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms;
+use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
+use Filament\Notifications\Notification;
 use UnitEnum;
-
-class ManageHeroSettings extends SiteSettings
+use BackedEnum;
+use Livewire\Form;
+use Filament\Forms\Concerns\InteractsWithForms;
+class ManageHeroSettings extends Page
 {
+    use InteractsWithForms;
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
-    protected static string $settings = 'hero';
 
     protected static ?string $title = 'Hero Section Settings';
 
     protected static ?string $slug = 'hero-settings';
 
-    protected function getFormSchema(): array
+    protected static string $settings = 'hero';
+
+    protected string $view = 'volt-livewire::filament.dark-admin.pages.settings.common-settings';
+
+    public ?array $data = [];
+
+    public function mount(): void
     {
-        return [
-            TextInput::make('hero_title')
-                ->label('Title')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('hero_subtitle')
-                ->label('Subtitle')
-                ->maxLength(255),
-            TextInput::make('hero_cta_text')
-                ->label('Call to Action Text')
-                ->maxLength(255),
-            TextInput::make('hero_cta_link')
-                ->label('Call to Action Link (URL)')
-                ->url()
-                ->maxLength(255),
-            FileUpload::make('hero_background_image')
-                ->label('Background Image')
-                ->directory('hero')
-                ->image()
-                ->nullable(),
+        // Default values (prevents validation errors)
+        $default = [
+            'hero_title' => '',
+            'hero_subtitle' => '',
+            'hero_cta_text' => '',
+            'hero_cta_link' => '',
+            'hero_background_image' => null,
         ];
+
+        // Load settings from DB
+        $settings = Setting::where('group', static::$settings)
+            ->pluck('value', 'key')
+            ->toArray();
+
+        // Merge defaults + DB values
+        $this->form->fill(array_merge($default, $settings));
     }
 
-    protected function mutateFormDataBeforeFill(array $data): array
+    public function form($form)
     {
-        $settings = Setting::where('group', static::$settings)->pluck('value', 'key');
+        return $form
+            ->statePath('data')
+            ->schema([
+                Forms\Components\TextInput::make('hero_title')
+                    ->label('Title')
+                    ->required(),
 
-        $data['hero_title'] = $settings->get('hero_title');
-        $data['hero_subtitle'] = $settings->get('hero_subtitle');
-        $data['hero_cta_text'] = $settings->get('hero_cta_text');
-        $data['hero_cta_link'] = $settings->get('hero_cta_link');
-        $data['hero_background_image'] = $settings->get('hero_background_image');
+                Forms\Components\TextInput::make('hero_subtitle')
+                    ->label('Subtitle'),
 
-        return $data;
+                Forms\Components\TextInput::make('hero_cta_text')
+                    ->label('Button Text'),
+
+                Forms\Components\TextInput::make('hero_cta_link')
+                    ->label('Button URL')
+                    ->url(),
+
+                Forms\Components\FileUpload::make('hero_background_image')
+                    ->label('Background Image')
+                    ->image()
+                    ->directory('hero')
+                    ->nullable(),
+            ]);
     }
 
-    protected function mutateFormDataBeforeSave(array $data): array
+    public function save(): void
     {
+        $data = $this->form->getState();
+
         foreach ($data as $key => $value) {
             Setting::updateOrCreate(
-                ['group' => static::$settings, 'key' => $key],
-                ['value' => $value]
+                [
+                    'group' => static::$settings,
+                    'key' => $key
+                ],
+                [
+                    'value' => $value
+                ]
             );
         }
 
-        return []; // Return empty to prevent Filament from trying to save the data in its default way
+        Notification::make()
+            ->title('Saved Successfully')
+            ->body('Hero section settings updated.')
+            ->success()
+            ->send();
     }
 }
