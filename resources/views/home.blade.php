@@ -15,5 +15,6 @@
     <x-products />
     <x-blog />
     <x-cta />
+    
 </body>
 </html>

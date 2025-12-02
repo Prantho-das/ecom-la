@@ -26,7 +26,7 @@
                 <div class="swiper-wrapper">
                     @foreach($images as $image)
                     <div class="w-24 h-24 overflow-hidden border border-gray-200 rounded-lg swiper-slide"><img src="{{asset('storage/'.$image)}}" class="object-cover w-full h-full" alt="Server Rack Thumbnail"></div>
-                    
+
                     @endforeach
                 </div>
             </div>
@@ -35,9 +35,9 @@
         <!-- Right Column - Details -->
         <div>
             <div class="w-12 h-12 mb-2">
-                <img src="{{ $product->brand->logo_path ? asset('storage/'.$product->brand->logo_path):'https://placehold.co/600x400?text='.$product->name }}" alt="{{$product->brand->name}}">
+                <img src="{{ $product->brand && $product->brand->logo_path ? asset('storage/'.$product->brand->logo_path):'https://placehold.co/600x400?text='.$product->name }}" alt="{{$product->brand?->name}}">
             </div>
-           
+
             <h1 class="mb-2 text-3xl font-light">{{$product->name}}</h1>
             <p class="mb-4 text-sm text-gray-500">SKU: {{$product->sku}}</p>
             <button class="px-6 py-2 mb-6 font-semibold text-white bg-green-600 rounded hover:bg-green-800">Add to My Quotation</button>
@@ -167,7 +167,7 @@
                     </div>
                 </div>
                 @endforeach
-    
+
             </div>
             <!-- Optional navigation -->
             <div class="swiper-button-next"></div>
@@ -181,14 +181,14 @@
 <script>
     function initializeSwipers() {
         console.log("Swiper Init");
-    
+
         // destroy existing swiper
         document.querySelectorAll('.swiper').forEach(swiperEl => {
             if (swiperEl.swiper) {
                 swiperEl.swiper.destroy(true, true);
             }
         });
-    
+
         // Thumbs
         const swiperThumbs = new Swiper(".mySwiper", {
             spaceBetween: 10,
@@ -197,7 +197,7 @@
             watchSlidesProgress: true,
             touchStartPreventDefault:false
         });
-    
+
         // Main Slider
         const swiperMain = new Swiper(".mySwiper2", {
             spaceBetween: 10,
@@ -208,7 +208,7 @@
             },
             thumbs: { swiper: swiperThumbs },
         });
-    
+
         // Related slider
         const relatedSwiper = new Swiper(".relatedSwiper", {
             slidesPerView: 2,
@@ -224,7 +224,7 @@
             }
         });
     }
-    
+
     document.addEventListener("DOMContentLoaded", initializeSwipers);
     document.addEventListener("livewire:navigated", initializeSwipers);
     document.querySelectorAll('.faq-question').forEach(q => {

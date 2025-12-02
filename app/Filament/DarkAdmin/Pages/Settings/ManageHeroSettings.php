@@ -71,6 +71,7 @@ class ManageHeroSettings extends Page
                     ->label('Background Image')
                     ->image()
                     ->directory('hero')
+                    ->disk('public')
                     ->nullable(),
             ]);
     }

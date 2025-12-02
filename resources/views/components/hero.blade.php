@@ -1,5 +1,6 @@
-<div class="lg:pt-8 pt-4 bg-white">
+<div class="pt-4 bg-white lg:pt-8">
   <div class="container lg:max-w-[1780px] mx-auto px-4">
+    
     <section
       class="relative bg-white lg:h-[660px] md:h-[600px] h-[480px] bg-cover bg-center text-white flex items-center rounded-2xl overflow-hidden"
       style="background-image: url('{{ $backgroundImage ? asset('storage/' . $backgroundImage) : '/assets/images/hero.jpg' }}');"
@@ -7,14 +8,14 @@
       <!-- Overlay -->
       <div class="absolute inset-0 bg-black opacity-40"></div>
 
-      <div class="h-full b-0 z-10">
-        <div class="flex lg:flex-row flex-col gap-8 lg:justify-between lg:items-end absolute left-0 bottom-14 w-full md:p-14 p-5">
+      <div class="z-10 h-full b-0">
+        <div class="absolute left-0 flex flex-col w-full gap-8 p-5 lg:flex-row lg:justify-between lg:items-end bottom-14 md:p-14">
           <!-- Text Section -->
           <div class="max-w-3xl">
-            <p class="text-lg md:text-xl mb-4">
+            <p class="mb-4 text-lg md:text-xl">
               {{ $subtitle }}
             </p>
-            <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold leading-tight">
+            <h1 class="text-4xl font-bold leading-tight md:text-5xl lg:text-7xl">
               {!! $title !!}
             </h1>
           </div>
