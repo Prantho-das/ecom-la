@@ -5,17 +5,17 @@
       <!-- Text Content -->
       <div>
         <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-          Got an Incredible Project Right Now?
+          {!! $title !!}
         </h2>
         <p class="text-white max-w-2xl mx-auto lg:mx-0 mb-8">
-          This helps ensure quality, schedule and that we're all working toward same goal
+          {!! $description !!}
         </p>
       </div>
 
       <!-- Button -->
-      <button class="bg-[#27ad4c] text-white border-2 border-white font-bold py-2.5 px-8 rounded-md hover:bg-white hover:border-white hover:text-[#27ad4c] transition-colors">
-        GET IN TOUCH
-      </button>
+      <a href="{{ $buttonLink }}" class="bg-[#27ad4c] text-white border-2 border-white font-bold py-2.5 px-8 rounded-md hover:bg-white hover:border-white hover:text-[#27ad4c] transition-colors">
+        {{ $buttonText }}
+      </a>
 
     </div>
   </div>

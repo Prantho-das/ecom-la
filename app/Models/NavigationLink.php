@@ -2,18 +2,35 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class NavigationLink extends Model
 {
     protected $guarded = [
-        
+        'parent_id',
     ];
 
     public function menu(): BelongsTo
     {
         return $this->belongsTo(NavigationMenu::class, 'navigation_menu_id');
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(NavigationLink::class, 'parent_id');
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(NavigationLink::class, 'parent_id')->orderBy('sort_order');
+    }
+
+    public function scopeTopLevel(Builder $query): Builder
+    {
+        return $query->whereNull('parent_id');
     }
 
     public function category()

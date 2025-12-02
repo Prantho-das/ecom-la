@@ -5,51 +5,51 @@
       <!-- Left Content -->
       <div class="pr-0 lg:pr-12">
         <p class="text-lime-600 font-semibold tracking-wider mb-2">
-          HYDROPOWER PLANT
+          {{ $subtitle }}
         </p>
         <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-          Taming the Elemental Power
+          {!! $title !!}
         </h2>
         <p class="text-slate-600 mb-6">
-          Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed quia.
+          {!! $description !!}
         </p>
 
+        @if(!empty($listItems))
         <ul class="space-y-3 text-slate-700 mb-8">
+          @foreach($listItems as $item)
           <li class="flex items-center">
             <span>✅</span>
-            <span class="ml-3">Adipiscing eli sed eiusmod</span>
+            <span class="ml-3">{{ $item['item'] }}</span>
           </li>
-          <li class="flex items-center">
-            <span>✅</span>
-            <span class="ml-3">Tempor incididunt</span>
-          </li>
+          @endforeach
         </ul>
+        @endif
 
-        <button class="bg-slate-900 text-white font-bold py-3 px-8 rounded-full hover:bg-slate-800 transition-colors">
-          About Us
-        </button>
+        <a href="{{ $buttonLink }}" class="bg-slate-900 text-white font-bold py-3 px-8 rounded-full hover:bg-slate-800 transition-colors">
+          {{ $buttonText }}
+        </a>
       </div>
 
       <!-- Right Content -->
       <div class="relative mx-auto">
         <img
-          src="https://picsum.photos/seed/dam/500/600"
-          alt="Hydropower Dam"
+          src="{{ $image ? asset('storage/' . $image) : 'https://picsum.photos/seed/dam/500/600' }}"
+          alt="{{ $title }}"
           class="rounded-2xl shadow-xl h-auto"
         />
 
         <!-- Stats Cards -->
         <div class="absolute bottom-8 sm:-left-12 left-8 flex lg:flex-col xl:flex-row flex-col w-full gap-4">
           <div class="bg-[#a4cc1c] text-white p-8 rounded-2xl shadow-lg w-64">
-            <p class="font-semibold">Experts</p>
-            <p class="md:text-6xl text-4xl font-bold">90+</p>
-            <p class="text-sm mt-2">Adipiscing elit, do eiusm.</p>
+            <p class="font-semibold">{{ $stat1Title }}</p>
+            <p class="md:text-6xl text-4xl font-bold">{{ $stat1Value }}</p>
+            <p class="text-sm mt-2">{{ $stat1Description }}</p>
           </div>
 
           <div class="bg-[#002134] text-white p-8 rounded-2xl shadow-lg w-64">
-            <p class="font-semibold">Stations</p>
-            <p class="md:text-6xl text-4xl font-bold">16</p>
-            <p class="text-sm mt-2">Sed do eius mod tempor.</p>
+            <p class="font-semibold">{{ $stat2Title }}</p>
+            <p class="md:text-6xl text-4xl font-bold">{{ $stat2Value }}</p>
+            <p class="text-sm mt-2">{{ $stat2Description }}</p>
           </div>
         </div>
       </div>
