@@ -1,13 +1,11 @@
 <section class="bg-[#27ad4c]">
-  <div class="container mx-auto px-4 lg:py-24 md:py-16 py-10">
-    <div class="flex flex-col lg:flex-row items-center justify-between text-center lg:text-start gap-8">
-
-      <!-- Text Content -->
+  <div class="container px-4 py-10 mx-auto lg:py-24 md:py-16">
+    <div class="flex flex-col items-center justify-between gap-8 text-center lg:flex-row lg:text-start">
       <div>
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+        <h2 class="mb-4 text-3xl font-bold text-white md:text-4xl">
           {!! $title !!}
         </h2>
-        <p class="text-white max-w-2xl mx-auto lg:mx-0 mb-8">
+        <p class="max-w-2xl mx-auto mb-8 text-white lg:mx-0">
           {!! $description !!}
         </p>
       </div>
