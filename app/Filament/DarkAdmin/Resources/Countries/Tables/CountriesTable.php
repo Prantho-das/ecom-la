@@ -20,6 +20,9 @@ class CountriesTable
                 TextColumn::make('code')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('continent.name')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime('d M Y')
                     ->sortable()

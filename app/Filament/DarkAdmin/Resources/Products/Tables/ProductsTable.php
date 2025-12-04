@@ -24,6 +24,9 @@ class ProductsTable
                     ->searchable()
                     ->sortable()
                     ->weight('semibold'),
+                TextColumn::make('sku')
+                    ->searchable()
+                    ->sortable(),
 
                 TextColumn::make('brand.name')
                     ->badge(),
@@ -36,6 +39,14 @@ class ProductsTable
                     ->boolean()
                     ->label('Published'),
 
+                IconColumn::make('has_pdf_files')
+                    ->label('PDFs')
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                TextColumn::make('pdf_files')
+                    ->label('PDF Files')
+                    ->listWithLineBreaks()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->dateTime('d M Y')
                     ->sortable()

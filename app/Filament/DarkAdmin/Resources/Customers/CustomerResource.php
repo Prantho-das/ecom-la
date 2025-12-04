@@ -12,20 +12,20 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class CustomerResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $recordTitleAttribute = 'Customer';
+    protected static ?string $navigationLabel = 'Customer';
 
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-group';
 
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string | UnitEnum | null $navigationGroup = 'Shop';
 
     public static function form(Schema $schema): Schema
     {
@@ -44,8 +44,8 @@ class CustomerResource extends Resource
 
                 \Filament\Forms\Components\TextInput::make('password')
                     ->password()
-                    ->dehydrateStateUsing(fn($state) => !empty($state) ? bcrypt($state) : null)
-                    ->required(fn(string $context) => $context === 'create'),
+                    ->dehydrateStateUsing(fn ($state) => ! empty($state) ? bcrypt($state) : null)
+                    ->required(fn (string $context) => $context === 'create'),
 
                 // Hidden role field
                 \Filament\Forms\Components\Hidden::make('role')

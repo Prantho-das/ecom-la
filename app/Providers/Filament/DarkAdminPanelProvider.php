@@ -27,13 +27,15 @@ use Filament\Navigation\NavigationItem;
 class DarkAdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
-    {$site_logo = getSetting('logo');
+    {$site_logo = "";
         return $panel
             ->id('dark-admin')
             ->path('dark-admin')
+            ->login()
+            ->default()
             ->colors([
                 'primary' => Color::Green,
-            ])->spa()
+            ])->spa()->sidebarCollapsibleOnDesktop()
             ->brandLogo(function () use ($site_logo) {
                 if (!empty($site_logo)) {
                     $logoUrl = asset('storage/' . $site_logo);
@@ -52,7 +54,7 @@ class DarkAdminPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->sidebarWidth("14rem")
             ->navigationItems([
-               
+
 
                 NavigationItem::make()
                     ->label('Clear Cache')
@@ -85,5 +87,5 @@ StatsOverview::class
                 Authenticate::class,
             ]);
     }
-    
+
 }

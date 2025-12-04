@@ -22,6 +22,9 @@ class NavigationLinksTable
                     ->searchable()
                     ->sortable()
                     ->weight('semibold'),
+                TextColumn::make('parent.label')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('menu.name')
                     ->badge(),
             ])

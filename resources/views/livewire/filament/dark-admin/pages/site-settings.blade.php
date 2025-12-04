@@ -2,13 +2,13 @@
 
 
 
-    <form wire:submit.prevent="save" class="space-y-6 max-w-xl">
+    <form wire:submit.prevent="save" class="max-w-xl space-y-6">
         {{ $this->form }}
-
+        <br/>
         <x-filament::button type="submit" class="mt-4">
             Save Settings
         </x-filament::button>
     </form>
 
-    
+
 </x-filament-panels::page>
