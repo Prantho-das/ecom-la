@@ -3,6 +3,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
         @forelse($featuresList as $feature)
             <div class="flex items-start space-x-4">
+
                 <div class="text-orange-500 mt-1 text-5xl">{!! $feature['icon'] !!}</div>
                 <div>
                     <h3 class="font-bold text-xl mb-2 text-slate-900">{{ $feature['title'] }}</h3>

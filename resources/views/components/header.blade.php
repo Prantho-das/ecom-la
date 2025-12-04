@@ -39,7 +39,7 @@
 
     <!-- Main Navigation -->
     <div class="sticky top-0 z-50 bg-white shadow-sm lg:shadow-none">
-        <div class="container px-4 mx-auto">
+        <div class="container lg:max-w-[1780px] mx-auto px-4">
             <div class="flex items-center justify-between py-3 md:py-6">
 
                 <!-- Logo -->

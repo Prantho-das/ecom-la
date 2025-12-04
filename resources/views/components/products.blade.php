@@ -6,8 +6,10 @@
         <!-- Header -->
         <div class="flex items-center justify-between mb-12">
             <h2 class="text-4xl font-bold md:text-5xl text-slate-900">New Products</h2>
-            <a href="#" class="flex items-center space-x-2 text-slate-600 hover:text-[#27ad4c] font-medium">
-                <div class="flex items-center justify-center w-8 h-8 border rounded-full border-slate-400">↗️</div>
+            <a href="#" class="flex items-center space-x-2 text-slate-600 hover:text-[#27ad4c] font-medium transition duration-300">
+                <div class="flex items-center justify-center w-8 h-8 border rounded-full border-slate-400 p-1">
+                    <x-heroicon-o-arrow-up-right />
+                </div>
                 <span>View All Product</span>
             </a>
         </div>
