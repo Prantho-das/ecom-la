@@ -34,7 +34,7 @@
             <!-- Right Content -->
             <div class="relative mx-auto">
                 <img src="{{ $image ? asset('storage/' . $image) : 'https://picsum.photos/seed/dam/500/600' }}"
-                    alt="{{ $title }}" class="h-auto shadow-xl rounded-2xl" />
+                    alt="{{ $title }}" class="h-auto shadow-xl rounded-2xl aspect-[4/5] object-cover " />
 
                 <!-- Stats Cards -->
                 <div class="absolute flex flex-col w-full gap-4 bottom-8 sm:-left-12 left-8 lg:flex-col xl:flex-row">

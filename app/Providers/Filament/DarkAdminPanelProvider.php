@@ -27,7 +27,7 @@ use Filament\Navigation\NavigationItem;
 class DarkAdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
-    {$site_logo = getSetting('logo');
+    {$site_logo = "";
         return $panel
             ->id('dark-admin')
             ->path('dark-admin')
