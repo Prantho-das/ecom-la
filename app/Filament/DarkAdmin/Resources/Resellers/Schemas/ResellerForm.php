@@ -2,9 +2,9 @@
 
 namespace App\Filament\DarkAdmin\Resources\Resellers\Schemas;
 
-use Filament\Schemas\Components\Select;
-use Filament\Schemas\Components\Textarea;
-use Filament\Schemas\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class ResellerForm
