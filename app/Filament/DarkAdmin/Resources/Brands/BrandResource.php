@@ -36,7 +36,7 @@ class BrandResource extends Resource
                     ->afterStateUpdated(fn ($set, ?string $state) => $set('slug', Str::slug($state))),
                 TextInput::make('slug')->required(),
                 TextInput::make('description'),
-                FileUpload::make('logo_path'),
+                FileUpload::make('logo_path')->disk('public'),
                 Toggle::make('is_active'),
             ]);
     }
