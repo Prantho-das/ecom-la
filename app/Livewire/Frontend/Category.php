@@ -4,7 +4,7 @@ namespace App\Livewire\Frontend;
 
 use Livewire\Component;
 use App\Models\Product;
-use App\Models\Category;
+use App\Models\Category as CategoryModel;
 
 class Category extends Component
 {
@@ -12,7 +12,7 @@ class Category extends Component
     public $category_products=[];
     public function mount(){
         if(request()->filled('category_slug')){
-            $this->category=Category::where('slug',request()->category_slug)->first();
+            $this->category=CategoryModel::where('slug',request()->category_slug)->first();
         }
         $this->category_products = Product::with(['images'])
             ->whereHas('categories', function ($q) {
