@@ -77,6 +77,7 @@ class ProductForm
                     ])->columns(3)->columnSpanFull(),
 
                 Section::make('Options')
+                ->hidden()
                     ->description('Create options like Color, Size, Material')
                     ->schema([
                         Repeater::make('options')

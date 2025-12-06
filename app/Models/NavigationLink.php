@@ -58,6 +58,7 @@ class NavigationLink extends Model
             case 'page':
                 return $this->page ? route('page.show', $this->page->slug) : '#';
             case 'custom':
+                return $this->custom_url ?? '#';
             default:
                 return $this->custom_url ?? '#';
         }

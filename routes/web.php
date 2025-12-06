@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// })->name('home');
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
@@ -51,26 +48,6 @@ Route::middleware(['auth'])->group(function () {
         ->name('two-factor.show');
 });
 
-// Route::get('/', function () {
-//     return view('home'); // Returns the 'about.blade.php' view
-// });
-
-// Route::get('/category', function () {
-//     return view('category'); // Returns the 'about.blade.php' view
-// });
-
-// Route::get('/contact', function () {
-//     return view('contact'); // Returns the 'about.blade.php' view
-// });
-
-// Route::get('/reseller-partner', function () {
-//     return view('reseller-partner'); // Returns the 'about.blade.php' view
-// });
-
-// Route::get('/details', function () {
-//     return view('details'); // Returns the 'about.blade.php' view
-// });
-
 // HOME
 Route::get('/', Home::class)->name('home');
 
@@ -88,3 +65,4 @@ Route::get('/details/{product:slug}', Details::class)->name('details');
 
 // BLOG POST DETAILS (Dynamic Route)
 Route::get('/blog/{post:slug}', App\Livewire\Frontend\BlogPostDetail::class)->name('blog.show');
+Route::get('/p/{page:slug}', App\Livewire\Frontend\PageDetail::class)->name('page.show');

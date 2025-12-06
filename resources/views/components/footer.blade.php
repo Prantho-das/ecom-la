@@ -7,7 +7,7 @@
           <h3 class="font-bold text-white text-lg">{{ Str::of($menu->name)->after('Footer ')->title() }}</h3>
           <ul class="space-y-2">
             @foreach($menu->links as $link)
-              <li><a href="{{ $link->custom_url }}" class="hover:text-white">{{ $link->label }}</a></li>
+              <li><a href="{{ $link->url }}" class="hover:text-white">{{ $link->label }}</a></li>
             @endforeach
           </ul>
         </div>
