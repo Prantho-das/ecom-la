@@ -13,4 +13,9 @@ class Country extends Model
     {
         return $this->belongsTo(Continent::class);
     }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'country_product');
+    }
 }

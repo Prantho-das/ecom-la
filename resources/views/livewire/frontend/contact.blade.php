@@ -11,7 +11,13 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-24">
-            <form action="#" method="POST" class="space-y-6">
+            <form wire:submit.prevent="save" class="space-y-6">
+
+                @if (session()->has('success'))
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                        <span class="block sm:inline">{{ session('success') }}</span>
+                    </div>
+                @endif
 
                 <!-- First + Last Name -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -21,8 +27,9 @@
                         <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">
                             First name
                         </label>
-                        <input type="text" id="firstName" name="firstName" placeholder="First name"
+                        <input type="text" id="firstName" wire:model="firstName" placeholder="First name"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
+                        @error('firstName') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
 
                     <!-- Last Name -->
@@ -30,8 +37,9 @@
                         <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">
                             Last name
                         </label>
-                        <input type="text" id="lastName" name="lastName" placeholder="Last name"
+                        <input type="text" id="lastName" wire:model="lastName" placeholder="Last name"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
+                        @error('lastName') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
 
                 </div>
@@ -41,8 +49,9 @@
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
                         Email
                     </label>
-                    <input type="email" id="email" name="email" placeholder="you@company.com"
+                    <input type="email" id="email" wire:model="email" placeholder="you@company.com"
                         class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
+                    @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Phone Number -->
@@ -50,23 +59,9 @@
                     <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
                         Phone number
                     </label>
-                    <div class="relative">
-
-                        <!-- Country Code -->
-                        <div class="absolute inset-y-0 left-0 flex items-center">
-                            <label for="country" class="sr-only">Country</label>
-                            <select id="country" name="country"
-                                class="h-full py-0 pl-3 pr-8 border-transparent bg-transparent text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800 rounded-md">
-                                <option>US</option>
-                                <option>CA</option>
-                                <option>EU</option>
-                            </select>
-                        </div>
-
-                        <!-- Phone Input -->
-                        <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000"
-                            class="w-full pl-20 px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
-                    </div>
+                    <input type="tel" id="phone" wire:model="phone" placeholder="+1 (555) 000-0000"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
+                    @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Message -->
@@ -74,8 +69,9 @@
                     <label for="message" class="block text-sm font-medium text-gray-700 mb-1">
                         Message
                     </label>
-                    <textarea id="message" name="message" rows="5" placeholder="Leave us a message..."
+                    <textarea id="message" wire:model="message" rows="5" placeholder="Leave us a message..."
                         class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800"></textarea>
+                    @error('message') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Submit Button -->

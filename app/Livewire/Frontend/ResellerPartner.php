@@ -2,12 +2,17 @@
 
 namespace App\Livewire\Frontend;
 
+use App\Models\Reseller;
 use Livewire\Component;
 
 class ResellerPartner extends Component
 {
     public function render()
     {
-        return view('livewire.frontend.reseller-partner');
+        $resellers = Reseller::where('status', 'active')->get();
+
+        return view('livewire.frontend.reseller-partner', [
+            'resellers' => $resellers,
+        ]);
     }
 }

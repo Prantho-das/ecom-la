@@ -14,22 +14,10 @@ class ResellersTable
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('email')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('phone')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('country.name')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('status')
-                    ->badge()
-                    ->searchable()
-                    ->sortable(),
+                TextColumn::make('name')->searchable()->sortable(),
+                TextColumn::make('email')->searchable()->sortable(),
+                TextColumn::make('phone')->searchable()->sortable(),
+                TextColumn::make('country.name')->searchable()->sortable(),
             ])
             ->filters([
                 //

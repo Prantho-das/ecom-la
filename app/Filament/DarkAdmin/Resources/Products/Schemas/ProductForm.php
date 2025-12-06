@@ -31,7 +31,7 @@ class ProductForm
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (string $operation, ?string $state,$set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                            ->afterStateUpdated(fn (string $operation, ?string $state, $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
                         TextInput::make('sku')
                             ->unique(ignoreRecord: true)
                             ->nullable()
@@ -52,6 +52,12 @@ class ProductForm
                             ->preload()
                             ->searchable()
                             ->label('Assign Categories'),
+                        Select::make('countries')
+                            ->relationship('countries', 'name')
+                            ->multiple()
+                            ->preload()
+                            ->searchable()
+                            ->label('Available In Countries'),
                         Select::make('status')
                             ->options([
                                 'draft' => 'Draft',

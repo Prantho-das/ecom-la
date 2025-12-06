@@ -89,7 +89,7 @@
 
 
             <!-- ============================= -->
-            <!-- Partner List (full HTML version) -->
+            <!-- Partner List (dynamic) -->
             <!-- ============================= -->
             <div style="width: 1200px; margin: 0 auto; font-family: Arial, sans-serif; color: #333;">
 
@@ -102,56 +102,20 @@
                     <div style="width: 20%;">Partner Level</div>
                 </div>
 
-                <!-- Partner Card 1 -->
-                <div style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center;">
-                    <div style="width: 25%; display: flex; align-items: center;">
-                        <img src="https://i.imgur.com/2s9Vp1X.png" alt="AKTEA"
-                            style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
-                        <span style="font-weight: 500;">AKTEA</span>
+                @foreach ($resellers as $reseller)
+                    <!-- Partner Card -->
+                    <div style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center;">
+                        <div style="width: 25%; display: flex; align-items: center;">
+                            <span style="font-weight: 500;">{{ $reseller->name }}</span>
+                        </div>
+                        <div style="width: 35%;">
+                            {{ $reseller->address }}<br>
+                            {{ $reseller->city }}, {{ $reseller->state }} {{ $reseller->zip_code }}<br>
+                        </div>
+                        <div style="width: 20%; font-weight: 500;">{{ $reseller->country->name }}</div>
+                        <div style="width: 20%; font-weight: 500;">Gold</div>
                     </div>
-                    <div style="width: 35%;">
-                        58 rue Jean Duvert<br>
-                        33290 Blanquefort<br>
-                        France
-                    </div>
-                    <div style="width: 20%; font-weight: 500;">France</div>
-                    <div style="width: 20%; font-weight: 500;">Gold</div>
-                </div>
-
-                <!-- Partner Card 2 -->
-                <div style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center;">
-                    <div style="width: 25%; display: flex; align-items: center;">
-                        <img src="https://i.imgur.com/R3aG5r5.png" alt="Applications2U, LLC DBA A2U"
-                            style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
-                        <span style="font-weight: 500;">Applications2U, LLC DBA A2U</span>
-                    </div>
-                    <div style="width: 35%;">
-                        6400 Brooktree Court Suite 120<br>
-                        Wexford, PA 15090<br>
-                        United States
-                    </div>
-                    <div style="width: 20%; font-weight: 500;">United States</div>
-                    <div style="width: 20%; font-weight: 500;">Silver</div>
-                </div>
-
-                <!-- Partner Card 3 -->
-                <div style="display: flex; padding: 15px 0; border-bottom: 1px solid #eee; align-items: center;">
-                    <div style="width: 25%; display: flex; align-items: center;">
-                        <img src="https://i.imgur.com/8FkO7V7.png" alt="Aricoma Systems a.s."
-                            style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
-                        <span style="font-weight: 500;">Aricoma Systems a.s.</span>
-                    </div>
-                    <div style="width: 35%;">
-                        Hornopolní 3322/34<br>
-                        702 00 Ostrava<br>
-                        Czechia
-                    </div>
-                    <div style="width: 20%; font-weight: 500;">Czechia</div>
-                    <div style="width: 20%; font-weight: 500;">Bronze</div>
-                </div>
-
-                <!-- Add more static partner cards here -->
-
+                @endforeach
             </div>
 
 

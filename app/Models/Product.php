@@ -69,14 +69,9 @@ class Product extends Model
         return $this->hasManyThrough(OptionValue::class, Option::class);
     }
 
-    /** Get all variant option values (all combinations used by variants) */
-    public function variantOptionValues()
+    /** Product belongs to many Countries (Pivot: country_product) */
+    public function countries()
     {
-        return $this->hasManyThrough(
-            OptionValue::class,
-            ProductVariant::class,
-            'product_id',
-            'id'
-        );
+        return $this->belongsToMany(Country::class, 'country_product');
     }
 }
