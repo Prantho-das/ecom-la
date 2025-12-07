@@ -107,8 +107,16 @@
                     <!-- Toolbar -->
                     <div class="flex justify-end items-center gap-3 mb-6 pb-4 border-b border-gray-200">
                         <div class="flex items-center space-x-2">
-                            <button id="listViewBtn" class="p-1 text-2xl text-black">☰</button>
-                            <button id="gridViewBtn" class="p-1 text-2xl text-green-600">⬢</button>
+                            @if($showMode=="grid")
+                            <button  class="p-1 text-2xl text-black">
+
+                                <i class="fa-solid fa-table-cells-large"></i>
+                            </button>
+                            @else
+                            <button  class="p-1 text-2xl text-green-600">
+<i class="fa-solid fa-bars"></i>
+                            </button>
+                            @endif
                         </div>
 
                         <p id="productCount" class="text-sm text-gray-500"></p>
