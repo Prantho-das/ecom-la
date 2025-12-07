@@ -2,7 +2,7 @@
 
 namespace App\View\Components;
 
-use App\Models\Setting;
+use App\Services\SettingService;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -38,9 +38,9 @@ class About extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(SettingService $settingService)
     {
-        $settings = Setting::where('group', 'about')->pluck('value', 'key');
+        $settings = $settingService->getSettings('about');
 
         $this->subtitle = $settings->get('about_subtitle', 'Default Subtitle');
         $this->title = $settings->get('about_title', 'Default Title');

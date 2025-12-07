@@ -25,7 +25,14 @@
         <!-- List -->
         <ul class="space-y-6">
             <li class="flex">
-                <div class="text-2xl mt-1">✅</div>
+                <div class="text-2xl mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+
+                </div>
                 <div class="ml-4">
                     <h3 class="font-bold text-lg">Robust Experience</h3>
                     <p class="text-sm opacity-90">
@@ -34,7 +41,14 @@
                 </div>
             </li>
             <li class="flex">
-                <div class="text-2xl mt-1">✅</div>
+                <div class="text-2xl mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+
+                </div>
                 <div class="ml-4">
                     <h3 class="font-bold text-lg">Best Energy Tariffs</h3>
                     <p class="text-sm opacity-90">
@@ -44,4 +58,4 @@
             </li>
         </ul>
     </div>
-    </section>
+</section>

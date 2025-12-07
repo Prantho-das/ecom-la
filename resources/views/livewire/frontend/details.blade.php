@@ -52,7 +52,7 @@
                     <div class="swiper-wrapper">
                         @foreach ($images as $image)
                             <div
-                                class="w-24 h-24 overflow-hidden border-2 border-gray-300 rounded-lg cursor-pointer swiper-slide">
+                                class="w-24 h-24 overflow-hidden border-2 border-gray-300 hover:border-green-600 rounded-lg cursor-pointer swiper-slide">
                                 <img src="{{ asset('storage/' . $image) }}"
                                     class="object-cover w-full h-full aspect-square" alt="Thumbnail">
                             </div>
@@ -63,41 +63,66 @@
 
             <!-- Right Column - Details -->
             <div>
-                <div class="w-12 h-12 mb-2">
+                <div class="w-32 mb-2">
                     <img src="{{ $product->brand && $product->brand->logo_path ? asset('storage/' . $product->brand->logo_path) : 'https://placehold.co/600x400?text=' . $product->name }}"
                         alt="{{ $product->brand?->name }}">
                 </div>
 
                 <h1 class="mb-2 text-3xl font-light text-black">{{ $product->name }}</h1>
                 <p class="mb-2 text-sm text-gray-500 ">SKU: {{ $product->sku }}</p>
+                <hr class="my-4">
                 <button
-                    class="font-semibold text-green-600 rounded hover:text-green-800 transition drop-shadow-blue-300 flex items-center gap-1">
+                    class="text-sm font-semibold mb-4 text-green-600 rounded hover:text-green-800 transition drop-shadow-blue-300 flex items-center gap-1">
                     <x-heroicon-o-star class="w-5 h-5" /> Add to My Quotation</button>
 
-                <hr class="my-4">
+
 
                 <ul class="mb-6 space-y-2 text-gray-500 text-base">
-                    <li class="flex items-start "><span class="mr-2 mt-1 text-green-600"><x-bi-check />
-                        </span> 2 pure sine wave AC
-                        outlets</li>
-                    <li class="flex items-start "><span class="mr-2 mt-1 text-green-600"><x-bi-check />
-                        </span> 3 USB-A and 1 USB-C
+                    <li class="flex items-start ">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-4 text-green-600 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                        </svg>
+                        2 pure sine wave AC
+                        outlets
+                    </li>
+                    <li class="flex items-start "><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 text-green-600 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                        </svg>
+                        3 USB-A and 1 USB-C
                         PD60W</li>
-                    <li class="flex items-start "><span class="mr-2 mt-1 text-green-600"><x-bi-check />
-                        </span> Recharge via wall,
+                    <li class="flex items-start "><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 text-green-600 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                        </svg>
+                        Recharge via wall,
                         solar, and car</li>
                 </ul>
 
-                <hr class="my-4">
+                {{-- <hr class="my-4"> --}}
 
                 <div class="space-y-2">
                     <a href="/reseller-partner"
                         class="flex items-center text-sm font-semibold text-green-600 hover:text-green-800">
-                        <span class="mr-2 text-green-600"><x-ionicon-location-outline /></span> Find a reseller
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-4 text-green-600 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                        </svg>
+                        Find a reseller
                     </a>
                     <a href="mailto:sales@example.com"
                         class="flex items-center text-sm font-semibold text-green-600 hover:text-green-800">
-                        <span class="mr-2 text-green-600"><x-ionicon-mail-outline /></span> Contact Sales
+
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-4 text-green-600 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                        </svg>
+                        Contact Sales
                     </a>
                 </div>
             </div>
@@ -171,39 +196,45 @@
         <section class="py-8">
             <h2 class="mb-4 text-2xl font-light">Gallery</h2>
             <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
-                @foreach ($images as $image)
+                {{-- @foreach ($images as $image)
                     <img src="{{ asset('storage/' . $image) }}" class="object-cover w-full h-full rounded-lg"
                         alt="Gallery Image">
+                @endforeach --}}
+                @foreach ($images as $image)
+                    <a href="image-a.jpeg" data-fancybox="gallery" data-caption="Gallery image">
+                        <img src="{{ asset('storage/' . $image) }}"
+                            class="object-cover w-full h-full aspect-square rounded-lg" alt="Gallery Image">
+                    </a>
                 @endforeach
             </div>
         </section>
 
         <!-- FAQ -->
         <section class="py-8">
-    <h2 class="mb-4 text-2xl font-light">FAQ</h2>
+            <h2 class="mb-4 text-2xl font-light">FAQ</h2>
 
-    @php
-        $faqSection = collect($product->custom_sections ?? [])->firstWhere('title', 'FAQ');
-    @endphp
+            @php
+                $faqSection = collect($product->custom_sections ?? [])->firstWhere('title', 'FAQ');
+            @endphp
 
-    @if ($faqSection && !empty($faqSection['fields']))
-        <div class="space-y-3">
-            @foreach ($faqSection['fields'] as $index => $faqItem)
-                <div class="collapse bg-base-100 border border-base-300 rounded-lg">
-                    <input type="radio" name="faq-accordion" {{ $index === 0 ? 'checked' : '' }} />
-                    <div class="collapse-title font-semibold">
-                        {{ $faqItem['key'] }}
-                    </div>
-                    <div class="collapse-content text-gray-600 text-sm">
-                        {{ $faqItem['value'] }}
-                    </div>
+            @if ($faqSection && !empty($faqSection['fields']))
+                <div class="space-y-3">
+                    @foreach ($faqSection['fields'] as $index => $faqItem)
+                        <div class="collapse bg-base-100 border border-base-300 rounded-lg">
+                            <input type="radio" name="faq-accordion" {{ $index === 0 ? 'checked' : '' }} />
+                            <div class="collapse-title font-semibold">
+                                {{ $faqItem['key'] }}
+                            </div>
+                            <div class="collapse-content text-gray-600 text-sm">
+                                {{ $faqItem['value'] }}
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
-        </div>
-    @else
-        <p class="text-gray-500">No FAQs available.</p>
-    @endif
-</section>
+            @else
+                <p class="text-gray-500">No FAQs available.</p>
+            @endif
+        </section>
 
 
         <!-- Related Products Swiper -->

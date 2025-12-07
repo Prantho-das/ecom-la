@@ -2,7 +2,7 @@
 
 namespace App\View\Components;
 
-use App\Models\Setting;
+use App\Services\SettingService;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -14,9 +14,9 @@ class Features extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(SettingService $settingService)
     {
-        $settings = Setting::where('group', 'features')->pluck('value', 'key');
+        $settings = $settingService->getSettings('features');
 
         $this->featuresList = $settings->get('features_list', []);
     }

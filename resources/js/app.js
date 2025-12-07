@@ -20,9 +20,9 @@ function initSwipers() {
         freeMode: true,
         watchSlidesProgress: true,
         breakpoints: {
-            640: { slidesPerView: 5 },
-            768: { slidesPerView: 6 },
-            1024: { slidesPerView: 8 },
+            640: { slidesPerView: 4 },
+            768: { slidesPerView: 4 },
+            1024: { slidesPerView: 4 },
         }
     });
 
