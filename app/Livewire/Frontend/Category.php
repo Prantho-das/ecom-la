@@ -36,6 +36,8 @@ class Category extends Component
                 $this->category ? $q->where('categories.id', $this->category->id) : null
             )
             ->simplePaginate();
-        return view('livewire.frontend.category', compact('category_products'));
+        return view('livewire.frontend.category', [
+            'category_products' => $category_products
+        ]);
     }
 }
