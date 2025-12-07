@@ -13,6 +13,8 @@ class Category extends Component
     public $category;
     public $categories;
     public $category_products = [];
+    public $showMode="grid";
+    
     public function mount()
     {
         $this->categories = CategoryModel::where('is_active',1)->get();
@@ -28,7 +30,7 @@ class Category extends Component
                 fn($q) =>
                 $this->category ? $q->where('categories.id', $this->category->id) : null
             )
-            ->paginate();
+            ->simplePaginate();
         return view('livewire.frontend.category', compact('category_products'));
     }
 }
