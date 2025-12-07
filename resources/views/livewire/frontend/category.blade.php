@@ -109,13 +109,19 @@
                         <div class="flex items-center space-x-2">
                             @if($showMode=="grid")
                             <button  class="p-1 text-2xl text-black">
-                                <i class="fa-solid fa-house"></i>
-                                <i class="fa-solid fa-table-cells-large"></i>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                    <path
+                                        d="M384 96l-128 0 0 128 128 0 0-128zm64 128l0 192c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 128zM64 288l0 128 128 0 0-128-128 0zm128-64l0-128-128 0 0 128 128 0zm64 64l0 128 128 0 0-128-128 0z" />
+                                </svg>
                             </button>
                             @else
                             <button  class="p-1 text-2xl text-green-600">
-                                <i class="fa-solid fa-house"></i>
-<i class="fa-solid fa-bars"></i>
+                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                    <path
+                                        d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
+                                </svg>
                             </button>
                             @endif
                         </div>
