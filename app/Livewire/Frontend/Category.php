@@ -5,9 +5,10 @@ namespace App\Livewire\Frontend;
 use Livewire\Component;
 use App\Models\Product;
 use App\Models\Category as CategoryModel;
-
+use Livewire\WithPagination;
 class Category extends Component
 {
+    use WithPagination;
     public $category;
     public $category_products=[];
     public function mount(){
@@ -17,7 +18,7 @@ class Category extends Component
         $this->category_products = Product::with(['images'])
             ->whereHas('categories', function ($q) {
                 if($this->category){
-                    $q->whereIn('categories.id', $category->id);
+                    $q->whereIn('categories.id', $this->category->id);
                 }
             })->paginate();
     }
