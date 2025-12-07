@@ -13,11 +13,16 @@ class Category extends Component
     public $category;
     public $categories;
     public $category_products = [];
-    public $showMode="grid";
-    
+    public $showMode = "grid";
+
+
+    public function changeShowMode($mode)
+    {
+        $this->showMode = $mode;
+    }
     public function mount()
     {
-        $this->categories = CategoryModel::where('is_active',1)->get();
+        $this->categories = CategoryModel::where('is_active', 1)->get();
         if (request()->filled('category_slug')) {
             $this->category = CategoryModel::where('slug', request()->category_slug)->first();
         }
