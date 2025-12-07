@@ -109,10 +109,12 @@
                         <div class="flex items-center space-x-2">
                             @if($showMode=="grid")
                             <button  class="p-1 text-2xl text-black">
+                                <i class="fa-solid fa-house"></i>
                                 <i class="fa-solid fa-table-cells-large"></i>
                             </button>
                             @else
                             <button  class="p-1 text-2xl text-green-600">
+                                <i class="fa-solid fa-house"></i>
 <i class="fa-solid fa-bars"></i>
                             </button>
                             @endif
