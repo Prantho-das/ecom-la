@@ -28,7 +28,7 @@
                             First name
                         </label>
                         <input type="text" id="firstName" wire:model="firstName" placeholder="First name"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
+                            class="text-gray-700 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
                         @error('firstName') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
 
@@ -38,7 +38,7 @@
                             Last name
                         </label>
                         <input type="text" id="lastName" wire:model="lastName" placeholder="Last name"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
+                            class="text-gray-700 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
                         @error('lastName') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
 
@@ -50,7 +50,7 @@
                         Email
                     </label>
                     <input type="email" id="email" wire:model="email" placeholder="you@company.com"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
+                        class="text-gray-700 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
                     @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
@@ -60,7 +60,7 @@
                         Phone number
                     </label>
                     <input type="tel" id="phone" wire:model="phone" placeholder="+1 (555) 000-0000"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
+                        class="text-gray-700 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
                     @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
@@ -70,7 +70,7 @@
                         Message
                     </label>
                     <textarea id="message" wire:model="message" rows="5" placeholder="Leave us a message..."
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800"></textarea>
+                        class="text-gray-700 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800"></textarea>
                     @error('message') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
