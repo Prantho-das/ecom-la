@@ -126,13 +126,15 @@
 
                     <!-- Product Container -->
                     @foreach ($category_products as $catePro)
-@if($showMode=="grid")
+                    @if($showMode=="grid")
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border">
                         <div class="bg-white p-6 flex flex-col items-center text-center h-full">
-                            <img src="${product.imageUrl}" alt="${product.name}" class="w-40 h-40 object-contain my-4" />
+                            <img src="${product.imageUrl}" alt="${product.name}"
+                                class="w-40 h-40 object-contain my-4" />
                             <p class="text-sm text-gray-500 mb-2">${product.sku}</p>
                             <h3 class="text-base text-gray-800 font-medium">${product.name}</h3>
-                            <a href="#" class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
+                            <a href="#"
+                                class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
                                 View Details
                             </a>
                         </div>
@@ -140,13 +142,15 @@
                     @else
                     <div class="flex flex-col gap-px bg-gray-200 border">
                         <div class="bg-white p-4 flex items-center w-full">
-                            <img src="${product.imageUrl}" alt="${product.name}" class="w-24 h-24 object-contain mr-4" />
+                            <img src="${product.imageUrl}" alt="${product.name}"
+                                class="w-24 h-24 object-contain mr-4" />
                             <div class="flex-grow">
                                 <p class="text-sm text-gray-500 mb-1"></p>
                                 <h3 class="text-base text-gray-800 font-medium"></h3>
                             </div>
                             <div class="ml-4">
-                                <a href="#" class="inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
+                                <a href="#"
+                                    class="inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
                                     View Details
                                 </a>
                             </div>
@@ -160,7 +164,7 @@
 
                 <!-- Pagination -->
                 <div class="mt-8 flex justify-center gap-2">
-                    {{ $category_products->links() }}
+                    {{-- {{ $category_products->links() }} --}}
                     <button id="prevPage" class="px-3 py-2 rounded border">Prev</button>
                     <span id="pageInfo" class="px-4 py-2"></span>
                     <button id="nextPage" class="px-3 py-2 rounded border">Next</button>
