@@ -29,13 +29,18 @@ class Category extends Component
     }
     public function render()
     {
-        $category_products = Product::with('images')
-            ->whereHas(
+        $category_products = Product::with('images');
+        if($this->category){
+            $category_products= $category_products->whereHas(
                 'categories',
                 fn($q) =>
-                $this->category ? $q->where('categories.id', $this->category->id) : null
-            )
-            ->simplePaginate();
+               $q->where('categories.id', $this->category->id) 
+            );
+        }
+
+
+
+        $category_products->simplePaginate();
         return view('livewire.frontend.category', [
             'category_products' => $category_products
         ]);
