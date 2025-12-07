@@ -29,6 +29,7 @@ class Category extends Component
     }
     public function render()
     {
+        dd($this->category);
         $category_products = Product::with('images')
             ->whereHas(
                 'categories',
