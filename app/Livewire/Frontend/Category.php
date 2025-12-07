@@ -15,7 +15,7 @@ class Category extends Component
     public $category_products = [];
     public function mount()
     {
-        $this->categories = CategoryModel::where('status',1)->get();
+        $this->categories = CategoryModel::where('is_active',1)->get();
         if (request()->filled('category_slug')) {
             $this->category = CategoryModel::where('slug', request()->category_slug)->first();
         }
