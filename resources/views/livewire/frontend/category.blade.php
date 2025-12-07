@@ -82,18 +82,19 @@
 
                         <div class="p-4">
                             <ul>
-                                <li class="flex items-center py-2">
-                                    <div class="w-1 h-6 bg-green-600 rounded-full mr-3"></div>
-                                    <a href="#" class="text-gray-800 font-semibold">
-                                        Rack Enclosures
-                                    </a>
-                                </li>
-
+                               
+@foreach($categories as $categoryInfo)
                                 <li class="py-2 pl-4">
-                                    <a href="#" class="text-gray-600 hover:text-gray-800">
-                                        Accessories
+                                    @if(request()->filled('category_slug') && request()->category_slug==$categoryInfo->slug)
+                                    <div class="w-1 h-6 bg-green-600 rounded-full mr-3"></div>
+                                    @endif
+                                    <a href="{{ url('/category',[
+                                    'category_slug'=>$categoryInfo->slug
+                                    ]) }}" class="text-gray-600 hover:text-gray-800">
+                                        {{$categoryInfo->name}}
                                     </a>
                                 </li>
+                                @endforeach
                             </ul>
                         </div>
 
