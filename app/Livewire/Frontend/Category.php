@@ -15,15 +15,14 @@ class Category extends Component
         if(request()->filled('category_slug')){
             $this->category=CategoryModel::where('slug',request()->category_slug)->first();
         }
-        $this->category_products = Product::with(['images'])
-            ->whereHas('categories', function ($q) {
-                if($this->category){
-                    $q->whereIn('categories.id', $this->category->id);
-                }
-            })->paginate();
     }
     public function render()
-    {
-        return view('livewire.frontend.category');
+    {$category_products = Product::with(['images'])
+        ->whereHas('categories', function ($q) {
+            if($this->category){
+                $q->whereIn('categories.id', $this->category->id);
+            }
+        })->paginate();
+        return view('livewire.frontend.category',compact('category_products'));
     }
 }
