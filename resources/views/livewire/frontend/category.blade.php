@@ -107,23 +107,32 @@
                     <!-- Toolbar -->
                     <div class="flex justify-end items-center gap-3 mb-6 pb-4 border-b border-gray-200">
                         <div class="flex items-center space-x-2">
-                            <button id="listViewBtn" class="p-1 text-2xl text-black" onclick="">☰</button>
-                            <button id="gridViewBtn" class="p-1 text-2xl text-green-600">⬢</button>
+                            <button id="listViewBtn" class="p-1 text-2xl text-black" onclick="">
+                                <svg data-name="Layer 3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+                                    <path
+                                        d="M97.092 36.078H30.908a2.111 2.111 0 0 0 0 4.222h66.184a2.111 2.111 0 0 0 0-4.222zM97.092 61.889H30.908a2.111 2.111 0 0 0 0 4.222h66.184a2.111 2.111 0 0 0 0-4.222zM97.092 87.7H30.908a2.111 2.111 0 0 0 0 4.222h66.184a2.111 2.111 0 0 0 0-4.222z" />
+                                </svg>
+                            </button>
+                            <button id="gridViewBtn" class="p-1 text-2xl text-green-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path
+                                        d="M11 11H3V4a1 1 0 0 1 1-1h7zm10-7a1 1 0 0 0-1-1h-7v8h8zM4 21h7v-8H3v7a1 1 0 0 0 1 1zm17-1v-7h-8v8h7a1 1 0 0 0 1-1z" />
+                                </svg>
+                            </button>
                         </div>
 
                         <p id="productCount" class="text-sm text-gray-500"></p>
                     </div>
 
                     <!-- Product Container -->
-                    @if($showMode=="grid")
+                    @foreach ($category_products as $catePro)
+@if($showMode=="grid")
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border">
                         <div class="bg-white p-6 flex flex-col items-center text-center h-full">
-                            <img src="${product.imageUrl}" alt="${product.name}"
-                                class="w-40 h-40 object-contain my-4" />
+                            <img src="${product.imageUrl}" alt="${product.name}" class="w-40 h-40 object-contain my-4" />
                             <p class="text-sm text-gray-500 mb-2">${product.sku}</p>
                             <h3 class="text-base text-gray-800 font-medium">${product.name}</h3>
-                            <a href="#"
-                                class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
+                            <a href="#" class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
                                 View Details
                             </a>
                         </div>
@@ -131,21 +140,21 @@
                     @else
                     <div class="flex flex-col gap-px bg-gray-200 border">
                         <div class="bg-white p-4 flex items-center w-full">
-                            <img src="${product.imageUrl}" alt="${product.name}"
-                                class="w-24 h-24 object-contain mr-4" />
+                            <img src="${product.imageUrl}" alt="${product.name}" class="w-24 h-24 object-contain mr-4" />
                             <div class="flex-grow">
                                 <p class="text-sm text-gray-500 mb-1"></p>
                                 <h3 class="text-base text-gray-800 font-medium"></h3>
                             </div>
                             <div class="ml-4">
-                                <a href="#"
-                                    class="inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
+                                <a href="#" class="inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
                                     View Details
                                 </a>
                             </div>
                         </div>
                     </div>
                     @endif
+                    @endforeach
+
 
                 </div>
 
