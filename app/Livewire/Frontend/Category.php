@@ -41,7 +41,7 @@ class Category extends Component
 
 
         $category_products = $category_products->simplePaginate();
-        dd
+        dd($category_products);
         return view('livewire.frontend.category', [
             'category_products' => $category_products
         ]);
