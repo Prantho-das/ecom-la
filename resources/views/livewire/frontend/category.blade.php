@@ -83,15 +83,15 @@
                         <div class="p-4">
                             <ul>
 
-                                @foreach($categories as $categoryInfo)
+@foreach($categories as $categoryInfo)
                                 <li class="py-2 pl-4">
-                                    @if(request()->filled('category_slug') &&
-                                    request()->category_slug==$categoryInfo->slug)
+                                    @if(request()->filled('category_slug') && request()->category_slug==$categoryInfo->slug)
                                     <div class="w-1 h-6 bg-green-600 rounded-full mr-3"></div>
                                     @endif
-                                    <a href="{{ url('/category') . '?category_slug=' . $categoryInfo->slug }}"
-                                        class="text-gray-600 hover:text-gray-800">
-                                        {{ $categoryInfo->name }}
+                                    <a href="{{ url('/category',[
+                                    'category_slug'=>$categoryInfo->slug
+                                    ]) }}" class="text-gray-600 hover:text-gray-800">
+                                        {{$categoryInfo->name}}
                                     </a>
                                 </li>
                                 @endforeach
@@ -107,73 +107,29 @@
                     <!-- Toolbar -->
                     <div class="flex justify-end items-center gap-3 mb-6 pb-4 border-b border-gray-200">
                         <div class="flex items-center space-x-2">
-                            <button id="listViewBtn" class="p-1 text-2xl text-black" onclick="">
-                                <svg data-name="Layer 3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-                                    <path
-                                        d="M97.092 36.078H30.908a2.111 2.111 0 0 0 0 4.222h66.184a2.111 2.111 0 0 0 0-4.222zM97.092 61.889H30.908a2.111 2.111 0 0 0 0 4.222h66.184a2.111 2.111 0 0 0 0-4.222zM97.092 87.7H30.908a2.111 2.111 0 0 0 0 4.222h66.184a2.111 2.111 0 0 0 0-4.222z" />
-                                </svg>
-                            </button>
-                            <button id="gridViewBtn" class="p-1 text-2xl text-green-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path
-                                        d="M11 11H3V4a1 1 0 0 1 1-1h7zm10-7a1 1 0 0 0-1-1h-7v8h8zM4 21h7v-8H3v7a1 1 0 0 0 1 1zm17-1v-7h-8v8h7a1 1 0 0 0 1-1z" />
-                                </svg>
-                            </button>
+                            <button id="listViewBtn" class="p-1 text-2xl text-black">☰</button>
+                            <button id="gridViewBtn" class="p-1 text-2xl text-green-600">⬢</button>
                         </div>
 
                         <p id="productCount" class="text-sm text-gray-500"></p>
                     </div>
 
                     <!-- Product Container -->
-                    @foreach ($category_products as $catePro)
-                    @if($showMode=="grid")
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border">
-                        <div class="bg-white p-6 flex flex-col items-center text-center h-full">
-                            <img src="${product.imageUrl}" alt="${product.name}"
-                                class="w-40 h-40 object-contain my-4" />
-                            <p class="text-sm text-gray-500 mb-2">${product.sku}</p>
-                            <h3 class="text-base text-gray-800 font-medium">${product.name}</h3>
-                            <a href="#"
-                                class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
-                                View Details
-                            </a>
-                        </div>
+                    <div id="productContainer"
+                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
                     </div>
-                    @else
-                    <div class="flex flex-col gap-px bg-gray-200 border">
-                        <div class="bg-white p-4 flex items-center w-full">
-                            <img src="${product.imageUrl}" alt="${product.name}"
-                                class="w-24 h-24 object-contain mr-4" />
-                            <div class="flex-grow">
-                                <p class="text-sm text-gray-500 mb-1"></p>
-                                <h3 class="text-base text-gray-800 font-medium"></h3>
-                            </div>
-                            <div class="ml-4">
-                                <a href="#"
-                                    class="inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
-                                    View Details
-                                </a>
-                            </div>
-                        </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-8 flex justify-center gap-2">
+                        <button id="prevPage" class="px-3 py-2 rounded border">Prev</button>
+                        <span id="pageInfo" class="px-4 py-2"></span>
+                        <button id="nextPage" class="px-3 py-2 rounded border">Next</button>
                     </div>
-                    @endif
-                    @endforeach
 
-
-                </div>
-
-                <!-- Pagination -->
-                <div class="mt-8 flex justify-center gap-2">
-                    {{-- {{ $category_products->links() }} --}}
-                    <button id="prevPage" class="px-3 py-2 rounded border">Prev</button>
-                    <span id="pageInfo" class="px-4 py-2"></span>
-                    <button id="nextPage" class="px-3 py-2 rounded border">Next</button>
                 </div>
 
             </div>
-
         </div>
-    </div>
     </div>
 
     <div class="py-16 ">
@@ -240,13 +196,10 @@
                             <!-- Replace with your WhereToBuyIcon SVG -->
                             <div>
                                 <!-- ICON -->
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-400">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-400">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+</svg>
 
                             </div>
                         </div>
@@ -283,8 +236,8 @@
 
 </section>
 @push('scripts')
-<script>
-    const products = [{
+    <script>
+        const products = [{
                 id: '3',
                 sku: 'AR3003',
                 name: 'APC NetShelter SX, Server Rack Enclosure, 12U, Black, 658H x 600W x 900D mm',
@@ -410,5 +363,5 @@
 
         // First render
         renderProducts();
-</script>
+    </script>
 @endpush
