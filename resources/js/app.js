@@ -4,6 +4,7 @@ import { Navigation, Thumbs } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+import "@fortawesome/fontawesome-free/css/all.css";
 
 let thumbnailSwiper = null;
 let gallerySwiper = null;
