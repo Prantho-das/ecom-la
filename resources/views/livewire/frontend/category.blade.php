@@ -128,10 +128,25 @@
                     </div>
 
                     <!-- Product Container -->
-                    <div id="productContainer"
-                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
-                    </div>
-
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border">
+                    
+                        @foreach($category_products as $product)
+                        <div class="bg-white p-6 flex flex-col items-center text-center h-full">
+                            <img src="{{ $product->thumbnail ?asset('storage/' . $product->thumbnail):'https://placehold.co/600x400?text='.$product->name }}" alt="{{ $product->name }}" class="w-40 h-40 object-contain my-4" />
+                    
+                            <p class="text-sm text-gray-500 mb-2">{{ $product->sku }}</p>
+                    
+                            <h3 class="text-base text-gray-800 font-medium">
+                               {{ $product->name }}
+                            </h3>
+                    
+                            <a href="{{ route('details', $product->slug) }}" wire:navigate class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
+                                View Details
+                            </a>
+                        </div>
+                        @endforeach
+                    
+                    </div>                    
                     <!-- Pagination -->
                     <div class="mt-8 flex justify-center gap-2">
                         <button id="prevPage" class="px-3 py-2 rounded border">Prev</button>
@@ -249,132 +264,5 @@
 
 </section>
 @push('scripts')
-    <script>
-        const products = [{
-                id: '3',
-                sku: 'AR3003',
-                name: 'APC NetShelter SX, Server Rack Enclosure, 12U, Black, 658H x 600W x 900D mm',
-                imageUrl: '/assets/images/server-rack.png'
-            },
-            {
-                id: '4',
-                sku: 'AR3105',
-                name: 'APC NetShelter SX, Server Rack Enclosure, 45U, Black, 2124H x 600W x 1070D mm',
-                imageUrl: '/assets/images/server-rack.png'
-            },
-            {
-                id: '8',
-                sku: 'AR3300',
-                name: 'APC NetShelter SX, Server Rack Enclosure, 42U, Black, 1991H x 600W x 1200D mm',
-                imageUrl: '/assets/images/server-rack.png'
-            },
-            {
-                id: '9',
-                sku: 'AR3140',
-                name: 'APC NetShelter SX, Networking Rack Enclosure, 42U, Black, 1991H x 750W x 1070D mm',
-                imageUrl: '/assets/images/server-rack.png'
-            },
-            {
-                id: '5',
-                sku: 'AR3350',
-                name: 'APC NetShelter SX, Server Rack Enclosure, 42U, Black, 1991H x 750W x 1200D mm',
-                imageUrl: '/assets/images/server-rack.png'
-            },
-            {
-                id: '2',
-                sku: 'AR3006',
-                name: 'APC NetShelter SX, Server Rack Enclosure, 18U, Black, 925H x 600W x 900D mm',
-                imageUrl: '/assets/images/server-rack.png'
-            },
-        ];
-
-        let currentPage = 1;
-        const productsPerPage = 6;
-        let view = "grid";
-
-        function renderProducts() {
-            const container = document.getElementById("productContainer");
-            container.innerHTML = "";
-
-            const totalPages = Math.ceil(products.length / productsPerPage);
-            const startIndex = (currentPage - 1) * productsPerPage;
-            const endIndex = startIndex + productsPerPage;
-
-            const currentProducts = products.slice(startIndex, endIndex);
-
-            document.getElementById("productCount").textContent =
-                `${startIndex + 1} - ${Math.min(endIndex, products.length)} of ${products.length} products`;
-
-            document.getElementById("pageInfo").textContent =
-                `Page ${currentPage} of ${totalPages}`;
-
-            // Set view type
-            if (view === "grid") {
-                container.class =
-                    "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border";
-            } else {
-                container.class =
-                    "flex flex-col gap-px bg-gray-200 border";
-            }
-
-            currentProducts.forEach((product) => {
-                if (view === "grid") {
-                    container.innerHTML += `
-                        <div class="bg-white p-6 flex flex-col items-center text-center h-full">
-                            <img src="${product.imageUrl}" alt="${product.name}" class="w-40 h-40 object-contain my-4" />
-                            <p class="text-sm text-gray-500 mb-2">${product.sku}</p>
-                            <h3 class="text-base text-gray-800 font-medium">${product.name}</h3>
-                            <a href="#" class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
-                                View Details
-                            </a>
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML += `
-                        <div class="bg-white p-4 flex items-center w-full">
-                            <img src="${product.imageUrl}" alt="${product.name}" class="w-24 h-24 object-contain mr-4" />
-                            <div class="flex-grow">
-                                <p class="text-sm text-gray-500 mb-1">${product.sku}</p>
-                                <h3 class="text-base text-gray-800 font-medium">${product.name}</h3>
-                            </div>
-                            <div class="ml-4">
-                                <a href="#" class="inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
-                                    View Details
-                                </a>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-        }
-
-        // Buttons
-        document.getElementById("listViewBtn").onclick = () => {
-            view = "list";
-            renderProducts();
-        };
-
-        document.getElementById("gridViewBtn").onclick = () => {
-            view = "grid";
-            renderProducts();
-        };
-
-        document.getElementById("prevPage").onclick = () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderProducts();
-            }
-        };
-
-        document.getElementById("nextPage").onclick = () => {
-            const totalPages = Math.ceil(products.length / productsPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderProducts();
-            }
-        };
-
-        // First render
-        renderProducts();
-    </script>
+    
 @endpush
