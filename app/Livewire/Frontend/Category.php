@@ -22,12 +22,13 @@ class Category extends Component
     }
     public function render()
     {
-        $category_products = Product::with(['images'])
-            ->whereHas('categories', function ($q) {
-                if ($this->category) {
-                    $q->whereIn('categories.id', $this->category->id);
-                }
-            })->paginate();
+        $category_products = Product::with('images')
+            ->whereHas(
+                'categories',
+                fn($q) =>
+                $this->category ? $q->where('categories.id', $this->category->id) : null
+            )
+            ->paginate();
         return view('livewire.frontend.category', compact('category_products'));
     }
 }
