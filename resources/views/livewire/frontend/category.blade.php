@@ -39,9 +39,24 @@
 
                     <div class="mt-8">
                         <a href="#"
+                        onclick="my_modal_1.showModal()"
                             class="inline-block bg-[#27ad4c] text-white font-semibold py-3 px-8 rounded-md hover:bg-green-700 transition-colors">
                             Contact Sales
                         </a>
+                        <!-- Open the modal using ID.showModal() method -->
+                        {{-- <button class="btn" >open modal</button> --}}
+                        <dialog id="my_modal_1" class="modal">
+                            <div class="modal-box">
+                                <h3 class="text-lg font-bold">Hello!</h3>
+                                <p class="py-4">Press ESC key or click the button below to close</p>
+                                <div class="modal-action">
+                                    <form method="dialog">
+                                        <!-- if there is a button in form, it will close the modal -->
+                                        <button class="btn">Close</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </dialog>
                     </div>
                 </div>
 
@@ -83,16 +98,16 @@
                         <div class="p-4">
                             <ul>
 
-@foreach($categories as $categoryInfo)
-                                <li class="py-2 pl-4">
-                                   @if(request()->filled('category_slug') &&
-                                    request()->category_slug==$categoryInfo->slug)
-                                    <div class="w-1 h-6 bg-green-600 rounded-full mr-3"></div>
-                                    @endif
-                                    <a href="{{ url('/category') . '?category_slug=' . $categoryInfo->slug }}" class="text-gray-600 hover:text-gray-800">
-                                        {{ $categoryInfo->name }}
-                                    </a>
-                                </li>
+                                @foreach ($categories as $categoryInfo)
+                                    <li class="py-2 pl-4">
+                                        @if (request()->filled('category_slug') && request()->category_slug == $categoryInfo->slug)
+                                            <div class="w-1 h-6 bg-green-600 rounded-full mr-3"></div>
+                                        @endif
+                                        <a href="{{ url('/category') . '?category_slug=' . $categoryInfo->slug }}"
+                                            class="text-gray-600 hover:text-gray-800">
+                                            {{ $categoryInfo->name }}
+                                        </a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -106,47 +121,52 @@
                     <!-- Toolbar -->
                     <div class="flex justify-end items-center gap-3 mb-6 pb-4 border-b border-gray-200">
                         <div class="flex items-center space-x-2">
-                    
-                            <button  wire:click="$set('showMode', 'grid')" class="p-1 text-2xl {{ $showMode=='grid'?'text-green-600':'text-black' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                    class="size-6">
+
+                            <button wire:click="$set('showMode', 'grid')"
+                                class="p-1 text-2xl {{ $showMode == 'grid' ? 'text-green-600' : 'text-black' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
-                                </svg>                                  
+                                </svg>
                             </button>
-                
-                            <button wire:click="$set('showMode', 'list')"  class="p-1 text-2xl {{ $showMode=='list'?'text-green-600':'text-black' }}">
-                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                    class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                                </svg>                                  
+
+                            <button wire:click="$set('showMode', 'list')"
+                                class="p-1 text-2xl {{ $showMode == 'list' ? 'text-green-600' : 'text-black' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                </svg>
                             </button>
-                
+
                         </div>
 
                         <p id="productCount" class="text-sm text-gray-500"></p>
                     </div>
 
                     <!-- Product Container -->
-                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border">
-                    
-                        @foreach($category_products as $product)
-                        <div class="bg-white p-6 flex flex-col items-center text-center h-full">
-                            <img src="{{ $product->thumbnail ?asset('storage/' . $product->thumbnail):'https://placehold.co/600x400?text='.$product->name }}" alt="{{ $product->name }}" class="w-40 h-40 object-contain my-4" />
-                    
-                            <p class="text-sm text-gray-500 mb-2">{{ $product->sku }}</p>
-                    
-                            <h3 class="text-base text-gray-800 font-medium">
-                               {{ $product->name }}
-                            </h3>
-                    
-                            <a href="{{ route('details', $product->slug) }}" wire:navigate class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
-                                View Details
-                            </a>
-                        </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border">
+
+                        @foreach ($category_products as $product)
+                            <div class="bg-white p-6 flex flex-col items-center text-center h-full">
+                                <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/600x400?text=' . $product->name }}"
+                                    alt="{{ $product->name }}" class="w-40 h-40 object-contain my-4" />
+
+                                <p class="text-sm text-gray-500 mb-2">{{ $product->sku }}</p>
+
+                                <h3 class="text-base text-gray-800 font-medium">
+                                    {{ $product->name }}
+                                </h3>
+
+                                <a href="{{ route('details', $product->slug) }}" wire:navigate
+                                    class="mt-6 w-full inline-block border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-100">
+                                    View Details
+                                </a>
+                            </div>
                         @endforeach
-                    
-                    </div>                    
+
+                    </div>
                     <!-- Pagination -->
                     <div class="mt-8 flex justify-center gap-2">
                         <button id="prevPage" class="px-3 py-2 rounded border">Prev</button>
@@ -224,10 +244,13 @@
                             <!-- Replace with your WhereToBuyIcon SVG -->
                             <div>
                                 <!-- ICON -->
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-400">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-</svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                </svg>
 
                             </div>
                         </div>
@@ -264,5 +287,4 @@
 
 </section>
 @push('scripts')
-    
 @endpush
