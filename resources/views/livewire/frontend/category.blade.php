@@ -98,7 +98,7 @@
                                     @else
                                     <div class="w-1 h-6 mr-3"></div>
                                     @endif
-                                    <a href="{{ route('category.show', ['category_slug' => $categoryInfo->slug]) }}"
+                                    <a href="{{ route('category', ['category_slug' => $categoryInfo->slug]) }}"
                                         class="text-gray-600 hover:text-gray-800">
                                         {{ $categoryInfo->name }}
                                     </a>
