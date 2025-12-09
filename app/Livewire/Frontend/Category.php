@@ -47,6 +47,9 @@ class Category extends Component
                 $q->where('categories.id', $this->category->id);
             });
         }
+        if(request()->filled('search')){
+            $category_products = $category_products->where('name', 'like', '%' . request()->search . '%');
+        }
 
         $category_products = $category_products->simplePaginate(10);
 
