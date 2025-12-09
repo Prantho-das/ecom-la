@@ -52,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/', Home::class)->name('home');
 
 // CATEGORY
-Route::get('/category', Category::class)->name('category');
+Route::get('/category/{category_slug?}', Category::class)->name('category');
 
 // CONTACT
 Route::get('/contact', Contact::class)->name('contact');
