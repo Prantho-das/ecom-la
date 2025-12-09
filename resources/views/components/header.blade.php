@@ -5,16 +5,22 @@
             <div class="flex items-center justify-between py-2">
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center space-x-1">
-                        <svg class="w-4 h-4" fill="currentColor">
-                            <!-- ClockIcon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
+
                         <span>Mon – Fri 8:00 – 18:00 / Sunday 8:00 – 14:00</span>
                     </div>
 
                     <div class="items-center hidden space-x-1 md:flex">
-                        <svg class="w-4 h-4" fill="currentColor">
-                            <!-- MailIcon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                         </svg>
+
                         <a href="mailto:info@" class="hover:underline">info@</a>
                     </div>
                 </div>
@@ -45,27 +51,27 @@
             <div class="flex items-center justify-between py-3 md:py-6">
 
                 <!-- Logo -->
-                <div class="lg:w-[180px] md:w-[150px] w-[120px]">
+                <div class="lg:w-[150px] md:w-[150px] w-[120px]">
                     <a href="{{ route('home') }}" wire:navigate>
                         @php
-                        $site_logo = getSetting('logo');
+                            $site_logo = getSetting('logo');
                         @endphp
-                        <img src="{{ $site_logo?asset('storage/' . $site_logo):asset('assets/images/logo.svg') }}"
-                            alt="Logo" />
+                        <img src="{{ $site_logo ? asset('storage/' . $site_logo) : asset('assets/images/logo.svg') }}"
+                            alt="Logo" class="h-[40px]"/>
                     </a>
                 </div>
 
                 <!-- Search Box -->
                 <div class="relative hidden w-5/10 sm:block">
-                    <form action="{{route('category')}}">
+                    <form action="{{ route('category') }}">
 
 
                         <input type="text" placeholder="Search" name="search"
                             class="border border-gray-400 py-1.5 px-3 w-full focus:outline-none focus:ring-1 focus:ring-[#27ad4c]" />
                         <button class="absolute right-0 top-0 h-full px-2 text-white bg-[#27ad4c]">
                             <!-- SearchIcon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                             </svg>

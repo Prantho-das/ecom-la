@@ -38,22 +38,10 @@
                     </div>
 
                     <div class="mt-8">
-                        <a href="#" onclick="my_modal_1.showModal()"
+                        <a href="#"
                             class="inline-block bg-[#27ad4c] text-white font-semibold py-3 px-8 rounded-md hover:bg-green-700 transition-colors">
                             Contact Sales
                         </a>
-
-                        <dialog id="my_modal_1" class="modal">
-                            <div class="modal-box">
-                                <h3 class="text-lg font-bold">Hello!</h3>
-                                <p class="py-4">Press ESC key or click the button below to close</p>
-                                <div class="modal-action">
-                                    <form method="dialog">
-                                        <button class="btn">Close</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </dialog>
                     </div>
                 </div>
 
@@ -92,17 +80,17 @@
                         <div class="p-4">
                             <ul>
                                 @foreach ($categories as $categoryInfo)
-                                <li class="flex items-center py-2 pl-4">
-                                    @if ($category_slug === $categoryInfo->slug)
-                                    <div class="w-1 h-6 mr-3 bg-green-600 rounded-full"></div>
-                                    @else
-                                    <div class="w-1 h-6 mr-3"></div>
-                                    @endif
-                                    <a href="{{ route('category', ['category_slug' => $categoryInfo->slug]) }}"
-                                        class="text-gray-600 hover:text-gray-800">
-                                        {{ $categoryInfo->name }}
-                                    </a>
-                                </li>
+                                    <li class="flex items-center py-2 pl-4">
+                                        @if ($category_slug === $categoryInfo->slug)
+                                            <div class="w-1 h-6 mr-3 bg-green-600 rounded-full"></div>
+                                        @else
+                                            <div class="w-1 h-6 mr-3"></div>
+                                        @endif
+                                        <a href="{{ route('category', ['category_slug' => $categoryInfo->slug]) }}"
+                                            class="text-gray-600 hover:text-gray-800">
+                                            {{ $categoryInfo->name }}
+                                        </a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -141,49 +129,49 @@
 
                     <!-- Product Container -->
                     @if ($category_products->count())
-                    @if ($showMode === 'grid')
-                    <div class="grid grid-cols-1 gap-px bg-gray-200 border sm:grid-cols-2 lg:grid-cols-3">
-                        @foreach ($category_products as $product)
-                        <div class="flex flex-col items-center h-full p-6 text-center bg-white">
-                            <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/600x400?text=' . urlencode($product->name) }}"
-                                alt="{{ $product->name }}" class="object-contain w-40 h-40 my-4" />
+                        @if ($showMode === 'grid')
+                            <div class="grid grid-cols-1 gap-px bg-gray-200 border sm:grid-cols-2 lg:grid-cols-3">
+                                @foreach ($category_products as $product)
+                                    <div class="flex flex-col items-center h-full p-6 text-center bg-white">
+                                        <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/600x400?text=' . urlencode($product->name) }}"
+                                            alt="{{ $product->name }}" class="object-contain w-40 h-40 my-4" />
 
-                            <p class="mb-2 text-sm text-gray-500">{{ $product->sku }}</p>
+                                        <p class="mb-2 text-sm text-gray-500">{{ $product->sku }}</p>
 
-                            <h3 class="text-base font-medium text-gray-800">
-                                {{ $product->name }}
-                            </h3>
+                                        <h3 class="text-base font-medium text-gray-800">
+                                            {{ $product->name }}
+                                        </h3>
 
-                            <a href="{{ route('details', $product->slug) }}" wire:navigate
-                                class="inline-block w-full px-4 py-2 mt-6 border border-gray-300 rounded-md hover:bg-gray-100">
-                                View Details
-                            </a>
-                        </div>
-                        @endforeach
-                    </div>
-                    @else
-                    <ul class="divide-y divide-gray-200">
-                        @foreach ($category_products as $product)
-                        <li class="flex items-center py-4 space-x-4">
-                            <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/150x150?text=' . urlencode($product->name) }}"
-                                alt="{{ $product->name }}" class="object-contain w-20 h-20" />
-                            <div>
-                                <p class="text-sm text-gray-500">{{ $product->sku }}</p>
-                                <h3 class="text-lg font-medium text-gray-900">{{ $product->name }}</h3>
-                                <a href="{{ route('details', $product->slug) }}" wire:navigate
-                                    class="text-blue-600 hover:underline">View Details</a>
+                                        <a href="{{ route('details', $product->slug) }}" wire:navigate
+                                            class="inline-block w-full px-4 py-2 mt-6 border border-gray-300 rounded-md hover:bg-gray-100">
+                                            View Details
+                                        </a>
+                                    </div>
+                                @endforeach
                             </div>
-                        </li>
-                        @endforeach
-                    </ul>
-                    @endif
+                        @else
+                            <ul class="divide-y divide-gray-200">
+                                @foreach ($category_products as $product)
+                                    <li class="flex items-center py-4 space-x-4">
+                                        <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/150x150?text=' . urlencode($product->name) }}"
+                                            alt="{{ $product->name }}" class="object-contain w-20 h-20" />
+                                        <div>
+                                            <p class="text-sm text-gray-500">{{ $product->sku }}</p>
+                                            <h3 class="text-lg font-medium text-gray-900">{{ $product->name }}</h3>
+                                            <a href="{{ route('details', $product->slug) }}" wire:navigate
+                                                class="text-blue-600 hover:underline">View Details</a>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
 
-                    <!-- Pagination -->
-                    <div class="mt-8">
-                        {{ $category_products->links() }}
-                    </div>
+                        <!-- Pagination -->
+                        <div class="mt-8">
+                            {{ $category_products->links() }}
+                        </div>
                     @else
-                    <p class="mt-12 text-center text-gray-500">No products found in this category.</p>
+                        <p class="mt-12 text-center text-gray-500">No products found in this category.</p>
                     @endif
 
                 </div>
@@ -208,8 +196,8 @@
                             <div>
                                 <!-- ICON -->
 
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="text-blue-400 size-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="text-blue-400 size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
                                 </svg>
@@ -232,8 +220,8 @@
                             <!-- Replace with your GetQuoteIcon SVG -->
                             <div>
                                 <!-- ICON -->
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="text-blue-400 size-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="text-blue-400 size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -256,8 +244,8 @@
                             <!-- Replace with your WhereToBuyIcon SVG -->
                             <div>
                                 <!-- ICON -->
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="text-blue-400 size-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="text-blue-400 size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -279,8 +267,8 @@
                             <!-- Replace with your HelpCentreIcon SVG -->
                             <div>
                                 <!-- ICON -->
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="text-blue-400 size-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="text-blue-400 size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
                                 </svg>
@@ -298,3 +286,5 @@
     </div>
 
 </section>
+
+

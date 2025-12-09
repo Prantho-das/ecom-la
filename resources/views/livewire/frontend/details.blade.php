@@ -1,4 +1,30 @@
 <section class="bg-white">
+    <div class="">
+        <a href="#" onclick="my_modal_1.showModal()"
+            class="inline-block bg-[#27ad4c] text-white font-semibold py-3 px-8 rounded-md hover:bg-green-700 transition-colors">
+            Contact Sales
+        </a>
+
+        <dialog id="my_modal_1" class="modal">
+            <div class="modal-box p-0">
+                <div class="modal-action ">
+                    <form method="dialog bg-white">
+                        <button class="btn p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                            </svg>
+
+                        </button>
+                    </form>
+                </div>
+                <div>
+                    <x-country-form />
+                </div>
+
+            </div>
+        </dialog>
+    </div>
     <div class="max-w-screen-xl px-4 mx-auto sm:px-6 lg:px-8">
         <!-- Breadcrumb -->
         <nav class="py-4 text-sm text-gray-500">

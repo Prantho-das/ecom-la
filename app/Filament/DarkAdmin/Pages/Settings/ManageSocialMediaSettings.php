@@ -68,7 +68,7 @@ class ManageSocialMediaSettings extends Page
                     TextInput::make('icon')
                         ->label('Icon (e.g., fab fa-facebook-f or emoji)')
                         ->required()
-                        ->maxLength(255),
+                        ,
                 ])
                 ->defaultItems(0)
                 ->columnSpanFull(),
