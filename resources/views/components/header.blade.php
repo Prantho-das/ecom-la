@@ -19,7 +19,7 @@
                     </div>
                 </div>
 
-                <div class="items-center hidden space-x-3 md:flex">
+                {{-- <div class="items-center hidden space-x-3 md:flex">
                     <a href="#">
                         <!-- Facebook -->
                     </a>
@@ -32,7 +32,9 @@
                     <a href="#">
                         <!-- Instagram -->
                     </a>
-                </div>
+                </div> --}}
+
+                <x-social-media />
             </div>
         </div>
     </div>

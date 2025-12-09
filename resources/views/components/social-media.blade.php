@@ -1,6 +1,6 @@
 <div class="flex space-x-4">
     @forelse($socialMediaLinks as $link)
-        <a href="{{ $link['url'] }}" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+        <a href="{{ $link['url'] }}" target="_blank" class="text-gray-400 transition-colors hover:text-white">
             @if(Str::startsWith($link['icon'], 'fab')) {{-- Assuming FontAwesome classes --}}
                 <i class="{{ $link['icon'] }} text-xl"></i>
             @else {{-- Otherwise, display as emoji or plain text --}}
@@ -8,6 +8,6 @@
             @endif
         </a>
     @empty
-        <p class="text-gray-500 text-sm">No social media links configured.</p>
+        <p class="text-sm text-gray-500"></p>
     @endforelse
 </div>
