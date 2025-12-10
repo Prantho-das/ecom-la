@@ -16,6 +16,7 @@ class PostsTable
         return $table
             ->columns([
                 ImageColumn::make('thumbnail')
+                ->disk('public')
                     ->square(),
                 TextColumn::make('title')
                     ->searchable()

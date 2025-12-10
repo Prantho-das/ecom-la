@@ -10,7 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $guarded = [
-        'sku',
+        // 'sku',
     ];
 
     protected $casts = [

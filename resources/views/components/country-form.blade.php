@@ -18,9 +18,10 @@
                             class="relative h-40 overflow-hidden transition-all duration-300 transform shadow-lg rounded-2xl hover:scale-105 active:scale-98"
                             :class="selectedContinent == continent.id ? 'ring-4 ring-green-500' : ''">
                             <!-- Background -->
-                            <div :class="selectedContinent == continent.id
-                                    ? 'bg-green-600'
-                                    : 'bg-white border-2 border-green-200'" class="absolute inset-0 rounded-2xl"></div>
+                            <div :class="selectedContinent == continent.id ?
+                                'bg-green-600' :
+                                'bg-white border-2 border-green-200'"
+                                class="absolute inset-0 rounded-2xl"></div>
 
                             <!-- Content -->
                             <div class="relative flex flex-col items-center justify-center h-full p-4"
@@ -98,7 +99,8 @@
                 <template x-if="submitting">
                     <span class="flex items-center gap-3">
                         <svg class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4">
                             </circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
                         </svg>
@@ -113,58 +115,58 @@
 </div>
 
 @php
-$continents = \DB::table('continents')->get();
-$countries = \DB::table('countries')->get();
+    $continents = \DB::table('continents')->get();
+    $countries = \DB::table('countries')->get();
 @endphp
 
 <script>
     function destinationSelector() {
-    return {
-        step: 1,
-        selectedContinent: '',
-        selectedCountry: '',
-        submitting: false,
+        return {
+            step: 1,
+            selectedContinent: '',
+            selectedCountry: '',
+            submitting: false,
 
-        continents: @json($continents),
-        countries: @json($countries),
+            continents: @json($continents),
+            countries: @json($countries),
 
-        get filteredCountries() {
-            return this.selectedContinent
-                ? this.countries.filter(c => c.continent_id == this.selectedContinent)
-                : [];
-        },
+            get filteredCountries() {
+                return this.selectedContinent ?
+                    this.countries.filter(c => c.continent_id == this.selectedContinent) :
+                    [];
+            },
 
-        get selectedContinentObj() {
-            return this.continents.find(c => c.id == this.selectedContinent);
-        },
+            get selectedContinentObj() {
+                return this.continents.find(c => c.id == this.selectedContinent);
+            },
 
-        get selectedCountryObj() {
-            return this.countries.find(c => c.id == this.selectedCountry);
-        },
+            get selectedCountryObj() {
+                return this.countries.find(c => c.id == this.selectedCountry);
+            },
 
-        nextStep() {
-            if (this.step === 1 && this.selectedContinent) {
-                this.step = 2;
-                return;
-            }
+            nextStep() {
+                if (this.step === 1 && this.selectedContinent) {
+                    this.step = 2;
+                    return;
+                }
 
-            if (this.step === 2 && this.selectedCountry) {
-                this.submitting = true;
+                if (this.step === 2 && this.selectedCountry) {
+                    this.submitting = true;
 
-                setTimeout(() => {
-                    alert(
-                        `Success! Destination: ${this.selectedCountryObj?.name}, ${this.selectedContinentObj?.name}`
-                    );
+                    setTimeout(() => {
+                        alert(
+                            `Success! Destination: ${this.selectedCountryObj?.name}, ${this.selectedContinentObj?.name}`
+                        );
 
-                    this.step = 1;
-                    this.selectedContinent = '';
-                    this.selectedCountry = '';
-                    this.submitting = false;
-                }, 1500);
+                        this.step = 1;
+                        this.selectedContinent = '';
+                        this.selectedCountry = '';
+                        this.submitting = false;
+                    }, 1500);
+                }
             }
         }
     }
-}
 </script>
 
 <style>

@@ -1,15 +1,16 @@
 <section class="py-10 bg-white lg:py-24 md:py-16">
     <div class="container px-4 mx-auto">
-        <div class="flex flex-col items-center justify-center w-full gap-12 lg:flex-row">
+        <div class="flex flex-col lg:flex-row gap-12 justify-center items-center w-full">
 
             <!-- Left Content -->
-            <div class="pr-0 lg:pr-12">
+            <div class="pr-0 lg:pr-12 basis-2/3">
                 <p class="mb-2 font-semibold tracking-wider text-lime-600">
                     {{ $subtitle }}
                 </p>
                 <h2 class="mb-6 text-4xl font-bold md:text-5xl text-slate-900">
                     {{ $title}}
                 </h2>
+                
                 <p class="mb-6 text-slate-600">
                     {!! $description !!}
                 </p>
@@ -34,9 +35,9 @@
             </div>
 
             <!-- Right Content -->
-            <div class="relative mx-auto">
+            <div class="relative mx-auto basis-1/3">
                 <img src="{{ $image ? asset('storage/' . $image) : 'https://picsum.photos/seed/dam/500/600' }}"
-                    alt="{{ $title }}" class="h-auto shadow-xl rounded-2xl aspect-[4/5] object-cover " />
+                    alt="{{ $title }}" class="h-auto shadow-xl rounded-2xl aspect-[5/6] w-full object-cover " />
 
                 <!-- Stats Cards -->
                 <div class="absolute flex flex-col w-full gap-4 bottom-8 sm:-left-12 left-8 lg:flex-col xl:flex-row">

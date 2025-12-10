@@ -52,7 +52,7 @@ class NavigationLink extends Model
     {
         switch ($this->type) {
             case 'category':
-                return $this->category ? route('category.show', $this->category->slug) : '#';
+                return $this->category ? route('category', $this->category->slug) : '#';
             case 'brand':
                 return $this->brand ? route('brand.show', $this->brand->slug) : '#';
             case 'page':

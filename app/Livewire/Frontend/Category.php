@@ -51,10 +51,12 @@ class Category extends Component
             $category_products = $category_products->where('name', 'like', '%' . request()->search . '%');
         }
 
+        $total_product= (clone $category_products)->count();
         $category_products = $category_products->simplePaginate(10);
 
         return view('livewire.frontend.category', [
             'category_products' => $category_products,
+            'total_product'=>$total_product
         ]);
     }
 }

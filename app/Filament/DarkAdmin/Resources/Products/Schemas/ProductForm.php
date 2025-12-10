@@ -52,12 +52,7 @@ class ProductForm
                             ->preload()
                             ->searchable()
                             ->label('Assign Categories'),
-                        Select::make('countries')
-                            ->relationship('countries', 'name')
-                            ->multiple()
-                            ->preload()
-                            ->searchable()
-                            ->label('Available In Countries'),
+
                         Select::make('status')
                             ->options([
                                 'draft' => 'Draft',
@@ -67,6 +62,12 @@ class ProductForm
                             ->default('draft')->columnSpan(1),
                         DateTimePicker::make('published_at')
                             ->nullable(),
+                             Select::make('countries')
+                            ->relationship('countries', 'name')
+                            ->multiple()
+                            ->preload()
+                            ->searchable()
+                            ->label('Available In Countries')->columnSpanFull(),
                         Textarea::make('short_description')
                             ->rows(3)
                             ->nullable()->columnSpanFull(),
@@ -174,7 +175,7 @@ class ProductForm
                             ->columns(5)
                             ->orderable()
                             ->defaultItems(0),
-                    ])->columnSpan(1),
+                    ])->hidden()->columnSpan(1),
                 Section::make('Images')
                     ->schema([
                         FileUpload::make('thumbnail')
@@ -264,7 +265,7 @@ class ProductForm
                             ->addActionLabel('Add New Section')
                             ->defaultItems(0)
                             ->itemLabel(fn (array $state): ?string => $state['title'] ?? null),
-                    ]),
+                    ])->columnSpanFull(),
 
             ])->columns(2);
     }

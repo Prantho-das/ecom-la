@@ -122,6 +122,8 @@
                                 </svg>
                             </button>
 
+                            <div>{{ $category_products->firstItem() }} – {{ $category_products->lastItem() }} of {{ $total_product }} products</div>
+
                         </div>
 
                         <p id="productCount" class="text-sm text-gray-500"></p>
@@ -130,37 +132,40 @@
                     <!-- Product Container -->
                     @if ($category_products->count())
                         @if ($showMode === 'grid')
-                            <div class="grid grid-cols-1 gap-px bg-gray-200 border sm:grid-cols-2 lg:grid-cols-3">
+                            <div
+                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  bg-gray-50 ">
                                 @foreach ($category_products as $product)
-                                    <div class="flex flex-col items-center h-full p-6 text-center bg-white">
+                                    <div class="flex flex-col items-center h-full p-6 text-center bg-white border border-gray-200">
                                         <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/600x400?text=' . urlencode($product->name) }}"
                                             alt="{{ $product->name }}" class="object-contain w-40 h-40 my-4" />
 
-                                        <p class="mb-2 text-sm text-gray-500">{{ $product->sku }}</p>
+                                        <p class="text-sm text-gray-500 mb-1">{{ $product->sku }}</p>
 
-                                        <h3 class="text-base font-medium text-gray-800">
+                                        <h3 class="text-base text-gray-800 font-semibold leading-snug">
                                             {{ $product->name }}
                                         </h3>
 
                                         <a href="{{ route('details', $product->slug) }}" wire:navigate
-                                            class="inline-block w-full px-4 py-2 mt-6 border border-gray-300 rounded-md hover:bg-gray-100">
+                                            class="inline-block font-semibold w-full px-4 py-2 mt-6 border border-gray-300 rounded-md hover:bg-gray-100">
                                             View Details
                                         </a>
                                     </div>
                                 @endforeach
                             </div>
                         @else
-                            <ul class="divide-y divide-gray-200">
+                            <ul class="divide-y divide-gray-200 bg-white border border-gray-200">
                                 @foreach ($category_products as $product)
-                                    <li class="flex items-center py-4 space-x-4">
-                                        <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/150x150?text=' . urlencode($product->name) }}"
-                                            alt="{{ $product->name }}" class="object-contain w-20 h-20" />
-                                        <div>
-                                            <p class="text-sm text-gray-500">{{ $product->sku }}</p>
-                                            <h3 class="text-lg font-medium text-gray-900">{{ $product->name }}</h3>
-                                            <a href="{{ route('details', $product->slug) }}" wire:navigate
-                                                class="text-blue-600 hover:underline">View Details</a>
+                                    <li class="flex items-center justify-between p-4 space-x-4">
+                                        <div class="flex items-center gap-2">
+                                            <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/150x150?text=' . urlencode($product->name) }}"
+                                                alt="{{ $product->name }}" class="object-contain w-24 h-24" />
+                                            <p class="text-sm text-gray-500 mb-1">{{ $product->sku }}</p>
+                                            <h3 class="text-base text-gray-800 font-semibold leading-snug">
+                                                {{ $product->name }}</h3>
                                         </div>
+                                        <a href="{{ route('details', $product->slug) }}" wire:navigate
+                                            class="inline-block font-semibold px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">View
+                                            Details</a>
                                     </li>
                                 @endforeach
                             </ul>
@@ -286,5 +291,3 @@
     </div>
 
 </section>
-
-

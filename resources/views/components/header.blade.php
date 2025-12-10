@@ -21,7 +21,7 @@
                                 d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                         </svg>
 
-                        <a href="mailto:info@" class="hover:underline">info@</a>
+                        <a href="mailto:info@" class="hover:underline">info@datohall.com</a>
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
                             $site_logo = getSetting('logo');
                         @endphp
                         <img src="{{ $site_logo ? asset('storage/' . $site_logo) : asset('assets/images/logo.svg') }}"
-                            alt="Logo" class="h-[40px]"/>
+                            alt="Logo" class="h-[40px]" />
                     </a>
                 </div>
 
@@ -105,7 +105,7 @@
                 </a>
 
                 <a href="{{ route('category') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
-                    Category
+                    Products
                 </a>
 
                 <a href="{{ route('reseller.partner') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
