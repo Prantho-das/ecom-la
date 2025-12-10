@@ -29,7 +29,7 @@
 
         >
                     <div
-                        class="bg-white rounded-lg shadow-md p-4 text-center group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]">
+                        class="bg-white h-full rounded-lg shadow-md p-4 text-center group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]">
                         <div
                             class="relative flex items-center justify-center h-56 mb-4 overflow-hidden border border-gray-100 rounded-lg">
                             <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/600x400?text=' . $product->name }}"
@@ -40,7 +40,7 @@
                 </a>
             @endforeach
 
-      
+
 
 
         </div>
