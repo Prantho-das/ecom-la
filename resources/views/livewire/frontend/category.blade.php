@@ -145,7 +145,11 @@
                                             {{ $product->name }}
                                         </h3>
 
-                                        <a href="{{ route('details', $product->slug) }}" wire:navigate
+                                        <a
+                       @click="
+            $dispatch('open-product-modal', {{ json_encode(['slug' => $product->slug]) }});
+            my_modal_3.showModal();
+        " wire:navigate
                                             class="inline-block font-semibold w-full px-4 py-2 mt-6 border border-gray-300 rounded-md hover:bg-gray-100">
                                             View Details
                                         </a>
@@ -163,7 +167,11 @@
                                             <h3 class="text-base text-gray-800 font-semibold leading-snug">
                                                 {{ $product->name }}</h3>
                                         </div>
-                                        <a href="{{ route('details', $product->slug) }}" wire:navigate
+                                        <a
+                       @click="
+            $dispatch('open-product-modal', {{ json_encode(['slug' => $product->slug]) }});
+            my_modal_3.showModal();
+        " wire:navigate
                                             class="inline-block font-semibold px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">View
                                             Details</a>
                                     </li>

@@ -17,6 +17,8 @@
     <x-header />
     {{ $slot }}
     <x-footer />
+    <!-- You can open the modal using ID.showModal() method -->
+    <x-country-modal />
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     {{-- Extra Scripts Slot For Components --}}

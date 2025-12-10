@@ -6,7 +6,7 @@
             <h2 class="text-4xl font-bold md:text-5xl text-slate-900">New Products</h2>
             <a href="{{ route('category') }}"
                 class="flex items-center space-x-2 text-slate-600 hover:text-[#27ad4c] font-medium transition duration-300">
-                <div class="flex items-center justify-center w-8 h-8 border rounded-full border-slate-400 p-1">
+                <div class="flex items-center justify-center w-8 h-8 p-1 border rounded-full border-slate-400">
                     <x-heroicon-o-arrow-up-right />
                 </div>
                 <span>View All Product</span>
@@ -31,7 +31,7 @@
                     <div
                         class="bg-white rounded-lg shadow-md p-4 text-center group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02]">
                         <div
-                            class="relative flex items-center justify-center h-56 mb-4 rounded-lg overflow-hidden border border-gray-100">
+                            class="relative flex items-center justify-center h-56 mb-4 overflow-hidden border border-gray-100 rounded-lg">
                             <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/600x400?text=' . $product->name }}"
                                 alt={{ $product->name }} class="object-cover max-w-full max-h-full aspect-square">
                         </div>
@@ -40,8 +40,7 @@
                 </a>
             @endforeach
 
-            <!-- You can open the modal using ID.showModal() method -->
-         <x-country-modal/>
+      
 
 
         </div>
