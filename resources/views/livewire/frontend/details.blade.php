@@ -309,7 +309,6 @@
             </div>
         </section>
     </div>
-    <x-country-modal />
 </section>
 @push('scripts')
     <script>

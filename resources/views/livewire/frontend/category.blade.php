@@ -293,5 +293,4 @@
             </div>
         </div>
     </div>
-    <x-country-modal />
 </section>
