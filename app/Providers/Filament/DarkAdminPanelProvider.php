@@ -54,8 +54,6 @@ class DarkAdminPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->sidebarWidth("14rem")
             ->navigationItems([
-
-
                 NavigationItem::make()
                     ->label('Clear Cache')
                     ->icon('heroicon-o-trash')
