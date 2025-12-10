@@ -308,8 +308,8 @@
                 <div class="swiper-button-prev"></div>
             </div>
         </section>
-<x-country-modal />
     </div>
+    <x-country-modal />
 </section>
 @push('scripts')
     <script>
