@@ -51,6 +51,6 @@ class Details extends Component
 
         $this->dispatch('initSwipers');
 
-        return view('livewire.frontend.details');
+        return view('livewire.frontend.details')->layout('layouts.frontend');
     }
 }
