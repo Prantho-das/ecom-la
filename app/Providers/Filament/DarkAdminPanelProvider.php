@@ -52,7 +52,7 @@ class DarkAdminPanelProvider extends PanelProvider
             })
             ->profile()
             ->maxContentWidth(Width::Full)
-            ->sidebarWidth("14rem")
+            ->sidebarWidth("16rem")
             ->navigationItems([
                 NavigationItem::make()
                     ->label('Clear Cache')
