@@ -2,7 +2,7 @@
     class="modal rounden-0">
     <div class="modal-box p-0 w-11/12 max-w-6xl h-[90vh]">
         <form method="dialog">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            <button class="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
         </form>
         @php
             $firstContinent = null;
@@ -17,16 +17,16 @@
         <div class="flex h-full" x-data="{ activeTab: '{{ $firstContinent }}' }">
 
             <!-- Vertical Tabs Sidebar -->
-            <div class="lg:w-64 md:w-40 bg-white border-r border-gray-200">
-                <div class="px-4 py-3 border-b border-gray-200 mb-0 bg-white text-center justify-center">
-                    <h2 class="text-2xl font-semibold text-center">
+            <div class="bg-white border-r border-gray-200 lg:w-64 md:w-40">
+                <div class="justify-center px-4 py-3 mb-0 text-center bg-white border-b border-gray-200">
+                    <h2 class="text-2xl font-semibold text-center text-black">
                         Continent
                     </h2>
                 </div>
-                <div class="tabs tabs-boxed flex-col h-full ">
+                <div class="flex-col h-full tabs tabs-boxed ">
 
                     @foreach ($continents as $key => $conti)
-                        <a class="tab tab-lg text-base font-medium h-12 "
+                        <a class="h-12 text-base font-medium tab tab-lg "
                             :class="{ 'tab-active bg-green-600 text-white font-semibold': activeTab === '{{ $conti->id }}' }"
                             @click="activeTab = '{{ $conti->id }}'">
                             {{ $conti->name }}
@@ -36,7 +36,7 @@
             </div>
 
             <!-- Tab Content Area - NOW WITH bg-gray-100 -->
-            <div class="flex-1  overflow-y-auto bg-white">
+            <div class="flex-1 overflow-y-auto bg-white">
 
                 <!-- Asia -->
                 @foreach ($continents as $conti)
@@ -45,17 +45,17 @@
                         $countries = \DB::table('countries')->where('continent_id', $conti->id)->orderBy('name')->get();
                     @endphp
                     <div x-show="activeTab === '{{ $conti->id }}'" class="space-y-6">
-                        <div class="px-4 py-3 border-b border-gray-200 mb-0 bg-white">
-                            <h2 class="text-2xl font-semibold flex items-center gap-3">
-                                Asia <span class="badge badge-lg text-gray-400 !text-sm">48 Countries</span>
+                        <div class="px-4 py-3 mb-0 bg-white border-b border-gray-200">
+                            <h2 class="flex items-center gap-3 text-2xl font-semibold text-black">
+                                {{ $conti->name }} <span class="badge badge-ghost text-gray-400 !text-sm">{{ count($countries) }} Countries</span>
                             </h2>
                         </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 p-4 bg-white">
+                        <div class="grid grid-cols-2 gap-2 p-4 bg-white sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                             @foreach ($countries as $country)
                                 <a
                                     @click.prevent="window.location.href = '/details/' + productSlug + '?country={{ $country->code }}'">
-                                    <div class="text-start cursor-pointer text-gray-800 hover:text-green-600">
-                                        <h3 class="font-base text-sm">{{ $country->name }}</h3>
+                                    <div class="text-gray-800 cursor-pointer text-start hover:text-green-600">
+                                        <h3 class="text-sm font-base">{{ $country->name }}</h3>
                                     </div>
                                 </a>
                             @endforeach
