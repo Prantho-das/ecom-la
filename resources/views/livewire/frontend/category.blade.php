@@ -87,6 +87,7 @@
                                     <div class="w-1 h-6 mr-3"></div>
                                     @endif
                                     <a href="{{ route('category', ['category_slug' => $categoryInfo->slug]) }}"
+                                        wire:navigate
                                         class="text-gray-600 hover:text-gray-800">
                                         {{ $categoryInfo->name }}
                                     </a>
