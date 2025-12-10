@@ -57,6 +57,6 @@ class Category extends Component
         return view('livewire.frontend.category', [
             'category_products' => $category_products,
             'total_product'=>$total_product
-        ]);
+        ])->layout('layouts.frontend');
     }
 }
