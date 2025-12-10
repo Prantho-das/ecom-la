@@ -148,7 +148,7 @@
                             <a @click="
             $dispatch('open-product-modal', {{ json_encode(['slug' => $product->slug]) }});
             my_modal_3.showModal();
-        " wire:navigate class="inline-block w-full px-4 py-2 mt-6 font-semibold border border-gray-300 rounded-md hover:bg-gray-100">
+        " wire:navigate class="inline-block w-full px-4 py-2 mt-6 font-semibold border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100">
                                 View Details
                             </a>
                         </div>
@@ -168,7 +168,7 @@
                             <a @click="
             $dispatch('open-product-modal', {{ json_encode(['slug' => $product->slug]) }});
             my_modal_3.showModal();
-        " wire:navigate class="inline-block px-4 py-2 font-semibold border border-gray-300 rounded-md hover:bg-gray-100">View
+        " wire:navigate class="inline-block px-4 py-2 font-semibold border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100">View
                                 Details</a>
                         </li>
                         @endforeach

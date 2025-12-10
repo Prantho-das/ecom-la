@@ -294,7 +294,9 @@
                                     alt="{{ $relatedProduct->name }}" class="object-contain w-40 h-40 my-4" />
                                 <p class="mb-2 text-sm text-gray-500">AR3003</p>
                                 <h3 class="text-base font-medium text-gray-800">{{ $relatedProduct->name }}</h3>
-                                <a href="{{ route('details', $relatedProduct->slug) }}"
+                                <a @click="
+                                $dispatch('open-product-modal', {{ json_encode(['slug' => $relatedProduct->slug]) }});
+                                my_modal_3.showModal();     " wire:navigate
                                     class="inline-block w-full px-4 py-2 mt-6 border border-gray-300 rounded-md hover:bg-gray-100">
                                     View Details
                                 </a>
