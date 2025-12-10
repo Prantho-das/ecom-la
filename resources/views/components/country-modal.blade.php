@@ -47,7 +47,7 @@
                     <div x-show="activeTab === '{{ $conti->id }}'" class="space-y-6">
                         <div class="px-4 py-3 mb-0 bg-white border-b border-gray-200">
                             <h2 class="flex items-center gap-3 text-2xl font-semibold text-black">
-                                {{ $conti->name }} <span class="badge badge-ghost text-gray-400 !text-sm">{{ count($countries) }} Countries</span>
+                                {{ $conti->name }} <span class="badge badge-ghost bg-white border-1 border-gray-400 text-gray-400 !text-sm">{{ count($countries) }} Countries</span>
                             </h2>
                         </div>
                         <div class="grid grid-cols-2 gap-2 p-4 bg-white sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
