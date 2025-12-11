@@ -151,7 +151,7 @@
                                                 my_modal_3.showModal();
                                             "
                                             wire:navigate
-                                            class="inline-block w-full px-4 py-2 mt-6 font-semibold border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100">
+                                            class="inline-block text-black w-full px-4 py-2 mt-6 font-semibold border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100">
                                             View Details
                                         </a>
                                     </div>
@@ -181,7 +181,7 @@
                         @endif
 
                         <!-- Pagination -->
-                        <div class="mt-8">
+                        <div class="mt-8 ">
                             {{ $category_products->links() }}
                         </div>
                     @else
