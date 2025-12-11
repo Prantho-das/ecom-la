@@ -1,4 +1,4 @@
-<section>
+<section class="bg-white">
     <x-breadcrumb />
 
     <div class="container lg:max-w-[1780px] mx-auto px-4">
@@ -80,18 +80,17 @@
                         <div class="p-4">
                             <ul>
                                 @foreach ($categories as $categoryInfo)
-                                <li class="flex items-center py-2 pl-4">
-                                    @if ($category_slug === $categoryInfo->slug)
-                                    <div class="w-1 h-6 mr-3 bg-green-600 rounded-full"></div>
-                                    @else
-                                    <div class="w-1 h-6 mr-3"></div>
-                                    @endif
-                                    <a href="{{ route('category', ['category_slug' => $categoryInfo->slug]) }}"
-                                        wire:navigate
-                                        class="text-gray-600 hover:text-gray-800">
-                                        {{ $categoryInfo->name }}
-                                    </a>
-                                </li>
+                                    <li class="flex items-center py-2 pl-4">
+                                        @if ($category_slug === $categoryInfo->slug)
+                                            <div class="w-1 h-6 mr-3 bg-green-600 rounded-full"></div>
+                                        @else
+                                            <div class="w-1 h-6 mr-3"></div>
+                                        @endif
+                                        <a href="{{ route('category', ['category_slug' => $categoryInfo->slug]) }}"
+                                            wire:navigate class="text-gray-600 hover:text-gray-800">
+                                            {{ $categoryInfo->name }}
+                                        </a>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -123,8 +122,8 @@
                                 </svg>
                             </button>
 
-                            <div>{{ $category_products->firstItem() }} – {{ $category_products->lastItem() }} of {{
-                                $total_product }} products</div>
+                            <div>{{ $category_products->firstItem() }} – {{ $category_products->lastItem() }} of
+                                {{ $total_product }} products</div>
 
                         </div>
 
@@ -133,55 +132,60 @@
 
                     <!-- Product Container -->
                     @if ($category_products->count())
-                    @if ($showMode === 'grid')
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 bg-gray-50 ">
-                        @foreach ($category_products as $product)
-                        <div class="flex flex-col items-center h-full p-6 text-center bg-white border border-gray-200">
-                            <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/600x400?text=' . urlencode($product->name) }}"
-                                alt="{{ $product->name }}" class="object-contain w-40 h-40 my-4" />
+                        @if ($showMode === 'grid')
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 bg-gray-50 ">
+                                @foreach ($category_products as $product)
+                                    <div
+                                        class="flex flex-col items-center h-full p-6 text-center bg-white border border-gray-200">
+                                        <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/600x400?text=' . urlencode($product->name) }}"
+                                            alt="{{ $product->name }}" class="object-contain w-40 h-40 my-4" />
 
-                            <p class="mb-1 text-sm text-gray-500">{{ $product->sku }}</p>
+                                        <p class="mb-1 text-sm text-gray-500">{{ $product->sku }}</p>
 
-                            <h3 class="text-base font-semibold leading-snug text-gray-800">
-                                {{ $product->name }}
-                            </h3>
+                                        <h3 class="text-base font-semibold leading-snug text-gray-800">
+                                            {{ $product->name }}
+                                        </h3>
 
-                            <a @click="
-            $dispatch('open-product-modal', {{ json_encode(['slug' => $product->slug]) }});
-            my_modal_3.showModal();
-        " wire:navigate class="inline-block w-full px-4 py-2 mt-6 font-semibold border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100">
-                                View Details
-                            </a>
-                        </div>
-                        @endforeach
-                    </div>
-                    @else
-                    <ul class="bg-white border border-gray-200 divide-y divide-gray-200">
-                        @foreach ($category_products as $product)
-                        <li class="flex items-center justify-between p-4 space-x-4">
-                            <div class="flex items-center gap-2">
-                                <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/150x150?text=' . urlencode($product->name) }}"
-                                    alt="{{ $product->name }}" class="object-contain w-24 h-24" />
-                                <p class="mb-1 text-sm text-gray-500">{{ $product->sku }}</p>
-                                <h3 class="text-base font-semibold leading-snug text-gray-800">
-                                    {{ $product->name }}</h3>
+                                        <a @click="
+                                                $dispatch('open-product-modal', {{ json_encode(['slug' => $product->slug]) }});
+                                                my_modal_3.showModal();
+                                            "
+                                            wire:navigate
+                                            class="inline-block w-full px-4 py-2 mt-6 font-semibold border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100">
+                                            View Details
+                                        </a>
+                                    </div>
+                                @endforeach
                             </div>
-                            <a @click="
+                        @else
+                            <ul class="bg-white border border-gray-200 divide-y divide-gray-200">
+                                @foreach ($category_products as $product)
+                                    <li class="flex items-center justify-between p-4 space-x-4">
+                                        <div class="flex items-center gap-2">
+                                            <img src="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : 'https://placehold.co/150x150?text=' . urlencode($product->name) }}"
+                                                alt="{{ $product->name }}" class="object-contain w-24 h-24" />
+                                            <p class="mb-1 text-sm text-gray-500">{{ $product->sku }}</p>
+                                            <h3 class="text-base font-semibold leading-snug text-gray-800">
+                                                {{ $product->name }}</h3>
+                                        </div>
+                                        <a @click="
             $dispatch('open-product-modal', {{ json_encode(['slug' => $product->slug]) }});
             my_modal_3.showModal();
-        " wire:navigate class="inline-block px-4 py-2 font-semibold border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100">View
-                                Details</a>
-                        </li>
-                        @endforeach
-                    </ul>
-                    @endif
+        "
+                                            wire:navigate
+                                            class="inline-block px-4 py-2 font-semibold border border-gray-300 rounded-md cursor-pointer hover:bg-gray-100">View
+                                            Details</a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
 
-                    <!-- Pagination -->
-                    <div class="mt-8">
-                        {{ $category_products->links() }}
-                    </div>
+                        <!-- Pagination -->
+                        <div class="mt-8">
+                            {{ $category_products->links() }}
+                        </div>
                     @else
-                    <p class="mt-12 text-center text-gray-500">No products found in this category.</p>
+                        <p class="mt-12 text-center text-gray-500">No products found in this category.</p>
                     @endif
 
                 </div>
