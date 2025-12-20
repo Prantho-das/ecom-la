@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Turnarounds and Outage Services</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <section class="bg-white py-12 md:py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid md:grid-cols-2 gap-12 items-start">
+        <!-- Text Content -->
+        <div class="space-y-6">
+          <span class="text-gray-500 text-xs font-bold uppercase tracking-widest">Product Family</span>
+          <h1 class="text-4xl md:text-5xl font-light text-gray-900 leading-tight">
+            Smart Turnarounds and Outage Services
+          </h1>
+          <p class="text-gray-600 leading-relaxed text-sm md:text-base max-w-xl">
+            Plant turnarounds constitute your single largest maintenance expense. Part of ensuring a successful 
+            turnaround is controlling the time and cost associated with the outage, while making sure your assets get 
+            the service needed to continue performing safely and reliably. Smart Turnarounds and Outage Services 
+            can help you make the most of planned maintenance time.
+          </p>
+          
+          <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
+            <button class="bg-green-600 text-white px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-orange-700 transition">
+              Find Sales Contact
+            </button>
+            <button class="bg-[#999] text-white px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-gray-500 transition">
+              Get Brochure
+            </button>
+          </div>
+
+          <div class="pt-8 border-t border-gray-200">
+            <div class="flex flex-wrap gap-y-2 text-[10px] uppercase font-bold text-gray-500 tracking-wider">
+              <span class="mr-2 text-gray-900">Best Suited For:</span>
+              <span class="after:content-['•'] after:mx-2 after:text-gray-300">Chemical/Petrochemical (excl. Oil & Gas)</span>
+              <span class="after:content-['•'] after:mx-2 after:text-gray-300">Manufacturing</span>
+              <span class="after:content-['•'] after:mx-2 after:text-gray-300">Oil and Gas</span>
+              <span class="after:content-['•'] after:mx-2 after:text-gray-300">Power Generation</span>
+              <span>Power/Gas Transmission and Distribution</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Image -->
+        <div class="relative">
+          <img 
+            src="https://picsum.photos/seed/industrial-panel/800/600" 
+            alt="Industrial Service" 
+            class="w-full h-auto shadow-xl"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="border-b border-gray-200 bg-white sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4">
+      <nav class="flex space-x-12">
+        <button 
+          onclick="setActiveTab('features')"
+          class="py-4 px-1 text-xs font-bold uppercase tracking-widest border-b-2 transition-colors border-[#FF5C00] text-gray-900"
+          id="tab-features">
+          Features and Benefits
+        </button>
+        <button 
+          onclick="setActiveTab('documents')"
+          class="py-4 px-1 text-xs font-bold uppercase tracking-widest border-b-2 transition-colors border-transparent text-gray-400 hover:text-gray-600"
+          id="tab-documents">
+          Documents & Downloads
+        </button>
+        <button 
+          onclick="setActiveTab('support')"
+          class="py-4 px-1 text-xs font-bold uppercase tracking-widest border-b-2 transition-colors border-transparent text-gray-400 hover:text-gray-600"
+          id="tab-support">
+          Support
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Features Tab Content -->
+  <div id="content-features" class="max-w-7xl mx-auto px-4 py-12 space-y-24">
+    <!-- Benefits Section -->
+    <section class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-4xl font-bold text-gray-900 mb-8">Benefits</h2>
+        <ul class="space-y-8">
+          <li>
+            <h3 class="text-xl font-semibold text-gray-900">Better scheduled, better budgeted turnarounds</h3>
+            <p class="mt-2 text-gray-600">occur with proper planning and diagnosis</p>
+          </li>
+          <li>
+            <h3 class="text-xl font-semibold text-gray-900">More efficient use of time and resources</h3>
+            <p class="mt-2 text-gray-600">is achieved by fully understanding up front what assets will be needed for the duration of the outage</p>
+          </li>
+          <li>
+            <h3 class="text-xl font-semibold text-gray-900">Optimized equipment performance, safety, and reliability</h3>
+            <p class="mt-2 text-gray-600">happens when you partner with experts using the latest diagnostic technology and state-of-the-art tools</p>
+          </li>
+          <li>
+            <h3 class="text-xl font-semibold text-gray-900">Reduced risk of equipment failure</h3>
+            <p class="mt-2 text-gray-600">is due to extensive planning, diagnosis, and maintenance performed prior to the outage</p>
+          </li>
+          <li>
+            <h3 class="text-xl font-semibold text-gray-900">Better long-term cycle efficiency</h3>
+            <p class="mt-2 text-gray-600">is achieved when predictive electrical inspections and testing are part of your outage</p>
+          </li>
+          <li>
+            <h3 class="text-xl font-semibold text-gray-900">More critical insight for ongoing maintenance planning</h3>
+            <p class="mt-2 text-gray-600">is gleaned from a comprehensive turnaround review and report</p>
+          </li>
+        </ul>
+      </div>
+      <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-96"></div> <!-- Placeholder for image -->
+    </section>
+
+    <!-- Features Section (reversed layout) -->
+    <section class="grid md:grid-cols-2 gap-12 items-center md:grid-flow-col-dense">
+      <div class="md:col-start-2">
+        <h2 class="text-4xl font-bold text-gray-900 mb-8">Features</h2>
+        <ul class="space-y-8">
+          <li>
+            <h3 class="text-xl font-semibold text-gray-900">Pre-outage planning</h3>
+            <p class="mt-2 text-gray-600">uses a plant walk-through and equipment assessment to identify turnaround objectives</p>
+          </li>
+          <li>
+            <h3 class="text-xl font-semibold text-gray-900">Pre-outage diagnostic testing</h3>
+            <p class="mt-2 text-gray-600">includes online testing to determine what assets need work and what work will need to be done</p>
+          </li>
+          <li>
+            <h3 class="text-xl font-semibold text-gray-900">Pre-outage electrical maintenance</h3>
+            <p class="mt-2 text-gray-600">includes an advanced predictive maintenance program that enables an efficient maintenance strategy and continuous performance improvement for plant assets</p>
+          </li>
+          <li>
+            <h3 class="text-xl font-semibold text-gray-900">Maintenance and testing services</h3>
+            <p class="mt-2 text-gray-600">helps you detect deficiencies before they result in unscheduled outages, loss of production, and damaged equipment</p>
+          </li>
+          <li>
+            <h3 class="text-xl font-semibold text-gray-900">Post-outage report and feedback</h3>
+            <p class="mt-2 text-gray-600">includes details of tasks performed, equipment serviced, personnel involved, and recommendations for future maintenance</p>
+          </li>
+        </ul>
+      </div>
+      <div class="md:col-start-1 md:row-start-1 bg-gray-200 border-2 border-dashed rounded-xl w-full h-96"></div> <!-- Placeholder for image -->
+    </section>
+  </div>
+
+  <!-- Documents Tab Content -->
+  <div id="content-documents" class="max-w-7xl mx-auto px-4 py-24 text-center text-gray-500 hidden">
+    <h2 class="text-2xl font-bold">Documents & Downloads</h2>
+    <p class="mt-4">Technical specifications, brochures, and case studies are available for download.</p>
+  </div>
+
+  <!-- Support Tab Content -->
+  <div id="content-support" class="max-w-7xl mx-auto px-4 py-24 text-center text-gray-500 hidden">
+    <h2 class="text-2xl font-bold">Support</h2>
+    <p class="mt-4">Our support team is available 24/7 for emergency outage assistance.</p>
+  </div>
+
+
+  <section class="bg-gray-50 py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl font-light text-center mb-16">Related Products And Services</h2>
+      
+      <div class="grid md:grid-cols-2 gap-12">
+        
+        <!-- Item 1: Life-Extension Services -->
+        <div class="flex flex-col items-center text-center">
+          <div class="mb-6 w-full h-64 overflow-hidden">
+            <img 
+              src="https://picsum.photos/seed/maintenance/400/300" 
+              alt="Life-Extension Services" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <h3 class="text-[#009CDE] text-lg font-bold mb-4 uppercase tracking-tight">
+            Life-Extension Services
+          </h3>
+          <p class="text-xs text-gray-600 leading-relaxed text-justify px-4">
+            Aging electrical equipment requires more maintenance and is more likely to fail than a newer system. It could even pose serious safety risks. However, replacing a worn down or obsolete electrical distribution system asset is no minor or inexpensive task. Vertiv's complete range of life-extension services helps you take advantage of the latest technology without incurring high replacement costs.
+          </p>
+        </div>
+        
+        <!-- Item 2: Relay Upgrades and Replacements -->
+        <div class="flex flex-col items-center text-center">
+          <div class="mb-6 w-full h-64 overflow-hidden">
+            <img 
+              src="https://picsum.photos/seed/relay/400/300" 
+              alt="Relay Upgrades and Replacements" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <h3 class="text-[#009CDE] text-lg font-bold mb-4 uppercase tracking-tight">
+            Relay Upgrades and Replacements
+          </h3>
+          <p class="text-xs text-gray-600 leading-relaxed text-justify px-4">
+            Keeping up with the rapid advances in technology and the increasing demand for improved power and reliability is a challenge for today's electrical asset managers. Relay upgrades and replacements allow you to replace your obsolete protection system and take advantage of the advancements in protection technology without the expense of installing new switchgear.
+          </p>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <footer class="relative overflow-hidden">
+    
+    <!-- Newsletter Section -->
+    <div class="bg-[#000d1a] py-16 relative">
+      <!-- Background Image Overlay -->
+      <div 
+        class="absolute inset-0 opacity-20 pointer-events-none bg-cover bg-center"
+        style="background-image: url('https://picsum.photos/seed/datacenter/1920/600')"
+      ></div>
+      
+      <div class="max-w-5xl mx-auto px-4 relative z-10">
+        <div class="flex flex-col md:flex-row items-center md:justify-between gap-8">
+          
+          <div class="flex items-center space-x-6">
+            <div class="bg-white rounded-full p-6 shadow-2xl">
+              <!-- Mail Icon (Lucide) -->
+              <i data-lucide="mail" class="w-10 h-10 text-gray-800"></i>
+            </div>
+            
+            <div class="text-white">
+              <h3 class="text-3xl font-bold mb-2">
+                Subscribe to get the latest trends in technology
+              </h3>
+              <p class="text-gray-400 text-sm max-w-xl">
+                Receive updates on the most important topics in the industry, with latest 
+                discussions and expert insights on AI, liquid cooling, and high performance 
+                computing in the data center.
+              </p>
+            </div>
+          </div>
+          
+          <button class="bg-green-600 text-white px-10 py-4 text-xs font-bold uppercase tracking-widest whitespace-nowrap hover:bg-orange-700 transition">
+            Sign Up Now
+          </button>
+          
+        </div>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Initialize Lucide icons -->
+  <script>
+    lucide.createIcons();
+  </script>
+
+  <script>
+    // Default active tab
+    let activeTab = 'features';
+
+    function setActiveTab(tab) {
+      // Update active state
+      activeTab = tab;
+
+      // Update tab buttons
+      document.getElementById('tab-features').className = 
+        tab === 'features' 
+          ? 'py-4 px-1 text-xs font-bold uppercase tracking-widest border-b-2 transition-colors border-[#FF5C00] text-gray-900'
+          : 'py-4 px-1 text-xs font-bold uppercase tracking-widest border-b-2 transition-colors border-transparent text-gray-400 hover:text-gray-600';
+
+      document.getElementById('tab-documents').className = 
+        tab === 'documents' 
+          ? 'py-4 px-1 text-xs font-bold uppercase tracking-widest border-b-2 transition-colors border-[#FF5C00] text-gray-900'
+          : 'py-4 px-1 text-xs font-bold uppercase tracking-widest border-b-2 transition-colors border-transparent text-gray-400 hover:text-gray-600';
+
+      document.getElementById('tab-support').className = 
+        tab === 'support' 
+          ? 'py-4 px-1 text-xs font-bold uppercase tracking-widest border-b-2 transition-colors border-[#FF5C00] text-gray-900'
+          : 'py-4 px-1 text-xs font-bold uppercase tracking-widest border-b-2 transition-colors border-transparent text-gray-400 hover:text-gray-600';
+
+      // Show/hide content
+      document.getElementById('content-features').classList.toggle('hidden', tab !== 'features');
+      document.getElementById('content-documents').classList.toggle('hidden', tab !== 'documents');
+      document.getElementById('content-support').classList.toggle('hidden', tab !== 'support');
+    }
+
+    // Initialize correct state on load
+    setActiveTab('features');
+  </script>
+</body>
+</html>
