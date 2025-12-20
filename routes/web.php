@@ -5,12 +5,13 @@ use App\Livewire\Frontend\Contact;
 use App\Livewire\Frontend\Details;
 use App\Livewire\Frontend\Home;
 use App\Livewire\Frontend\ResellerPartner;
+use App\Livewire\Frontend\ServiceCategoryIndex;
+use App\Livewire\Frontend\ServiceCategoryShow;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
-
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
@@ -50,6 +51,10 @@ Route::middleware(['auth'])->group(function () {
 
 // HOME
 Route::get('/', Home::class)->name('home');
+
+// SERVICES
+Route::get('/services', ServiceCategoryIndex::class)->name('services.index');
+Route::get('/services/{slug}', ServiceCategoryShow::class)->name('services.show');
 
 // CATEGORY
 Route::get('/category/{category_slug?}', Category::class)->name('category');

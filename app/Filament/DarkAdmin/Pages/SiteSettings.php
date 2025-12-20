@@ -29,6 +29,7 @@ class SiteSettings extends Page
     public $meta_title;
 
     public $meta_description;
+    public $service_page_description;
 
     public $logo; // will store file path
 
@@ -44,6 +45,7 @@ class SiteSettings extends Page
         $this->meta_description = $this->getSetting('general', 'meta_description') ?? '';
         $this->logo = $this->getSetting('general', 'logo') ?? '';
         $this->current_logo = $this->getSetting('general', 'logo') ?? '';
+        $this->service_page_description=$this->getSetting('general','service_page_description')??'';
 
         $this->form->fill([
             'site_title' => $this->site_title,
@@ -77,6 +79,9 @@ class SiteSettings extends Page
             Textarea::make('meta_description')
                 ->label('Meta Description')
                 ->rows(3),
+            Textarea::make('service_page_description')
+                ->label('service page Description')
+                ->rows(3),
 
             FileUpload::make('logo')
                 ->label('Site Logo')
@@ -100,6 +105,7 @@ class SiteSettings extends Page
         $this->setSetting('general', 'site_email', $data['site_email']);
         $this->setSetting('general', 'meta_title', $data['meta_title']);
         $this->setSetting('general', 'meta_description', $data['meta_description']);
+        $this->setSetting('general', 'service_page_description', $data['service_page_description']);
 
         // Handle logo upload path save
         if (! empty($data['logo'])) {
