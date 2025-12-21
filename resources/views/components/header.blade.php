@@ -97,34 +97,73 @@
                 </div>
             </div>
 
-            <!-- Desktop Navigation -->
-            <nav class="items-center hidden space-x-6 font-semibold text-black lg:flex">
-                <a href="{{ route('home') }}" wire:navigate
-                    class="pb-2 {{ request()->routeIs('home') ? 'text-[#27ad4c] border-b-2 border-[#27ad4c]' : 'hover:text-[#27ad4c]' }}">
-                    Home
-                </a>
+            <!-- Desktop Navigation with Mega Menu -->
+            <div class="relative">
+                <nav class="items-center hidden space-x-6 font-semibold text-black lg:flex">
+                    <a href="{{ route('home') }}" wire:navigate
+                        class="pb-2 {{ request()->routeIs('home') ? 'text-[#27ad4c] border-b-2 border-[#27ad4c]' : 'hover:text-[#27ad4c]' }}">
+                        Home
+                    </a>
 
-                <a href="{{ route('category') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
-                    Products
-                </a>
+                    <!-- Products Menu Item with Mega Menu -->
+                    <div class="group">
+                        <a href="{{ route('category') }}" wire:navigate class="pb-2 hover:text-[#27ad4c] flex items-center">
+                            Products
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </a>
 
-                <a href="{{ route('reseller.partner') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
-                    Reseller
-                </a>
-                <a href="{{ route('contact') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
-                    Contact
-                </a>
-                {{-- <a href="{{ route('details',10) }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
-                    Product Details
-                </a> --}}
+                        <!-- Mega Menu (full width) -->
+                        <div class="absolute left-0 right-0 top-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 bg-white shadow-lg border-t-2 border-[#27ad4c] z-50">
+                            <div class="container  px-4 py-8">
+                                <div class="grid grid-cols-4 gap-8">
+                                    <!-- Example Mega Menu Columns -->
+                                    <div>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 1</h3>
+                                        <ul class="space-y-2">
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 1</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 2</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 3</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 4</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 2</h3>
+                                        <ul class="space-y-2">
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 5</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 6</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 7</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 3</h3>
+                                        <ul class="space-y-2">
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Featured</h3>
+                                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-48">
+                                            <!-- Placeholder for image or featured content -->
+                                        </div>
+                                        <a href="#" class="block mt-4 text-[#27ad4c] font-semibold hover:underline">View All Products →</a>
+                                    </div>
+                                </div>
 
-                {{-- <a href="#" class="pb-2 hover:text-[#27ad4c]">Software</a>
-                <a href="#" class="pb-2 hover:text-[#27ad4c]">Services</a>
-                <a href="#" class="pb-2 hover:text-[#27ad4c]">Solutions</a>
-                <a href="#" class="pb-2 hover:text-[#27ad4c]">Homeowner</a>
-                <a href="#" class="pb-2 hover:text-[#27ad4c]">Support</a>
-                <a href="#" class="pb-2 hover:text-[#27ad4c]">Company</a> --}}
-            </nav>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('reseller.partner') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
+                        Reseller
+                    </a>
+                    <a href="{{ route('contact') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
+                        Contact
+                    </a>
+                </nav>
+            </div>
 
             <!-- Mobile Navigation -->
             <div class="hidden px-4 py-4 bg-white shadow-lg lg:hidden">
