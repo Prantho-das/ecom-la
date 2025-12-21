@@ -107,17 +107,20 @@
 
                     <!-- Products Menu Item with Mega Menu -->
                     <div class="group">
-                        <a href="{{ route('category') }}" wire:navigate class="pb-2 hover:text-[#27ad4c] flex items-center">
+                        <a href="{{ route('category') }}" wire:navigate
+                            class="pb-2 hover:text-[#27ad4c] flex items-center">
                             Products
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
                         </a>
 
                         <!-- Mega Menu (full width) -->
-                        <div class="absolute left-0 right-0 top-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 bg-white shadow-lg border-t-2 border-[#27ad4c] z-50">
+                        <div
+                            class="absolute left-0 right-0 top-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 bg-white shadow-lg border-t-2 border-[#27ad4c] z-50">
                             <div class="container  px-4 py-8">
-                                <div class="grid grid-cols-4 gap-8">
+                                {{-- <div class="grid grid-cols-4 gap-8">
                                     <!-- Example Mega Menu Columns -->
                                     <div>
                                         <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 1</h3>
@@ -150,8 +153,77 @@
                                         </div>
                                         <a href="#" class="block mt-4 text-[#27ad4c] font-semibold hover:underline">View All Products →</a>
                                     </div>
-                                </div>
+                                </div> --}}
+                                <!-- Make sure to include Alpine.js in your layout, e.g. -->
+                                <!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
 
+                                <div class="flex flex-col md:flex-row gap-8" x-data="{ activeTab: 'tab2' }">
+    <!-- Tabs on the left -->
+    <div class="flex flex-col gap-2 w-full md:w-64">
+        <button
+            @click="activeTab = 'tab1'"
+            :class="{ 'tab-active': activeTab === 'tab1' }"
+            class="tab tab-bordered tab-lifted w-full text-left"
+            aria-label="Tab 1"
+        >
+            Tab 1
+        </button>
+
+        <button
+            @click="activeTab = 'tab2'"
+            :class="{ 'tab-active': activeTab === 'tab2' }"
+            class="tab tab-bordered tab-lifted w-full text-left"
+            aria-label="Tab 2"
+        >
+            Tab 2
+        </button>
+
+        <button
+            @click="activeTab = 'tab3'"
+            :class="{ 'tab-active': activeTab === 'tab3' }"
+            class="tab tab-bordered tab-lifted w-full text-left"
+            aria-label="Tab 3"
+        >
+            Tab 3
+        </button>
+    </div>
+
+    <!-- Content on the right - with fixed height behavior -->
+    <div class="grow mt-6 md:mt-0 min-h-96 md:min-h-screen-lg relative">
+        <!-- Wrapper with relative positioning and min-height -->
+        <div class="absolute inset-0 overflow-y-auto">
+            <!-- All tab panels are absolutely positioned in the same space -->
+            <div
+                x-show="activeTab === 'tab1'"
+                x-transition.opacity
+                class="absolute inset-0 prose max-w-none border border-base-300 bg-base-100 rounded-box p-10"
+            >
+                <h2 class="text-2xl font-bold mb-4">Tab 1</h2>
+                <p>Tab content 1</p>
+                <!-- Add more content here if needed -->
+            </div>
+
+            <div
+                x-show="activeTab === 'tab2'"
+                x-transition.opacity
+                class="absolute inset-0 prose max-w-none border border-base-300 bg-base-100 rounded-box p-10"
+            >
+                <h2 class="text-2xl font-bold mb-4">Tab 2</h2>
+                <p>Tab content 2<br><br>This tab has more lines to make it taller.</p>
+                <p>Extra content...</p>
+            </div>
+
+            <div
+                x-show="activeTab === 'tab3'"
+                x-transition.opacity
+                class="absolute inset-0 prose max-w-none border border-base-300 bg-base-100 rounded-box p-10"
+            >
+                <h2 class="text-2xl font-bold mb-4">Tab 3</h2>
+                <p>Tab content 3 – short again.</p>
+            </div>
+        </div>
+    </div>
+</div>
                             </div>
                         </div>
                     </div>
