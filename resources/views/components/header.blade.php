@@ -91,9 +91,68 @@
 
                 <!-- Mobile Menu Button -->
                 <div class="lg:hidden">
-                    <button class="text-[#27ad4c]">
-                        <!-- MenuIcon -->MenuIcon
-                    </button>
+                    <div class="drawer">
+                        <input id="my-drawer-1" type="checkbox" class="drawer-toggle" />
+                        <div class="drawer-content">
+                            <!-- Page content here -->
+                            <label for="my-drawer-1" class="btn drawer-button">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                </svg>
+                            </label>
+
+                        </div>
+                        <div class="drawer-side">
+                            <label for="my-drawer-1" aria-label="close sidebar" class="drawer-overlay"></label>
+
+                            <div class=" px-4 py-4 bg-white shadow-lg min-h-full w-80">
+
+                                <div class="relative w-full mb-4 sm:hidden">
+                                    <input type="text" placeholder="Search"
+                                        class="border border-gray-400 py-1.5 px-3 w-full focus:outline-none focus:ring-1 focus:ring-[#27ad4c]" />
+                                    <button class="absolute right-0 top-0 h-full px-2 text-white bg-[#27ad4c]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <nav class="flex flex-col space-y-4 font-medium text-slate-700">
+
+                                    <a href="{{ route('home') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
+                                        Home
+                                    </a>
+
+                                    <a href="{{ route('category') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
+                                        Products
+                                    </a>
+
+                                    <a href="{{ route('reseller.partner') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
+                                        Reseller
+                                    </a>
+
+                                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Software</a>
+                                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Services</a>
+                                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Solutions</a>
+                                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Homeowner</a>
+                                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Support</a>
+                                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Company</a>
+
+                                    <div class="flex flex-col pt-4 space-y-4">
+                                        <a href="#" class="font-medium text-slate-700 hover:text-[#27ad4c]">Login</a>
+                                        <a href="#"
+                                            class="bg-[#27ad4c] text-white text-center font-bold py-2 px-4 rounded-md hover:bg-[#27ad4c]">
+                                            Get a Free Quotation
+                                        </a>
+                                    </div>
+
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -302,6 +361,8 @@
 
                 </nav>
             </div>
+
+
 
         </div>
     </div>
