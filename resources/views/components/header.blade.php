@@ -126,12 +126,200 @@
                                         Home
                                     </a>
 
-                                    <a href="{{ route('category') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
-                                        Products
-                                    </a>
+                                    <div x-data="{ open: false }">
+                                        <button @click="open = !open" class="flex items-center justify-between w-full pb-2 font-medium text-slate-700 hover:text-[#27ad4c]">
+                                            <span>Megamenu</span>
+                                            <svg class="w-4 h-4 transition-transform" :class="{'rotate-180': open}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        </button>
+                                        <div x-show="open" x-collapse class="pt-2 pl-4">
+                                            <div class="flex flex-col gap-2">
+                                                <!-- Accordion Item 1 -->
+                                                <div x-data="{ tabOpen: true }">
+                                                    <button @click="tabOpen = !tabOpen" class="flex items-center justify-between w-full py-2 text-sm font-semibold text-gray-800">
+                                                        <span>Tab 1</span>
+                                                        <svg :class="{'rotate-180': tabOpen}" class="w-4 h-4 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                        </svg>
+                                                    </button>
+                                                    <div x-show="tabOpen" x-collapse class="pt-2 pl-2 text-sm">
+                                                        
+                                                        <div class="flex flex-col gap-2 text-xs">
+                                                            <div class="pl-3" x-data="{ categoryOpen: false }">
+                                                                <button @click="categoryOpen = !categoryOpen" class="flex items-center justify-between w-full py-1 text-sm font-medium">
+                                                                    <span>Category 1</span>
+                                                                    <svg :class="{'rotate-180': categoryOpen}" class="w-3 h-3 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                                    </svg>
+                                                                </button>
+                                                                <div x-show="categoryOpen" x-collapse class="pl-3">
+                                                                    <ul class="py-1 space-y-1 font-normal">
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 1</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 2</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 3</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 4</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="pl-3" x-data="{ categoryOpen: false }">
+                                                                <button @click="categoryOpen = !categoryOpen" class="flex items-center justify-between w-full py-1 text-sm font-medium">
+                                                                    <span>Category 2</span>
+                                                                    <svg :class="{'rotate-180': categoryOpen}" class="w-3 h-3 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                                    </svg>
+                                                                </button>
+                                                                <div x-show="categoryOpen" x-collapse class="pl-3">
+                                                                    <ul class="py-1 space-y-1 font-normal">
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 5</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 6</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 7</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="pl-3" x-data="{ categoryOpen: false }">
+                                                                <button @click="categoryOpen = !categoryOpen" class="flex items-center justify-between w-full py-1 text-sm font-medium">
+                                                                    <span>Category 3</span>
+                                                                    <svg :class="{'rotate-180': categoryOpen}" class="w-3 h-3 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                                    </svg>
+                                                                </button>
+                                                                <div x-show="categoryOpen" x-collapse class="pl-3">
+                                                                    <ul class="py-1 space-y-1 font-normal">
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Accordion Item 2 -->
+                                                <div x-data="{ tabOpen: false }">
+                                                    <button @click="tabOpen = !tabOpen" class="flex items-center justify-between w-full py-2 text-sm font-semibold text-gray-800">
+                                                        <span>Tab 2</span>
+                                                        <svg :class="{'rotate-180': tabOpen}" class="w-4 h-4 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                        </svg>
+                                                    </button>
+                                                    <div x-show="tabOpen" x-collapse class="pt-2 pl-2 text-sm">
+                                                        <div class="flex flex-col gap-2 text-xs">
+                                                            <div class="pl-3" x-data="{ categoryOpen: false }">
+                                                                <button @click="categoryOpen = !categoryOpen" class="flex items-center justify-between w-full py-1 text-sm font-medium">
+                                                                    <span>Category 1</span>
+                                                                    <svg :class="{'rotate-180': categoryOpen}" class="w-3 h-3 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                                    </svg>
+                                                                </button>
+                                                                <div x-show="categoryOpen" x-collapse class="pl-3">
+                                                                    <ul class="py-1 space-y-1 font-normal">
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 1</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 2</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 3</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 4</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="pl-3" x-data="{ categoryOpen: false }">
+                                                                <button @click="categoryOpen = !categoryOpen" class="flex items-center justify-between w-full py-1 text-sm font-medium">
+                                                                    <span>Category 2</span>
+                                                                    <svg :class="{'rotate-180': categoryOpen}" class="w-3 h-3 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                                    </svg>
+                                                                </button>
+                                                                <div x-show="categoryOpen" x-collapse class="pl-3">
+                                                                    <ul class="py-1 space-y-1 font-normal">
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 5</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 6</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 7</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="pl-3" x-data="{ categoryOpen: false }">
+                                                                <button @click="categoryOpen = !categoryOpen" class="flex items-center justify-between w-full py-1 text-sm font-medium">
+                                                                    <span>Category 3</span>
+                                                                    <svg :class="{'rotate-180': categoryOpen}" class="w-3 h-3 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                                    </svg>
+                                                                </button>
+                                                                <div x-show="categoryOpen" x-collapse class="pl-3">
+                                                                    <ul class="py-1 space-y-1 font-normal">
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Accordion Item 3 -->
+                                                <div x-data="{ tabOpen: false }">
+                                                    <button @click="tabOpen = !tabOpen" class="flex items-center justify-between w-full py-2 text-sm font-semibold text-gray-800">
+                                                        <span>Tab 3</span>
+                                                        <svg :class="{'rotate-180': tabOpen}" class="w-4 h-4 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                        </svg>
+                                                    </button>
+                                                    <div x-show="tabOpen" x-collapse class="pt-2 pl-2 text-sm">
+                                                       <div class="flex flex-col gap-2 text-xs">
+                                                            <div class="pl-3" x-data="{ categoryOpen: false }">
+                                                                <button @click="categoryOpen = !categoryOpen" class="flex items-center justify-between w-full py-1 text-sm font-medium">
+                                                                    <span>Category 1</span>
+                                                                    <svg :class="{'rotate-180': categoryOpen}" class="w-3 h-3 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                                    </svg>
+                                                                </button>
+                                                                <div x-show="categoryOpen" x-collapse class="pl-3">
+                                                                    <ul class="py-1 space-y-1 font-normal">
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 1</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 2</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 3</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 4</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="pl-3" x-data="{ categoryOpen: false }">
+                                                                <button @click="categoryOpen = !categoryOpen" class="flex items-center justify-between w-full py-1 text-sm font-medium">
+                                                                    <span>Category 2</span>
+                                                                    <svg :class="{'rotate-180': categoryOpen}" class="w-3 h-3 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                                    </svg>
+                                                                </button>
+                                                                <div x-show="categoryOpen" x-collapse class="pl-3">
+                                                                    <ul class="py-1 space-y-1 font-normal">
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 5</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 6</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 7</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="pl-3" x-data="{ categoryOpen: false }">
+                                                                <button @click="categoryOpen = !categoryOpen" class="flex items-center justify-between w-full py-1 text-sm font-medium">
+                                                                    <span>Category 3</span>
+                                                                    <svg :class="{'rotate-180': categoryOpen}" class="w-3 h-3 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                                    </svg>
+                                                                </button>
+                                                                <div x-show="categoryOpen" x-collapse class="pl-3">
+                                                                    <ul class="py-1 space-y-1 font-normal">
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
+                                                                        <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <a href="{{ route('reseller.partner') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
                                         Reseller
+                                    </a>
+
+                                    <a href="{{ route('category') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
+                                        Product
                                     </a>
 
                                     <a href="#" class="pb-2 hover:text-[#27ad4c]">Software</a>
@@ -164,11 +352,15 @@
                         Home
                     </a>
 
+                    <a href="{{ route('category') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
+                        Product
+                    </a>
+
                     <!-- Products Menu Item with Mega Menu -->
                     <div class="group">
-                        <a href="{{ route('category') }}" wire:navigate
+                        <a href="#" wire:navigate
                             class="pb-2 hover:text-[#27ad4c] flex items-center">
-                            Products
+                            Megamenu
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -318,51 +510,6 @@
                     </a>
                 </nav>
             </div>
-
-            <!-- Mobile Navigation -->
-            <div class="hidden px-4 py-4 bg-white shadow-lg lg:hidden">
-
-                <div class="relative w-full mb-4 sm:hidden">
-                    <input type="text" placeholder="Search"
-                        class="border border-gray-400 py-1.5 px-3 w-full focus:outline-none focus:ring-1 focus:ring-[#27ad4c]" />
-                    <button class="absolute right-0 top-0 h-full px-2 text-white bg-[#27ad4c]">
-                        <!-- SearchIcon -->
-                    </button>
-                </div>
-
-                <nav class="flex flex-col space-y-4 font-medium text-slate-700">
-
-                    <a href="{{ route('home') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
-                        Home
-                    </a>
-
-                    <a href="{{ route('category') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
-                        Products
-                    </a>
-
-                    <a href="{{ route('reseller.partner') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
-                        Reseller
-                    </a>
-
-                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Software</a>
-                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Services</a>
-                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Solutions</a>
-                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Homeowner</a>
-                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Support</a>
-                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Company</a>
-
-                    <div class="flex flex-col pt-4 space-y-4">
-                        <a href="#" class="font-medium text-slate-700 hover:text-[#27ad4c]">Login</a>
-                        <a href="#"
-                            class="bg-[#27ad4c] text-white text-center font-bold py-2 px-4 rounded-md hover:bg-[#27ad4c]">
-                            Get a Free Quotation
-                        </a>
-                    </div>
-
-                </nav>
-            </div>
-
-
 
         </div>
     </div>
