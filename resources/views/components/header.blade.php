@@ -54,7 +54,7 @@
                 <div class="lg:w-[150px] md:w-[150px] w-[120px]">
                     <a href="{{ route('home') }}" wire:navigate>
                         @php
-                            $site_logo = getSetting('logo');
+                        $site_logo = getSetting('logo');
                         @endphp
                         <img src="{{ $site_logo ? asset('storage/' . $site_logo) : asset('assets/images/logo.svg') }}"
                             alt="Logo" class="h-[40px]" />
@@ -92,7 +92,7 @@
                 <!-- Mobile Menu Button -->
                 <div class="lg:hidden">
                     <button class="text-[#27ad4c]">
-                        <!-- MenuIcon -->
+                        <!-- MenuIcon -->MenuIcon
                     </button>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                         <!-- Mega Menu (full width) -->
                         <div
                             class="absolute left-0 right-0 top-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 bg-white shadow-lg border-t-2 border-[#27ad4c] z-50">
-                            <div class="container  px-4 py-8">
+                            <div class="  px-4 py-8">
                                 {{-- <div class="grid grid-cols-4 gap-8">
                                     <!-- Example Mega Menu Columns -->
                                     <div>
@@ -157,73 +157,96 @@
                                 <!-- Make sure to include Alpine.js in your layout, e.g. -->
                                 <!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
 
-                                <div class="flex flex-col md:flex-row gap-8" x-data="{ activeTab: 'tab2' }">
-    <!-- Tabs on the left -->
-    <div class="flex flex-col gap-2 w-full md:w-64">
-        <button
-            @click="activeTab = 'tab1'"
-            :class="{ 'tab-active': activeTab === 'tab1' }"
-            class="tab tab-bordered tab-lifted w-full text-left"
-            aria-label="Tab 1"
-        >
-            Tab 1
-        </button>
+                                <div class="flex flex-col md:flex-row gap-8 w-full" x-data="{ activeTab: 'tab2' }">
+                                    <!-- Tabs on the left -->
+                                    <div class="flex flex-col gap-2 w-64">
+                                        <button
+                                            @click="activeTab = 'tab1'"
+                                            :class="activeTab === 'tab1' ? 'bg-[#27ad4c] text-white' : 'text-gray-700 hover:bg-gray-100 hover:text-[#27ad4c]'"
+                                            class="block px-4 py-2 text-left rounded-md transition-colors duration-200"
+                                            aria-label="Tab 1">
+                                            Tab 1
+                                        </button>
 
-        <button
-            @click="activeTab = 'tab2'"
-            :class="{ 'tab-active': activeTab === 'tab2' }"
-            class="tab tab-bordered tab-lifted w-full text-left"
-            aria-label="Tab 2"
-        >
-            Tab 2
-        </button>
+                                        <button
+                                            @click="activeTab = 'tab2'"
+                                            :class="activeTab === 'tab2' ? 'bg-[#27ad4c] text-white' : 'text-gray-700 hover:bg-gray-100 hover:text-[#27ad4c]'"
+                                            class="block px-4 py-2 text-left rounded-md transition-colors duration-200"
+                                            aria-label="Tab 2">
+                                            Tab 2
+                                        </button>
 
-        <button
-            @click="activeTab = 'tab3'"
-            :class="{ 'tab-active': activeTab === 'tab3' }"
-            class="tab tab-bordered tab-lifted w-full text-left"
-            aria-label="Tab 3"
-        >
-            Tab 3
-        </button>
-    </div>
+                                        <button
+                                            @click="activeTab = 'tab3'"
+                                            :class="activeTab === 'tab3' ? 'bg-[#27ad4c] text-white' : 'text-gray-700 hover:bg-gray-100 hover:text-[#27ad4c]'"
+                                            class="block px-4 py-2 text-left rounded-md transition-colors duration-200"
+                                            aria-label="Tab 3">
+                                            Tab 3
+                                        </button>
+                                    </div>
 
-    <!-- Content on the right - with fixed height behavior -->
-    <div class="grow mt-6 md:mt-0 min-h-96 md:min-h-screen-lg relative">
-        <!-- Wrapper with relative positioning and min-height -->
-        <div class="absolute inset-0 overflow-y-auto">
-            <!-- All tab panels are absolutely positioned in the same space -->
-            <div
-                x-show="activeTab === 'tab1'"
-                x-transition.opacity
-                class="absolute inset-0 prose max-w-none border border-base-300 bg-base-100 rounded-box p-10"
-            >
-                <h2 class="text-2xl font-bold mb-4">Tab 1</h2>
-                <p>Tab content 1</p>
-                <!-- Add more content here if needed -->
-            </div>
+                                    <!-- Content on the right - with fixed height behavior -->
+                                    <div class="mt-6 md:mt-0 min-h-96 md:min-h-screen-lg relative w-full">
+                                        <!-- Wrapper with relative positioning and min-height -->
+                                        <div class="absolute inset-0 overflow-y-auto">
+                                            <!-- All tab panels are absolutely positioned in the same space -->
+                                            <div
+                                                x-show="activeTab === 'tab1'"
+                                                x-transition.opacity
+                                                class="absolute inset-0 prose w-full border border-base-300 bg-base-100 rounded-box p-4 overflow-y-auto">
 
-            <div
-                x-show="activeTab === 'tab2'"
-                x-transition.opacity
-                class="absolute inset-0 prose max-w-none border border-base-300 bg-base-100 rounded-box p-10"
-            >
-                <h2 class="text-2xl font-bold mb-4">Tab 2</h2>
-                <p>Tab content 2<br><br>This tab has more lines to make it taller.</p>
-                <p>Extra content...</p>
-            </div>
 
-            <div
-                x-show="activeTab === 'tab3'"
-                x-transition.opacity
-                class="absolute inset-0 prose max-w-none border border-base-300 bg-base-100 rounded-box p-10"
-            >
-                <h2 class="text-2xl font-bold mb-4">Tab 3</h2>
-                <p>Tab content 3 – short again.</p>
-            </div>
-        </div>
-    </div>
-</div>
+                                                <h2 class="text-2xl font-bold mb-4">EcoStruxure Building</h2>
+                                                <p class="mb-4 font-light">Connecting your values to more valuable experiences, EcoStruxure Building is our end-to-end software designed to create positive outcomes and engaging experiences for buildings of all sizes.</p>
+                                                <!-- Add more content here if needed -->
+                                                <div class="grid grid-cols-4 gap-3">
+                                                    <!-- Example Mega Menu Columns -->
+                                                    <div>
+                                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 1</h3>
+                                                        <ul class="space-y-1 font-normal">
+                                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 1</a></li>
+                                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 2</a></li>
+                                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 3</a></li>
+                                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 4</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div>
+                                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 2</h3>
+                                                        <ul class="space-y-1 font-normal">
+                                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 5</a></li>
+                                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 6</a></li>
+                                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 7</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div>
+                                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 3</h3>
+                                                        <ul class="space-y-1 font-normal">
+                                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
+                                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                x-show="activeTab === 'tab2'"
+                                                x-transition.opacity
+                                                class="absolute inset-0 prose w-full border border-base-300 bg-base-100 rounded-box p-4 overflow-y-auto">
+                                                <h2 class="text-2xl font-bold mb-4">Tab 2</h2>
+                                                <p>Tab content 2<br><br>This tab has more lines to make it taller.</p>
+                                                <p>Extra content...</p>
+                                            </div>
+
+                                            <div
+                                                x-show="activeTab === 'tab3'"
+                                                x-transition.opacity
+                                                class="absolute inset-0 prose w-full border border-base-300 bg-base-100 rounded-box p-4 overflow-y-auto">
+                                                <h2 class="text-2xl font-bold mb-4">Tab 3</h2>
+                                                <p>Tab content 3 – short again.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,7 @@
     <x-breadcrumb />
 
     <div class="container lg:max-w-[1780px] mx-auto px-4">
-        <div class="py-12">
+        <div class="lg:py-12">
             <div class="flex flex-col items-center gap-8 md:flex-row">
 
                 <!-- Left Content -->
