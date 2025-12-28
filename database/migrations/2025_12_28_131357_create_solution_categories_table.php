@@ -11,13 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('service_categories', function (Blueprint $table) {
+        Schema::create('solution_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('short_description')->nullable();
             $table->boolean('published')->default(false);
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->string('image')->nullable();
+            $table->string('benefit_image')->nullable();
+            $table->string('feature_image')->nullable();
+            $table->json('links')->nullable();
+            $table->json('industries')->nullable();
+            $table->json('features')->nullable();
+            $table->json('benefits')->nullable();
+            $table->json('related_services')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('service_categories');
+        Schema::dropIfExists('solution_categories');
     }
 };

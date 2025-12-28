@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class ServiceCategory extends Model
+class SolutionCategory extends Model
 {
     protected $guarded = ['id'];
 
@@ -15,7 +15,7 @@ class ServiceCategory extends Model
         'industries'       => 'array',
         'features'         => 'array',
         'benefits'         => 'array',
-        'related_services' => 'array',   // Important: cast to array
+        'related_services' => 'array',
         'published'        => 'boolean',
     ];
 
@@ -24,15 +24,14 @@ class ServiceCategory extends Model
         $query->where('published', true);
     }
 
-    // Optional: relationship for related services
-    public function relatedServices()
+    public function relatedServices(): BelongsToMany
     {
-        return $this->belongsToMany(ServiceCategory::class, null, 'id', 'id')
+        return $this->belongsToMany(SolutionCategory::class, null, 'id', 'id')
             ->whereIn('id', $this->related_services ?? []);
     }
 
-    public function services(): BelongsToMany
+    public function solutions(): BelongsToMany
     {
-        return $this->belongsToMany(Service::class);
+        return $this->belongsToMany(Solution::class);
     }
 }

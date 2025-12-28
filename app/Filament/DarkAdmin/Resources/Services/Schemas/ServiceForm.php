@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Filament\DarkAdmin\Resources\ServiceCategories\Schemas;
+namespace App\Filament\DarkAdmin\Resources\Services\Schemas;
 
+use App\Models\Service;
 use App\Models\ServiceCategory;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
@@ -13,7 +14,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
-class ServiceCategoryForm
+class ServiceForm
 {
     public static function configure(Schema $schema): Schema
     {
@@ -37,19 +38,96 @@ class ServiceCategoryForm
 
                         Toggle::make('published')
                             ->default(true),
+                        FileUpload::make('image')
+                            ->image()
+                            ->imageEditor()
+                            ->disk('public')
+                            ->directory('services')
+                            ->preserveFilenames(),
                         Textarea::make('short_description')
                             ->required()
                             ->rows(3)->columnSpan(1),
-                        Select::make('parent_id')
-                            ->label('Parent Category')
-                            ->options(ServiceCategory::query()
-                                ->where('published', true)
-                                ->orderBy('title')
-                                ->pluck('title', 'id'))
-                            ->searchable()
-                            ->placeholder('Select Parent Category')
+
+                        RichEditor::make('full_description')
                             ->columnSpan(1),
+                        Select::make('Service Categories')
+                            ->relationship('categories', 'title')
+                            ->multiple()
+                            ->preload()
+                            ->searchable()
+                            ->label('Assign Categories'),
+                        Repeater::make('links')
+                            ->schema([
+                                TextInput::make('label')->required(),
+                                TextInput::make('url')
+                                    ->url()
+                                    ->required(),
+                            ])
+                            ->columns(2)->columnSpanFull()
+                            ->collapsible(),
                     ])->columns(2)->columnSpanFull(),
+
+                Section::make('Industries & Benefits')
+                    ->schema([
+                        Repeater::make('industries')
+                            ->schema([
+                                TextInput::make('name')->label('Industry'),
+                            ])
+
+                            ->collapsible(),
+                        Repeater::make('benefits')
+                            ->label('Benefits List')
+                            ->schema([
+                                TextInput::make('title')->required(),
+                                Textarea::make('description')->required(),
+                            ])
+                            ->columns(2)
+                            ->collapsible(),
+
+                        FileUpload::make('feature_image')
+                            ->image()
+                            ->imageEditor()
+                            ->disk('public')
+                            ->directory('services')
+                            ->preserveFilenames(),
+
+                        FileUpload::make('benefit_image')
+                            ->image()
+                            ->imageEditor()
+                            ->disk('public')
+                            ->directory('services')
+                            ->preserveFilenames(),
+                    ])->columns(2)->columnSpanFull(),
+
+                Section::make('Features')
+                    ->schema([
+                        Repeater::make('features')
+                            ->label('Features List')
+                            ->schema([
+                                TextInput::make('title')->required(),
+                                Textarea::make('description')->required(),
+                            ])
+                            ->columns(2)
+                            ->collapsible(),
+                    ]),
+
+                Section::make('Related Services')
+                    ->schema([
+                        Select::make('related_services')
+                            ->multiple()
+                            ->label('Related Services')
+                            ->options(
+                                // Load all published services as title => id
+                                Service::published()->pluck('title', 'id')->toArray()
+                            )
+                            ->searchable(['title']) // Search by title
+                            ->preload()             // Load options immediately (good if <100 services)
+                            ->placeholder('Select related services...')
+                            ->helperText('These will appear in the "Related Products And Services" section on the public page.')
+                            ->columnSpanFull()
+                            ->dehydrated(fn($state) => !empty($state)) // Only save if not empty
+                            ->default([]), // Ensure it's always an array
+                    ]),
             ]);
     }
 
