@@ -18,14 +18,6 @@ return new class extends Migration
             $table->text('short_description')->nullable();
             $table->boolean('published')->default(false);
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->string('image')->nullable();
-            $table->string('benefit_image')->nullable();
-            $table->string('feature_image')->nullable();
-            $table->json('links')->nullable();
-            $table->json('industries')->nullable();
-            $table->json('features')->nullable();
-            $table->json('benefits')->nullable();
-            $table->json('related_services')->nullable();
             $table->timestamps();
         });
     }

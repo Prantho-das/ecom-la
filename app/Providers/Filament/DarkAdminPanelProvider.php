@@ -27,7 +27,8 @@ use Filament\Navigation\NavigationItem;
 class DarkAdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
-    {$site_logo = getSetting('logo',null);
+    {
+        $site_logo = getSetting('logo', null);
         return $panel
             ->id('dark-admin')
             ->path('dark-admin')
@@ -64,11 +65,11 @@ class DarkAdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/DarkAdmin/Pages'), for: 'App\Filament\DarkAdmin\Pages')
             ->pages([
                 Dashboard::class,
-            SiteSettings::class,
+                SiteSettings::class,
             ])
             ->discoverWidgets(in: app_path('Filament/DarkAdmin/Widgets'), for: 'App\Filament\DarkAdmin\Widgets')
             ->widgets([
-StatsOverview::class
+                StatsOverview::class
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -85,5 +86,4 @@ StatsOverview::class
                 Authenticate::class,
             ]);
     }
-
 }

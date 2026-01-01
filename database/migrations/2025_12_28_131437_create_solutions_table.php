@@ -13,19 +13,20 @@ return new class extends Migration
     {
         Schema::create('solutions', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->text('short_description');
-            $table->longText('full_description')->nullable();
-            $table->string('image')->nullable();
-            $table->string('feature_image')->nullable();
-            $table->string('benefit_image')->nullable();
-            $table->json('links')->nullable();
-            $table->json('industries')->nullable();
-            $table->json('features')->nullable();
-            $table->json('benefits')->nullable();
-            $table->json('related_solutions')->nullable();
-            $table->boolean('published')->default(true);
+            $table->string('page_slug')->default('vertiv-home')->unique();
+
+            // ========= FIXED CONTENT (regular columns) =========
+            $table->string('hero_title');
+            $table->text('hero_subtitle');
+            $table->string('hero_background_image')->nullable();
+            $table->text('features_heading')->nullable();
+            $table->string('trends_heading')->default("What's changing in logistics infrastructure"); // Fixed header for trends
+            $table->string('faqs_heading')->default("FAQs");        // Fixed header for FAQs
+            $table->json('features_grid_section')->nullable();  // 3 feature cards only (no heading)
+            $table->json('trends_items_section')->nullable();   // Only the 3 trend items (icon, title, description)
+            $table->json('cta_image_section')->nullable();      // Full CTA section
+            $table->json('faqs_items_section')->nullable();     // Only FAQ items (question + answer)
+
             $table->timestamps();
         });
     }

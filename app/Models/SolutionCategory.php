@@ -10,13 +10,12 @@ class SolutionCategory extends Model
 {
     protected $guarded = ['id'];
 
-    protected $casts = [
-        'links'            => 'array',
-        'industries'       => 'array',
-        'features'         => 'array',
-        'benefits'         => 'array',
-        'related_services' => 'array',
-        'published'        => 'boolean',
+    protected $fillable = [
+        'title',
+        'slug',
+        'short_description',
+        'published',
+        'parent_id',
     ];
 
     public function scopePublished(Builder $query): void
