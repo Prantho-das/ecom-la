@@ -374,7 +374,7 @@
 
                                             @foreach($serviceCategories as $servicCategory)
                                             <div x-show="activeTab === '{{$servicCategory->slug}}'" x-transition.opacity
-                                                class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300 bg-base-100 rounded-box">
+                                                class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300  rounded-box">
 
 
                                                 <h2 class="mb-4 text-2xl font-bold">{{$servicCategory->title}}</h2>
@@ -483,7 +483,7 @@
 
                                             @foreach($solutionCategories as $solutionCategory)
                                             <div x-show="activeTab === '{{$solutionCategory->slug}}'" x-transition.opacity
-                                                class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300 bg-base-100 rounded-box">
+                                                class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300  rounded-box">
 
 
                                                 <h2 class="mb-4 text-2xl font-bold">{{$solutionCategory->title}}</h2>
