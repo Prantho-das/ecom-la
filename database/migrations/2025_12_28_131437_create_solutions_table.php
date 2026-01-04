@@ -28,7 +28,7 @@ return new class extends Migration
 
             // ==================== DYNAMIC REPEATABLE CONTENT ====================
             $table->json('sections'); // Only FAQs (fully repeatable)
-
+            $table->boolean('published')->default(false);
             $table->timestamps();
         });
     }
