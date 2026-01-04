@@ -38,6 +38,11 @@
                         </div>
                     </div>
                 @endforeach
+                @if(count($serviceCategories) === 0)
+                <div class="p-4 text-center text-gray-500">
+                    No solution categories available at the moment.
+                </div>
+                @endif
             </div>
         </div>
     </div>

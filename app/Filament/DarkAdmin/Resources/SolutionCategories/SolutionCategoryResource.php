@@ -10,6 +10,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
@@ -41,19 +42,18 @@ class SolutionCategoryResource extends Resource
                     ->columnSpanFull(),
                 Toggle::make('published')
                     ->required(),
-                TextInput::make('parent_id')
-                    ->numeric(),
+                Select::make('parent_id')
+                    ->relationship('parent', 'title'),
                 FileUpload::make('image')
-                    ->image(),
-                FileUpload::make('benefit_image')
-                    ->image(),
-                FileUpload::make('feature_image')
-                    ->image(),
-                TextInput::make('links'),
-                TextInput::make('industries'),
-                TextInput::make('features'),
-                TextInput::make('benefits'),
-                TextInput::make('related_services'),
+                    ->required()
+                    ->preserveFilenames()
+                    ->disk('public')
+                    ->acceptedFileTypes(['image/*'])
+                    ->maxFiles(1)
+                    ->enableOpen()
+                    ->label('Solution Category Image')
+                    ->hint('Upload a representative image for the solution category.')
+
             ]);
     }
 
@@ -68,20 +68,8 @@ class SolutionCategoryResource extends Resource
                     ->searchable(),
                 IconColumn::make('published')
                     ->boolean(),
-                TextColumn::make('parent_id')
-                    ->numeric()
-                    ->sortable(),
-                ImageColumn::make('image'),
-                ImageColumn::make('benefit_image'),
-                ImageColumn::make('feature_image'),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('parent.title')
+
             ])
             ->filters([
                 //

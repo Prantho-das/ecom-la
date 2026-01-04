@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('short_description')->nullable();
             $table->boolean('published')->default(false);
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->string('image')->nullable(); // e.g., stored via FileUpload
             $table->timestamps();
         });
     }

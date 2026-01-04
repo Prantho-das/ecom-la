@@ -26,10 +26,10 @@ class Solution extends Model
      * The attributes that should be cast.
      */
     protected $casts = [
-        'feature_cards_section' => 'array',  // Array of 3 feature cards
-        'trends_section'        => 'array',  // Full trends section with title, video, items
-        'cta_section'           => 'array',  // Full CTA section with title, description, button, image
-        'sections'              => 'array',  // Remaining dynamic sections (currently only FAQs)
+        'feature_cards_section' => 'array',
+        'trends_section'        => 'array',
+        'cta_section'           => 'array',
+        'sections'              => 'array',
     ];
 
     /**
@@ -46,9 +46,13 @@ class Solution extends Model
     public function getFaqsAttribute()
     {
         foreach ($this->sections ?? [] as $section) {
-            if ($section['type'] === 'faqs') {
-                return $section['data'];
-            }
+            $data = $section['data'] ?? ['items' => []];
+
+            // Ensure we always have the expected structure with title and items
+            return [
+                'title' => $data['title'] ?? 'FAQs',
+                'items' => $data['items'] ?? [],
+            ];
         }
         return ['title' => 'FAQs', 'items' => []];
     }

@@ -16,6 +16,7 @@ class SolutionCategory extends Model
         'short_description',
         'published',
         'parent_id',
+        'image'
     ];
 
     public function scopePublished(Builder $query): void
@@ -29,8 +30,9 @@ class SolutionCategory extends Model
             ->whereIn('id', $this->related_services ?? []);
     }
 
-    public function solutions(): BelongsToMany
+    public function parent()
     {
-        return $this->belongsToMany(Solution::class);
+        return $this->belongsTo(SolutionCategory::class, 'parent_id');
     }
+
 }

@@ -7,6 +7,8 @@ use App\Livewire\Frontend\Home;
 use App\Livewire\Frontend\ResellerPartner;
 use App\Livewire\Frontend\ServiceCategoryIndex;
 use App\Livewire\Frontend\ServiceCategoryShow;
+use App\Livewire\SolutionCategory;
+use App\Livewire\SolutionShow;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +57,10 @@ Route::get('/', Home::class)->name('home');
 // SERVICES
 Route::get('/services', ServiceCategoryIndex::class)->name('services.index');
 Route::get('/services/{slug}', ServiceCategoryShow::class)->name('services.show');
+
+Route::get('/solutions', SolutionCategory::class)->name('solutions.index');
+Route::get('/solutions/{slug}', SolutionShow::class)->name('solutions.show');
+
 
 // CATEGORY
 Route::get('/category/{category_slug?}', Category::class)->name('category');
