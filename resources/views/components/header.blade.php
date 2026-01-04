@@ -367,7 +367,7 @@
                                     </div>
 
                                     <!-- Content on the right - with fixed height behavior -->
-                                    <div class="relative w-full mt-6 md:mt-0 min-h-96 md:min-h-screen-lg">
+                                    <div class="relative w-full mt-6 md:mt-0 min-h-96 md:min-h-screen-lg bg-white">
                                         <!-- Wrapper with relative positioning and min-height -->
                                         <div class="absolute inset-0 overflow-y-auto">
                                             <!-- All tab panels are absolutely positioned in the same space -->
@@ -476,7 +476,7 @@
                                     </div>
 
                                     <!-- Content on the right - with fixed height behavior -->
-                                    <div class="relative w-full mt-6 md:mt-0 min-h-96 md:min-h-screen-lg">
+                                    <div class="relative w-full mt-6 md:mt-0 min-h-96 md:min-h-screen-lg bg-white">
                                         <!-- Wrapper with relative positioning and min-height -->
                                         <div class="absolute inset-0 overflow-y-auto">
                                             <!-- All tab panels are absolutely positioned in the same space -->
