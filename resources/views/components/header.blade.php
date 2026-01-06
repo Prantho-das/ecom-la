@@ -10,7 +10,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
-
                         <span>Mon – Fri 8:00 – 18:00 / Sunday 8:00 – 14:00</span>
                     </div>
 
@@ -50,14 +49,14 @@
         <div class="container lg:max-w-[1780px] mx-auto px-4">
             <div class="flex items-center justify-between py-3 md:py-6">
                 @php
-                $serviceCategories=\App\Models\ServiceCategory::where('published',1)->get();
-                $solutionCategories=\App\Models\SolutionCategory::all();
+                    $serviceCategories = \App\Models\ServiceCategory::where('published', 1)->get();
+                    $solutionCategories = \App\Models\SolutionCategory::all();
                 @endphp
                 <!-- Logo -->
                 <div class="lg:w-[150px] md:w-[150px] w-[120px]">
                     <a href="{{ route('home') }}" wire:navigate>
                         @php
-                        $site_logo = getSetting('logo');
+                            $site_logo = getSetting('logo');
                         @endphp
                         <img src="{{ $site_logo ? asset('storage/' . $site_logo) : asset('assets/images/logo.svg') }}"
                             alt="Logo" class="h-[40px]" />
@@ -73,8 +72,8 @@
                             class="border border-gray-400 py-1.5 px-3 w-full focus:outline-none focus:ring-1 focus:ring-[#27ad4c]" />
                         <button class="absolute right-0 top-0 h-full px-2 text-white bg-[#27ad4c]">
                             <!-- SearchIcon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                             </svg>
@@ -135,7 +134,7 @@
                                         <button @click="open = !open"
                                             class="flex items-center justify-between w-full pb-2 font-medium text-slate-700 hover:text-[#27ad4c]">
                                             <span>Services</span>
-                                            <svg class="w-4 h-4 transition-transform" :class="{'rotate-180': open}"
+                                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }"
                                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -146,110 +145,113 @@
                                             <div class="flex flex-col gap-2">
                                                 <!-- Accordion Item 1 -->
 
-                                                @foreach($serviceCategories as $servicCategory)
-                                                <div x-data="{ tabOpen: true }">
-                                                    <button @click="tabOpen = !tabOpen"
-                                                        class="flex items-center justify-between w-full py-2 text-sm font-semibold text-gray-800">
-                                                        <span>Tab 1</span>
-                                                        <svg :class="{'rotate-180': tabOpen}"
-                                                            class="w-4 h-4 transition-transform"
-                                                            xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke-width="1.5"
-                                                            stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                                        </svg>
-                                                    </button>
-                                                    <div x-show="tabOpen" x-collapse class="pt-2 pl-2 text-sm">
+                                                @foreach ($serviceCategories as $servicCategory)
+                                                    <div x-data="{ tabOpen: true }">
+                                                        <button @click="tabOpen = !tabOpen"
+                                                            class="flex items-center justify-between w-full py-2 text-sm font-semibold text-gray-800">
+                                                            <span>Tab 1</span>
+                                                            <svg :class="{ 'rotate-180': tabOpen }"
+                                                                class="w-4 h-4 transition-transform"
+                                                                xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                            </svg>
+                                                        </button>
+                                                        <div x-show="tabOpen" x-collapse class="pt-2 pl-2 text-sm">
 
-                                                        <div class="flex flex-col gap-2 text-xs">
-                                                            <div class="pl-3" x-data="{ categoryOpen: false }">
-                                                                <button @click="categoryOpen = !categoryOpen"
-                                                                    class="flex items-center justify-between w-full py-1 text-sm font-medium">
-                                                                    <span>Category 1</span>
-                                                                    <svg :class="{'rotate-180': categoryOpen}"
-                                                                        class="w-3 h-3 transition-transform"
-                                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                        viewBox="0 0 24 24" stroke-width="1.5"
-                                                                        stroke="currentColor">
-                                                                        <path stroke-linecap="round"
-                                                                            stroke-linejoin="round"
-                                                                            d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                                                    </svg>
-                                                                </button>
-                                                                <div x-show="categoryOpen" x-collapse class="pl-3">
-                                                                    <ul class="py-1 space-y-1 font-normal">
-                                                                        <li><a href="#"
-                                                                                class="hover:text-[#27ad4c]">Product
-                                                                                Item 1</a></li>
-                                                                        <li><a href="#"
-                                                                                class="hover:text-[#27ad4c]">Product
-                                                                                Item 2</a></li>
-                                                                        <li><a href="#"
-                                                                                class="hover:text-[#27ad4c]">Product
-                                                                                Item 3</a></li>
-                                                                        <li><a href="#"
-                                                                                class="hover:text-[#27ad4c]">Product
-                                                                                Item 4</a></li>
-                                                                    </ul>
+                                                            <div class="flex flex-col gap-2 text-xs">
+                                                                <div class="pl-3" x-data="{ categoryOpen: false }">
+                                                                    <button @click="categoryOpen = !categoryOpen"
+                                                                        class="flex items-center justify-between w-full py-1 text-sm font-medium">
+                                                                        <span>Category 1</span>
+                                                                        <svg :class="{ 'rotate-180': categoryOpen }"
+                                                                            class="w-3 h-3 transition-transform"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            fill="none" viewBox="0 0 24 24"
+                                                                            stroke-width="1.5" stroke="currentColor">
+                                                                            <path stroke-linecap="round"
+                                                                                stroke-linejoin="round"
+                                                                                d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                                        </svg>
+                                                                    </button>
+                                                                    <div x-show="categoryOpen" x-collapse
+                                                                        class="pl-3">
+                                                                        <ul class="py-1 space-y-1 font-normal">
+                                                                            <li><a href="#"
+                                                                                    class="hover:text-[#27ad4c]">Product
+                                                                                    Item 1</a></li>
+                                                                            <li><a href="#"
+                                                                                    class="hover:text-[#27ad4c]">Product
+                                                                                    Item 2</a></li>
+                                                                            <li><a href="#"
+                                                                                    class="hover:text-[#27ad4c]">Product
+                                                                                    Item 3</a></li>
+                                                                            <li><a href="#"
+                                                                                    class="hover:text-[#27ad4c]">Product
+                                                                                    Item 4</a></li>
+                                                                        </ul>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="pl-3" x-data="{ categoryOpen: false }">
-                                                                <button @click="categoryOpen = !categoryOpen"
-                                                                    class="flex items-center justify-between w-full py-1 text-sm font-medium">
-                                                                    <span>Category 2</span>
-                                                                    <svg :class="{'rotate-180': categoryOpen}"
-                                                                        class="w-3 h-3 transition-transform"
-                                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                        viewBox="0 0 24 24" stroke-width="1.5"
-                                                                        stroke="currentColor">
-                                                                        <path stroke-linecap="round"
-                                                                            stroke-linejoin="round"
-                                                                            d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                                                    </svg>
-                                                                </button>
-                                                                <div x-show="categoryOpen" x-collapse class="pl-3">
-                                                                    <ul class="py-1 space-y-1 font-normal">
-                                                                        <li><a href="#"
-                                                                                class="hover:text-[#27ad4c]">Product
-                                                                                Item 5</a></li>
-                                                                        <li><a href="#"
-                                                                                class="hover:text-[#27ad4c]">Product
-                                                                                Item 6</a></li>
-                                                                        <li><a href="#"
-                                                                                class="hover:text-[#27ad4c]">Product
-                                                                                Item 7</a></li>
-                                                                    </ul>
+                                                                <div class="pl-3" x-data="{ categoryOpen: false }">
+                                                                    <button @click="categoryOpen = !categoryOpen"
+                                                                        class="flex items-center justify-between w-full py-1 text-sm font-medium">
+                                                                        <span>Category 2</span>
+                                                                        <svg :class="{ 'rotate-180': categoryOpen }"
+                                                                            class="w-3 h-3 transition-transform"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            fill="none" viewBox="0 0 24 24"
+                                                                            stroke-width="1.5" stroke="currentColor">
+                                                                            <path stroke-linecap="round"
+                                                                                stroke-linejoin="round"
+                                                                                d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                                        </svg>
+                                                                    </button>
+                                                                    <div x-show="categoryOpen" x-collapse
+                                                                        class="pl-3">
+                                                                        <ul class="py-1 space-y-1 font-normal">
+                                                                            <li><a href="#"
+                                                                                    class="hover:text-[#27ad4c]">Product
+                                                                                    Item 5</a></li>
+                                                                            <li><a href="#"
+                                                                                    class="hover:text-[#27ad4c]">Product
+                                                                                    Item 6</a></li>
+                                                                            <li><a href="#"
+                                                                                    class="hover:text-[#27ad4c]">Product
+                                                                                    Item 7</a></li>
+                                                                        </ul>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="pl-3" x-data="{ categoryOpen: false }">
-                                                                <button @click="categoryOpen = !categoryOpen"
-                                                                    class="flex items-center justify-between w-full py-1 text-sm font-medium">
-                                                                    <span>Category 3</span>
-                                                                    <svg :class="{'rotate-180': categoryOpen}"
-                                                                        class="w-3 h-3 transition-transform"
-                                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                        viewBox="0 0 24 24" stroke-width="1.5"
-                                                                        stroke="currentColor">
-                                                                        <path stroke-linecap="round"
-                                                                            stroke-linejoin="round"
-                                                                            d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                                                    </svg>
-                                                                </button>
-                                                                <div x-show="categoryOpen" x-collapse class="pl-3">
-                                                                    <ul class="py-1 space-y-1 font-normal">
-                                                                        <li><a href="#"
-                                                                                class="hover:text-[#27ad4c]">Product
-                                                                                Item 8</a></li>
-                                                                        <li><a href="#"
-                                                                                class="hover:text-[#27ad4c]">Product
-                                                                                Item 9</a></li>
-                                                                    </ul>
+                                                                <div class="pl-3" x-data="{ categoryOpen: false }">
+                                                                    <button @click="categoryOpen = !categoryOpen"
+                                                                        class="flex items-center justify-between w-full py-1 text-sm font-medium">
+                                                                        <span>Category 3</span>
+                                                                        <svg :class="{ 'rotate-180': categoryOpen }"
+                                                                            class="w-3 h-3 transition-transform"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            fill="none" viewBox="0 0 24 24"
+                                                                            stroke-width="1.5" stroke="currentColor">
+                                                                            <path stroke-linecap="round"
+                                                                                stroke-linejoin="round"
+                                                                                d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                                        </svg>
+                                                                    </button>
+                                                                    <div x-show="categoryOpen" x-collapse
+                                                                        class="pl-3">
+                                                                        <ul class="py-1 space-y-1 font-normal">
+                                                                            <li><a href="#"
+                                                                                    class="hover:text-[#27ad4c]">Product
+                                                                                    Item 8</a></li>
+                                                                            <li><a href="#"
+                                                                                    class="hover:text-[#27ad4c]">Product
+                                                                                    Item 9</a></li>
+                                                                        </ul>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
                                                 @endforeach
 
                                             </div>
@@ -273,7 +275,8 @@
                                     <a href="#" class="pb-2 hover:text-[#27ad4c]">Company</a>
 
                                     <div class="flex flex-col pt-4 space-y-4">
-                                        <a href="#" class="font-medium text-slate-700 hover:text-[#27ad4c]">Login</a>
+                                        <a href="#"
+                                            class="font-medium text-slate-700 hover:text-[#27ad4c]">Login</a>
                                         <a href="#"
                                             class="bg-[#27ad4c] text-white text-center font-bold py-2 px-4 rounded-md hover:bg-[#27ad4c]">
                                             Get a Free Quotation
@@ -301,11 +304,13 @@
 
                     <!-- Products Menu Item with Mega Menu -->
                     <div class="group">
-                        <a href="{{url('/services')}}" wire:navigate class="pb-2 hover:text-[#27ad4c] flex items-center">
+                        <a href="{{ url('/services') }}" wire:navigate
+                            class="pb-2 hover:text-[#27ad4c] flex items-center">
                             Services
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-4 h-4 ml-1">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
                         </a>
 
@@ -351,16 +356,18 @@
                                 <!-- Make sure to include Alpine.js in your layout, e.g. -->
                                 <!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
 
-                                <div class="flex flex-col w-full gap-8 md:flex-row" x-data="{ activeTab: 'tab2' }">
+                                <div class="hidden flex flex-col w-full gap-8 md:flex-row " x-data="{ activeTab: 'tab2' }">
                                     <!-- Tabs on the left -->
                                     <div class="flex flex-col w-64 gap-2">
-                                        @foreach($serviceCategories as $servicCategory)
-                                        <button @click="activeTab = '{{$servicCategory->slug}}'"
-                                            :class="activeTab === '{{$servicCategory->slug}}' ? 'bg-[#27ad4c] text-white' : 'text-gray-700 hover:bg-gray-100 hover:text-[#27ad4c]'"
-                                            class="block px-4 py-2 text-left transition-colors duration-200 rounded-md"
-                                            aria-label="Tab 1">
-                                            {{$servicCategory->title}}
-                                        </button>
+                                        @foreach ($serviceCategories as $servicCategory)
+                                            <button @click="activeTab = '{{ $servicCategory->slug }}'"
+                                                :class="activeTab === '{{ $servicCategory->slug }}' ?
+                                                    'bg-[#27ad4c] text-white' :
+                                                    'text-gray-700 hover:bg-gray-100 hover:text-[#27ad4c]'"
+                                                class="block px-4 py-2 text-left transition-colors duration-200 rounded-md"
+                                                aria-label="Tab 1">
+                                                {{ $servicCategory->title }}
+                                            </button>
                                         @endforeach
 
 
@@ -372,50 +379,106 @@
                                         <div class="absolute inset-0 overflow-y-auto">
                                             <!-- All tab panels are absolutely positioned in the same space -->
 
-                                            @foreach($serviceCategories as $servicCategory)
-                                            <div x-show="activeTab === '{{$servicCategory->slug}}'" x-transition.opacity
-                                                class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300 bg-base-100 rounded-box">
+                                            @foreach ($serviceCategories as $servicCategory)
+                                                <div x-show="activeTab === '{{ $servicCategory->slug }}'"
+                                                    x-transition.opacity
+                                                    class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300 bg-base-100 rounded-box">
 
 
-                                                <h2 class="mb-4 text-2xl font-bold">{{$servicCategory->title}}</h2>
-                                                <p class="mb-4 font-light">{{$servicCategory->short_description}}</p>
-                                                <!-- Add more content here if needed -->
-                                                <div class="grid grid-cols-4 gap-3">
-                                                    <!-- Example Mega Menu Columns -->
-                                                    <div>
-                                                        @php
-                                                        $searvices=\App\Models\Service::where('published', true)
-                                                        ->whereHas('categories', function ($q) use ($servicCategory) {
-                                                        $q->where('service_service_category.service_category_id',
-                                                        $servicCategory->id);
-                                                        })->get();
-                                                        @endphp
-                                                        <ul class="space-y-1 font-normal">
-                                                            @foreach($searvices as $service)
-                                                            <li><a href="{{ route('services.show', $service->slug) }}"
-                                                                    wire:navigate
-                                                                    class="hover:text-[#27ad4c]">{{$service->title}}</a>
-                                                            </li>
-                                                            @endforeach
-                                                        </ul>
+                                                    <h2 class="mb-4 text-2xl font-bold">{{ $servicCategory->title }}
+                                                    </h2>
+                                                    <p class="mb-4 font-light">
+                                                        {{ $servicCategory->short_description }}</p>
+                                                    <!-- Add more content here if needed -->
+                                                    <div class="grid grid-cols-4 gap-3">
+                                                        <!-- Example Mega Menu Columns -->
+                                                        <div>
+                                                            @php
+                                                                $searvices = \App\Models\Service::where(
+                                                                    'published',
+                                                                    true,
+                                                                )
+                                                                    ->whereHas('categories', function ($q) use (
+                                                                        $servicCategory,
+                                                                    ) {
+                                                                        $q->where(
+                                                                            'service_service_category.service_category_id',
+                                                                            $servicCategory->id,
+                                                                        );
+                                                                    })
+                                                                    ->get();
+                                                            @endphp
+                                                            <ul class="space-y-1 font-normal">
+                                                                @foreach ($searvices as $service)
+                                                                    <li><a href="{{ route('services.show', $service->slug) }}"
+                                                                            wire:navigate
+                                                                            class="hover:text-[#27ad4c]">{{ $service->title }}</a>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+
                                                     </div>
-
                                                 </div>
-                                            </div>
                                             @endforeach
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="grid grid-cols-5 gap-8">
+                                    <!-- Example Mega Menu Columns -->
+                                    <div>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 1</h3>
+                                        <ul class="space-y-2">
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 1</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 2</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 3</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 4</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 2</h3>
+                                        <ul class="space-y-2">
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 5</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 6</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 7</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 3</h3>
+                                        <ul class="space-y-2">
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 3</h3>
+                                        <ul class="space-y-2">
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
+                                        </ul>
+                                    </div>
+                                    {{-- <div>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Featured</h3>
+                                        <div class="w-full h-48 bg-gray-200 border-2 border-dashed rounded-xl">
+                                            <!-- Placeholder for image or featured content -->
+                                        </div>
+                                        <a href="#" class="block mt-4 text-[#27ad4c] font-semibold hover:underline">View
+                                            All Products →</a>
+                                    </div> --}}
+                                </div>
                             </div>
                         </div>
                     </div>
-<!-- Products Menu Item with Mega Menu -->
+                    <!-- Products Menu Item with Mega Menu -->
                     <div class="group">
-                        <a href="{{url('/solutions')}}" wire:navigate class="pb-2 hover:text-[#27ad4c] flex items-center">
+                        <a href="{{ url('/solutions') }}" wire:navigate
+                            class="pb-2 hover:text-[#27ad4c] flex items-center">
                             Solutions
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                class="w-4 h-4 ml-1">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
                         </a>
 
@@ -464,12 +527,15 @@
                                 <div class="flex flex-col w-full gap-8 md:flex-row" x-data="{ activeTab: 'tab2' }">
                                     <!-- Tabs on the left -->
                                     <div class="flex flex-col w-64 gap-2">
-                                        @foreach($solutionCategories as $solutionCategory)
-                                        <button @click="activeTab = '{{$solutionCategory->slug}}'"
-                                            :class="activeTab === '{{$solutionCategory->slug}}' ? 'bg-[#27ad4c] text-white' : 'text-gray-700 hover:bg-gray-100 hover:text-[#27ad4c]'"
-                                            class="block px-4 py-2 text-left transition-colors duration-200 rounded-md" aria-label="Tab 1">
-                                            {{$solutionCategory->title}}
-                                        </button>
+                                        @foreach ($solutionCategories as $solutionCategory)
+                                            <button @click="activeTab = '{{ $solutionCategory->slug }}'"
+                                                :class="activeTab === '{{ $solutionCategory->slug }}' ?
+                                                    'bg-[#27ad4c] text-white' :
+                                                    'text-gray-700 hover:bg-gray-100 hover:text-[#27ad4c]'"
+                                                class="block px-4 py-2 text-left transition-colors duration-200 rounded-md"
+                                                aria-label="Tab 1">
+                                                {{ $solutionCategory->title }}
+                                            </button>
                                         @endforeach
 
 
@@ -481,34 +547,43 @@
                                         <div class="absolute inset-0 overflow-y-auto">
                                             <!-- All tab panels are absolutely positioned in the same space -->
 
-                                            @foreach($solutionCategories as $solutionCategory)
-                                            <div x-show="activeTab === '{{$solutionCategory->slug}}'" x-transition.opacity
-                                                class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300 bg-base-100 rounded-box">
+                                            @foreach ($solutionCategories as $solutionCategory)
+                                                <div x-show="activeTab === '{{ $solutionCategory->slug }}'"
+                                                    x-transition.opacity
+                                                    class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300 bg-base-100 rounded-box">
 
 
-                                                <h2 class="mb-4 text-2xl font-bold">{{$solutionCategory->title}}</h2>
-                                                <p class="mb-4 font-light">{{$solutionCategory->short_description}}</p>
-                                                <!-- Add more content here if needed -->
-                                                <div class="grid grid-cols-4 gap-3">
-                                                    <!-- Example Mega Menu Columns -->
-                                                    <div>
-                                                        @php
-                                                        $solutions=\App\Models\Solution::whereHas('categories', function ($q) use ($solutionCategory) {
-                                                        $q->where('solution_solution_category.solution_category_id',
-                                                        $solutionCategory->id);
-                                                        })->get();
-                                                        @endphp
-                                                        <ul class="space-y-1 font-normal">
-                                                            @foreach($solutions as $solution)
-                                                            <li><a href="{{ route('solutions.show', $solution->page_slug) }}" wire:navigate
-                                                                    class="hover:text-[#27ad4c]">{{$solution->hero_title}}</a>
-                                                            </li>
-                                                            @endforeach
-                                                        </ul>
+                                                    <h2 class="mb-4 text-2xl font-bold">{{ $solutionCategory->title }}
+                                                    </h2>
+                                                    <p class="mb-4 font-light">
+                                                        {{ $solutionCategory->short_description }}</p>
+                                                    <!-- Add more content here if needed -->
+                                                    <div class="grid grid-cols-4 gap-3">
+                                                        <!-- Example Mega Menu Columns -->
+                                                        <div>
+                                                            @php
+                                                                $solutions = \App\Models\Solution::whereHas(
+                                                                    'categories',
+                                                                    function ($q) use ($solutionCategory) {
+                                                                        $q->where(
+                                                                            'solution_solution_category.solution_category_id',
+                                                                            $solutionCategory->id,
+                                                                        );
+                                                                    },
+                                                                )->get();
+                                                            @endphp
+                                                            <ul class="space-y-1 font-normal">
+                                                                @foreach ($solutions as $solution)
+                                                                    <li><a href="{{ route('solutions.show', $solution->page_slug) }}"
+                                                                            wire:navigate
+                                                                            class="hover:text-[#27ad4c]">{{ $solution->hero_title }}</a>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </div>
+
                                                     </div>
-
                                                 </div>
-                                            </div>
                                             @endforeach
                                         </div>
                                     </div>
