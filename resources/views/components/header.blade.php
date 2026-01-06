@@ -374,15 +374,14 @@
                                     </div>
 
                                     <!-- Content on the right - with fixed height behavior -->
-                                    <div class="relative w-full mt-6 md:mt-0 min-h-96 md:min-h-screen-lg">
+                                    <div class="relative w-full mt-6 md:mt-0 min-h-96 md:min-h-screen-lg bg-white">
                                         <!-- Wrapper with relative positioning and min-height -->
                                         <div class="absolute inset-0 overflow-y-auto">
                                             <!-- All tab panels are absolutely positioned in the same space -->
 
-                                            @foreach ($serviceCategories as $servicCategory)
-                                                <div x-show="activeTab === '{{ $servicCategory->slug }}'"
-                                                    x-transition.opacity
-                                                    class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300 bg-base-100 rounded-box">
+                                            @foreach($serviceCategories as $servicCategory)
+                                            <div x-show="activeTab === '{{$servicCategory->slug}}'" x-transition.opacity
+                                                class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300  rounded-box">
 
 
                                                     <h2 class="mb-4 text-2xl font-bold">{{ $servicCategory->title }}
@@ -486,7 +485,7 @@
                         <div
                             class="absolute left-0 right-0 top-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 bg-white shadow-lg border-t-2 border-[#27ad4c] z-50">
                             <div class="px-4 py-8 ">
-                                {{-- <div class="grid grid-cols-4 gap-8">
+                                <div class="grid grid-cols-5 gap-8">
                                     <!-- Example Mega Menu Columns -->
                                     <div>
                                         <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 1</h3>
@@ -513,18 +512,32 @@
                                         </ul>
                                     </div>
                                     <div>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 3</h3>
+                                        <ul class="space-y-2">
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 3</h3>
+                                        <ul class="space-y-2">
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
+                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
+                                        </ul>
+                                    </div>
+                                    {{-- <div>
                                         <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Featured</h3>
                                         <div class="w-full h-48 bg-gray-200 border-2 border-dashed rounded-xl">
                                             <!-- Placeholder for image or featured content -->
                                         </div>
                                         <a href="#" class="block mt-4 text-[#27ad4c] font-semibold hover:underline">View
                                             All Products →</a>
-                                    </div>
-                                </div> --}}
+                                    </div> --}}
+                                </div>
                                 <!-- Make sure to include Alpine.js in your layout, e.g. -->
                                 <!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
 
-                                <div class="flex flex-col w-full gap-8 md:flex-row" x-data="{ activeTab: 'tab2' }">
+                                {{-- <div class="flex flex-col w-full gap-8 md:flex-row" x-data="{ activeTab: 'tab2' }">
                                     <!-- Tabs on the left -->
                                     <div class="flex flex-col w-64 gap-2">
                                         @foreach ($solutionCategories as $solutionCategory)
@@ -542,15 +555,14 @@
                                     </div>
 
                                     <!-- Content on the right - with fixed height behavior -->
-                                    <div class="relative w-full mt-6 md:mt-0 min-h-96 md:min-h-screen-lg">
+                                    <div class="relative w-full mt-6 md:mt-0 min-h-96 md:min-h-screen-lg bg-white">
                                         <!-- Wrapper with relative positioning and min-height -->
                                         <div class="absolute inset-0 overflow-y-auto">
                                             <!-- All tab panels are absolutely positioned in the same space -->
 
-                                            @foreach ($solutionCategories as $solutionCategory)
-                                                <div x-show="activeTab === '{{ $solutionCategory->slug }}'"
-                                                    x-transition.opacity
-                                                    class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300 bg-base-100 rounded-box">
+                                            @foreach($solutionCategories as $solutionCategory)
+                                            <div x-show="activeTab === '{{$solutionCategory->slug}}'" x-transition.opacity
+                                                class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300  rounded-box">
 
 
                                                     <h2 class="mb-4 text-2xl font-bold">{{ $solutionCategory->title }}
@@ -587,7 +599,7 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
