@@ -39,8 +39,9 @@ class SolutionForm
                             ->rows(3),
 
                         FileUpload::make('hero_background_image')
-                            ->image()->disk('public')
-                            ->directory('hero')
+                            ->image()
+                            ->disk('public')
+                            ->directory('solutions')
                             ->required(),
                         Select::make('Solution Categories')
                             ->relationship('categories', 'title')
@@ -61,7 +62,7 @@ class SolutionForm
                             ->schema([
                                 FileUpload::make('image')->disk('public')
                                     ->image()
-                                    ->directory('features')
+                                    ->directory('solutions')
                                     ->required(),
 
                                 TextInput::make('title')
@@ -126,7 +127,7 @@ class SolutionForm
 
                         FileUpload::make('cta_section.image')->disk('public')
                             ->image()
-                            ->directory('cta')
+                            ->directory('solutions')
                             ->required(),
                     ]),
 
