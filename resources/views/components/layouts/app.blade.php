@@ -6,7 +6,10 @@
 
         <title>{{ $title ?? getSetting('site_title',"Dato Hall") }}</title>
         <meta name="description" content="{{ $description ?? 'Laravel Ecom LA' }}">
-        <link rel="icon" href="{{ asset(getSetting('logo')) }}" type="image/x-icon">
+        @php
+        $site_logo = getSetting('logo');
+        @endphp
+        <link rel="icon" href="{{ $site_logo ? asset('storage/' . $site_logo) : asset('assets/images/logo.svg') }}" type="image/x-icon">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
