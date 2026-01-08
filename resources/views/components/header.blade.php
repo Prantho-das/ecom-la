@@ -49,8 +49,14 @@
         <div class="container lg:max-w-[1780px] mx-auto px-4">
             <div class="flex items-center justify-between py-3 md:py-6">
                 @php
-                    $serviceCategories = \App\Models\ServiceCategory::where('published', 1)->get();
-                    $solutionCategories = \App\Models\SolutionCategory::all();
+                    $serviceCategories = \App\Models\ServiceCategory::where('published', 1)
+                    ->with(['parent', 'children'])
+                    ->where('parent_id', null)
+                    ->get();
+                    $solutionCategories = \App\Models\SolutionCategory::where('published', 1)
+                    ->with(['parent', 'children'])
+                    ->where('parent_id', null)
+                    ->get();
                 @endphp
                 <!-- Logo -->
                 <div class="lg:w-[150px] md:w-[150px] w-[120px]">
@@ -124,142 +130,105 @@
                                     </button>
                                 </div>
 
-                                <nav class="flex flex-col space-y-4 font-medium text-slate-700">
-
+                               <nav class="flex flex-col space-y-4 font-medium text-slate-700">
                                     <a href="{{ route('home') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
                                         Home
                                     </a>
 
+                                    <!-- Services Main Accordion -->
                                     <div x-data="{ open: false }">
                                         <button @click="open = !open"
                                             class="flex items-center justify-between w-full pb-2 font-medium text-slate-700 hover:text-[#27ad4c]">
-                                            <span>Services</span>
-                                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }"
-                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                            <a href="{{ url('/services') }}" wire:navigate>
+                                                <span>Services</span>
+                                            </a>
+                                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                             </svg>
                                         </button>
+
                                         <div x-show="open" x-collapse class="pt-2 pl-4">
-                                            <div class="flex flex-col gap-2">
-                                                <!-- Accordion Item 1 -->
+                                            <div class="flex flex-col gap-3">
+                                                @foreach ($serviceCategories as $parentCategory)
+                                                <div x-data="{ categoryOpen: false }">
+                                                    <button @click="categoryOpen = !categoryOpen"
+                                                        class="flex items-center justify-between w-full py-2 text-sm font-semibold text-gray-800 hover:text-[#27ad4c]">
+                                                        <a href="{{ url('/services') }}?category_id={{ $parentCategory->slug }}" wire:navigate
+                                                            class="block w-full text-left">
+                                                            {{ $parentCategory->title }}
+                                                        </a>
+                                                        <svg :class="{ 'rotate-180': categoryOpen }"
+                                                            class="flex-shrink-0 w-4 h-4 ml-2 transition-transform" xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                        </svg>
+                                                    </button>
 
-                                                @foreach ($serviceCategories as $servicCategory)
-                                                    <div x-data="{ tabOpen: true }">
-                                                        <button @click="tabOpen = !tabOpen"
-                                                            class="flex items-center justify-between w-full py-2 text-sm font-semibold text-gray-800">
-                                                            <span>Tab 1</span>
-                                                            <svg :class="{ 'rotate-180': tabOpen }"
-                                                                class="w-4 h-4 transition-transform"
-                                                                xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                viewBox="0 0 24 24" stroke-width="1.5"
-                                                                stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                                            </svg>
-                                                        </button>
-                                                        <div x-show="tabOpen" x-collapse class="pt-2 pl-2 text-sm">
-
-                                                            <div class="flex flex-col gap-2 text-xs">
-                                                                <div class="pl-3" x-data="{ categoryOpen: false }">
-                                                                    <button @click="categoryOpen = !categoryOpen"
-                                                                        class="flex items-center justify-between w-full py-1 text-sm font-medium">
-                                                                        <span>Category 1</span>
-                                                                        <svg :class="{ 'rotate-180': categoryOpen }"
-                                                                            class="w-3 h-3 transition-transform"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            fill="none" viewBox="0 0 24 24"
-                                                                            stroke-width="1.5" stroke="currentColor">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round"
-                                                                                d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                                                        </svg>
-                                                                    </button>
-                                                                    <div x-show="categoryOpen" x-collapse
-                                                                        class="pl-3">
-                                                                        <ul class="py-1 space-y-1 font-normal">
-                                                                            <li><a href="#"
-                                                                                    class="hover:text-[#27ad4c]">Product
-                                                                                    Item 1</a></li>
-                                                                            <li><a href="#"
-                                                                                    class="hover:text-[#27ad4c]">Product
-                                                                                    Item 2</a></li>
-                                                                            <li><a href="#"
-                                                                                    class="hover:text-[#27ad4c]">Product
-                                                                                    Item 3</a></li>
-                                                                            <li><a href="#"
-                                                                                    class="hover:text-[#27ad4c]">Product
-                                                                                    Item 4</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="pl-3" x-data="{ categoryOpen: false }">
-                                                                    <button @click="categoryOpen = !categoryOpen"
-                                                                        class="flex items-center justify-between w-full py-1 text-sm font-medium">
-                                                                        <span>Category 2</span>
-                                                                        <svg :class="{ 'rotate-180': categoryOpen }"
-                                                                            class="w-3 h-3 transition-transform"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            fill="none" viewBox="0 0 24 24"
-                                                                            stroke-width="1.5" stroke="currentColor">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round"
-                                                                                d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                                                        </svg>
-                                                                    </button>
-                                                                    <div x-show="categoryOpen" x-collapse
-                                                                        class="pl-3">
-                                                                        <ul class="py-1 space-y-1 font-normal">
-                                                                            <li><a href="#"
-                                                                                    class="hover:text-[#27ad4c]">Product
-                                                                                    Item 5</a></li>
-                                                                            <li><a href="#"
-                                                                                    class="hover:text-[#27ad4c]">Product
-                                                                                    Item 6</a></li>
-                                                                            <li><a href="#"
-                                                                                    class="hover:text-[#27ad4c]">Product
-                                                                                    Item 7</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="pl-3" x-data="{ categoryOpen: false }">
-                                                                    <button @click="categoryOpen = !categoryOpen"
-                                                                        class="flex items-center justify-between w-full py-1 text-sm font-medium">
-                                                                        <span>Category 3</span>
-                                                                        <svg :class="{ 'rotate-180': categoryOpen }"
-                                                                            class="w-3 h-3 transition-transform"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            fill="none" viewBox="0 0 24 24"
-                                                                            stroke-width="1.5" stroke="currentColor">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round"
-                                                                                d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                                                        </svg>
-                                                                    </button>
-                                                                    <div x-show="categoryOpen" x-collapse
-                                                                        class="pl-3">
-                                                                        <ul class="py-1 space-y-1 font-normal">
-                                                                            <li><a href="#"
-                                                                                    class="hover:text-[#27ad4c]">Product
-                                                                                    Item 8</a></li>
-                                                                            <li><a href="#"
-                                                                                    class="hover:text-[#27ad4c]">Product
-                                                                                    Item 9</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    <div x-show="categoryOpen" x-collapse class="pl-4">
+                                                        <ul class="py-1 space-y-1 text-sm">
+                                                            @foreach ($parentCategory->children as $child)
+                                                            <li>
+                                                                <a href="{{ url('/services') }}?category_id={{ $child->slug }}" wire:navigate
+                                                                    class="block py-1 hover:text-[#27ad4c]">
+                                                                    {{ $child->title }}
+                                                                </a>
+                                                            </li>
+                                                            @endforeach
+                                                        </ul>
                                                     </div>
+                                                </div>
                                                 @endforeach
-
                                             </div>
                                         </div>
                                     </div>
+<div x-data="{ open: false }">
+                                        <button @click="open = !open"
+                                            class="flex items-center justify-between w-full pb-2 font-medium text-slate-700 hover:text-[#27ad4c]">
+                                            <a href="{{ url('/solutions') }}" wire:navigate>
+                                                <span>Solutions</span>
+                                            </a>
+                                            <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        </button>
 
-                                    <a href="{{ route('reseller.partner') }}" wire:navigate
-                                        class="pb-2 hover:text-[#27ad4c]">
+                                        <div x-show="open" x-collapse class="pt-2 pl-4">
+                                            <div class="flex flex-col gap-3">
+                                                @foreach ($solutionCategories as $parentCategory)
+                                                <div x-data="{ categoryOpen: false }">
+                                                    <button @click="categoryOpen = !categoryOpen"
+                                                        class="flex items-center justify-between w-full py-2 text-sm font-semibold text-gray-800 hover:text-[#27ad4c]">
+                                                        <a href="{{ url('/solutions') }}?category_id={{ $parentCategory->slug }}" wire:navigate
+                                                            class="block w-full text-left">
+                                                            {{ $parentCategory->title }}
+                                                        </a>
+                                                        <svg :class="{ 'rotate-180': categoryOpen }" class="flex-shrink-0 w-4 h-4 ml-2 transition-transform"
+                                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                            stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                                        </svg>
+                                                    </button>
+
+                                                    <div x-show="categoryOpen" x-collapse class="pl-4">
+                                                        <ul class="py-1 space-y-1 text-sm">
+                                                            @foreach ($parentCategory->children as $child)
+                                                            <li>
+                                                                <a href="{{ url('/solutions') }}?category_id={{ $child->slug }}" wire:navigate
+                                                                    class="block py-1 hover:text-[#27ad4c]">
+                                                                    {{ $child->title }}
+                                                                </a>
+                                                            </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="{{ route('reseller.partner') }}" wire:navigate class="pb-2 hover:text-[#27ad4c]">
                                         Reseller
                                     </a>
 
@@ -267,22 +236,13 @@
                                         Product
                                     </a>
 
-                                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Software</a>
-                                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Services</a>
-                                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Solutions</a>
-                                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Homeowner</a>
-                                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Support</a>
-                                    <a href="#" class="pb-2 hover:text-[#27ad4c]">Company</a>
-
                                     <div class="flex flex-col pt-4 space-y-4">
+                                        <a href="#" class="font-medium text-slate-700 hover:text-[#27ad4c]">Login</a>
                                         <a href="#"
-                                            class="font-medium text-slate-700 hover:text-[#27ad4c]">Login</a>
-                                        <a href="#"
-                                            class="bg-[#27ad4c] text-white text-center font-bold py-2 px-4 rounded-md hover:bg-[#27ad4c]">
+                                            class="bg-[#27ad4c] text-white text-center font-bold py-2 px-4 rounded-md hover:bg-[#1e8b3a] transition">
                                             Get a Free Quotation
                                         </a>
                                     </div>
-
                                 </nav>
                             </div>
                         </div>
@@ -318,45 +278,8 @@
                         <div
                             class="absolute left-0 right-0 top-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 bg-white shadow-lg border-t-2 border-[#27ad4c] z-50">
                             <div class="px-4 py-8 ">
-                                {{-- <div class="grid grid-cols-4 gap-8">
-                                    <!-- Example Mega Menu Columns -->
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 1</h3>
-                                        <ul class="space-y-2">
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 1</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 2</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 3</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 4</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 2</h3>
-                                        <ul class="space-y-2">
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 5</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 6</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 7</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 3</h3>
-                                        <ul class="space-y-2">
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Featured</h3>
-                                        <div class="w-full h-48 bg-gray-200 border-2 border-dashed rounded-xl">
-                                            <!-- Placeholder for image or featured content -->
-                                        </div>
-                                        <a href="#" class="block mt-4 text-[#27ad4c] font-semibold hover:underline">View
-                                            All Products →</a>
-                                    </div>
-                                </div> --}}
-                                <!-- Make sure to include Alpine.js in your layout, e.g. -->
-                                <!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
 
-                                <div class="hidden flex flex-col w-full gap-8 md:flex-row " x-data="{ activeTab: 'tab2' }">
+                                <div class="flex flex-col hidden w-full gap-8 md:flex-row " x-data="{ activeTab: 'tab2' }">
                                     <!-- Tabs on the left -->
                                     <div class="flex flex-col w-64 gap-2">
                                         @foreach ($serviceCategories as $servicCategory)
@@ -374,14 +297,14 @@
                                     </div>
 
                                     <!-- Content on the right - with fixed height behavior -->
-                                    <div class="relative w-full mt-6 md:mt-0 min-h-96 md:min-h-screen-lg bg-white">
+                                    <div class="relative w-full mt-6 bg-white md:mt-0 min-h-96 md:min-h-screen-lg">
                                         <!-- Wrapper with relative positioning and min-height -->
                                         <div class="absolute inset-0 overflow-y-auto">
                                             <!-- All tab panels are absolutely positioned in the same space -->
 
                                             @foreach($serviceCategories as $servicCategory)
                                             <div x-show="activeTab === '{{$servicCategory->slug}}'" x-transition.opacity
-                                                class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300  rounded-box">
+                                                class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300 rounded-box">
 
 
                                                     <h2 class="mb-4 text-2xl font-bold">{{ $servicCategory->title }}
@@ -426,45 +349,21 @@
 
                                 <div class="grid grid-cols-5 gap-8">
                                     <!-- Example Mega Menu Columns -->
+                                    @foreach ($serviceCategories as $servicCategory)
                                     <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 1</h3>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">
+                                            <a href="{{ url('/services') }}?category_id={{ $servicCategory->slug }}" wire:navigate>
+                                            {{ $servicCategory->title }}</a>
+                                        </h3>
                                         <ul class="space-y-2">
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 1</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 2</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 3</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 4</a></li>
+                                            @foreach($servicCategory->children as $child)
+                                            <li><a href="{{ url('/services') }}?category_id={{ $child->slug }}" wire:navigate class="hover:text-[#27ad4c]">{{ $child->title }}</a></li>
+                                            @endforeach
+
                                         </ul>
                                     </div>
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 2</h3>
-                                        <ul class="space-y-2">
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 5</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 6</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 7</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 3</h3>
-                                        <ul class="space-y-2">
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 3</h3>
-                                        <ul class="space-y-2">
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
-                                        </ul>
-                                    </div>
-                                    {{-- <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Featured</h3>
-                                        <div class="w-full h-48 bg-gray-200 border-2 border-dashed rounded-xl">
-                                            <!-- Placeholder for image or featured content -->
-                                        </div>
-                                        <a href="#" class="block mt-4 text-[#27ad4c] font-semibold hover:underline">View
-                                            All Products →</a>
-                                    </div> --}}
+                                    @endforeach
+
                                 </div>
                             </div>
                         </div>
@@ -487,119 +386,22 @@
                             <div class="px-4 py-8 ">
                                 <div class="grid grid-cols-5 gap-8">
                                     <!-- Example Mega Menu Columns -->
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 1</h3>
+                                    @foreach ($solutionCategories as $solutionCategory)
+<div>
+                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">
+                                            <a href="{{ url('/solutions') }}?category_id={{ $solutionCategory->slug }}" wire:navigate>
+                                            {{ $solutionCategory->title }}
+                                        </a>
+                                        </h3>
                                         <ul class="space-y-2">
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 1</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 2</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 3</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 4</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 2</h3>
-                                        <ul class="space-y-2">
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 5</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 6</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 7</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 3</h3>
-                                        <ul class="space-y-2">
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 3</h3>
-                                        <ul class="space-y-2">
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Category 3</h3>
-                                        <ul class="space-y-2">
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 8</a></li>
-                                            <li><a href="#" class="hover:text-[#27ad4c]">Product Item 9</a></li>
-                                        </ul>
-                                    </div>
-                                    {{-- <div>
-                                        <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">Featured</h3>
-                                        <div class="w-full h-48 bg-gray-200 border-2 border-dashed rounded-xl">
-                                            <!-- Placeholder for image or featured content -->
-                                        </div>
-                                        <a href="#" class="block mt-4 text-[#27ad4c] font-semibold hover:underline">View
-                                            All Products →</a>
-                                    </div> --}}
-                                </div>
-                                <!-- Make sure to include Alpine.js in your layout, e.g. -->
-                                <!-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> -->
-
-                                {{-- <div class="flex flex-col w-full gap-8 md:flex-row" x-data="{ activeTab: 'tab2' }">
-                                    <!-- Tabs on the left -->
-                                    <div class="flex flex-col w-64 gap-2">
-                                        @foreach ($solutionCategories as $solutionCategory)
-                                            <button @click="activeTab = '{{ $solutionCategory->slug }}'"
-                                                :class="activeTab === '{{ $solutionCategory->slug }}' ?
-                                                    'bg-[#27ad4c] text-white' :
-                                                    'text-gray-700 hover:bg-gray-100 hover:text-[#27ad4c]'"
-                                                class="block px-4 py-2 text-left transition-colors duration-200 rounded-md"
-                                                aria-label="Tab 1">
-                                                {{ $solutionCategory->title }}
-                                            </button>
-                                        @endforeach
-
-
-                                    </div>
-
-                                    <!-- Content on the right - with fixed height behavior -->
-                                    <div class="relative w-full mt-6 md:mt-0 min-h-96 md:min-h-screen-lg bg-white">
-                                        <!-- Wrapper with relative positioning and min-height -->
-                                        <div class="absolute inset-0 overflow-y-auto">
-                                            <!-- All tab panels are absolutely positioned in the same space -->
-
-                                            @foreach($solutionCategories as $solutionCategory)
-                                            <div x-show="activeTab === '{{$solutionCategory->slug}}'" x-transition.opacity
-                                                class="absolute inset-0 w-full p-4 overflow-y-auto prose border border-base-300  rounded-box">
-
-
-                                                    <h2 class="mb-4 text-2xl font-bold">{{ $solutionCategory->title }}
-                                                    </h2>
-                                                    <p class="mb-4 font-light">
-                                                        {{ $solutionCategory->short_description }}</p>
-                                                    <!-- Add more content here if needed -->
-                                                    <div class="grid grid-cols-4 gap-3">
-                                                        <!-- Example Mega Menu Columns -->
-                                                        <div>
-                                                            @php
-                                                                $solutions = \App\Models\Solution::whereHas(
-                                                                    'categories',
-                                                                    function ($q) use ($solutionCategory) {
-                                                                        $q->where(
-                                                                            'solution_solution_category.solution_category_id',
-                                                                            $solutionCategory->id,
-                                                                        );
-                                                                    },
-                                                                )->get();
-                                                            @endphp
-                                                            <ul class="space-y-1 font-normal">
-                                                                @foreach ($solutions as $solution)
-                                                                    <li><a href="{{ route('solutions.show', $solution->page_slug) }}"
-                                                                            wire:navigate
-                                                                            class="hover:text-[#27ad4c]">{{ $solution->hero_title }}</a>
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
+                                            @foreach($solutionCategory->children as $child)
+                                            <li><a href="{{ url('/solutions') }}?category_id={{ $child->slug }}" class="hover:text-[#27ad4c]" wire:navigate>{{ $child->title }}</a></li>
                                             @endforeach
-                                        </div>
+                                        </ul>
                                     </div>
-                                </div> --}}
+                                    @endforeach
+
+                                </div>
                             </div>
                         </div>
                     </div>

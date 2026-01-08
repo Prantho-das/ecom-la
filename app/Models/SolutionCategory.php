@@ -35,4 +35,9 @@ class SolutionCategory extends Model
         return $this->belongsTo(SolutionCategory::class, 'parent_id');
     }
 
+    public function children()
+    {
+        return $this->hasMany(SolutionCategory::class, 'parent_id');
+    }
+
 }
