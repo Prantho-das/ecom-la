@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
+        <title>{{ $title ?? getSetting('site_title',"Dato Hall") }}</title>
         <meta name="description" content="{{ $description ?? 'Laravel Ecom LA' }}">
         <link rel="icon" href="{{ asset(getSetting('logo')) }}" type="image/x-icon">
 
