@@ -154,7 +154,7 @@
                                                 <div x-data="{ categoryOpen: false }">
                                                     <button @click="categoryOpen = !categoryOpen"
                                                         class="flex items-center justify-between w-full py-2 text-sm font-semibold text-gray-800 hover:text-[#27ad4c]">
-                                                        <a href="{{ url('/services') }}?category_id={{ $parentCategory->slug }}" wire:navigate
+                                                        <a href="{{ url('/services') }}?category_id={{ $parentCategory->id }}" wire:navigate
                                                             class="block w-full text-left">
                                                             {{ $parentCategory->title }}
                                                         </a>
@@ -200,7 +200,7 @@
                                                 <div x-data="{ categoryOpen: false }">
                                                     <button @click="categoryOpen = !categoryOpen"
                                                         class="flex items-center justify-between w-full py-2 text-sm font-semibold text-gray-800 hover:text-[#27ad4c]">
-                                                        <a href="{{ url('/solutions') }}?category_id={{ $parentCategory->slug }}" wire:navigate
+                                                        <a href="{{ url('/solutions') }}?category_id={{ $parentCategory->id }}" wire:navigate
                                                             class="block w-full text-left">
                                                             {{ $parentCategory->title }}
                                                         </a>
@@ -352,7 +352,7 @@
                                     @foreach ($serviceCategories as $servicCategory)
                                     <div>
                                         <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">
-                                            <a href="{{ url('/services') }}?category_id={{ $servicCategory->slug }}" wire:navigate>
+                                            <a href="{{ url('/services') }}?category_id={{ $servicCategory->id }}" wire:navigate>
                                             {{ $servicCategory->title }}</a>
                                         </h3>
                                         <ul class="space-y-2">
@@ -389,7 +389,7 @@
                                     @foreach ($solutionCategories as $solutionCategory)
 <div>
                                         <h3 class="font-bold text-lg mb-4 text-[#27ad4c]">
-                                            <a href="{{ url('/solutions') }}?category_id={{ $solutionCategory->slug }}" wire:navigate>
+                                            <a href="{{ url('/solutions') }}?category_id={{ $solutionCategory->id }}" wire:navigate>
                                             {{ $solutionCategory->title }}
                                         </a>
                                         </h3>
