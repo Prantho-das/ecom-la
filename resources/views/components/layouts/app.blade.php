@@ -5,10 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
+        <meta name="description" content="{{ $description ?? 'Laravel Ecom LA' }}">
+        <link rel="icon" href="{{ asset(getSetting('logo')) }}" type="image/x-icon">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="bg-white font-sans antialiased flex flex-col min-h-screen">
+    <body class="flex flex-col min-h-screen font-sans antialiased bg-white">
         <x-header />
 
         <main class="flex-grow">
