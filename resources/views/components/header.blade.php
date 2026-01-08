@@ -169,7 +169,7 @@
                                                         <ul class="py-1 space-y-1 text-sm">
                                                             @foreach ($parentCategory->children as $child)
                                                             <li>
-                                                                <a href="{{ url('/services') }}?category_id={{ $child->slug }}" wire:navigate
+                                                                <a href="{{ url('/services') }}?category_id={{ $child->id }}" wire:navigate
                                                                     class="block py-1 hover:text-[#27ad4c]">
                                                                     {{ $child->title }}
                                                                 </a>
@@ -215,7 +215,7 @@
                                                         <ul class="py-1 space-y-1 text-sm">
                                                             @foreach ($parentCategory->children as $child)
                                                             <li>
-                                                                <a href="{{ url('/solutions') }}?category_id={{ $child->slug }}" wire:navigate
+                                                                <a href="{{ url('/solutions') }}?category_id={{ $child->id }}" wire:navigate
                                                                     class="block py-1 hover:text-[#27ad4c]">
                                                                     {{ $child->title }}
                                                                 </a>
@@ -357,7 +357,7 @@
                                         </h3>
                                         <ul class="space-y-2">
                                             @foreach($servicCategory->children as $child)
-                                            <li><a href="{{ url('/services') }}?category_id={{ $child->slug }}" wire:navigate class="hover:text-[#27ad4c]">{{ $child->title }}</a></li>
+                                            <li><a href="{{ url('/services') }}?category_id={{ $child->id }}" wire:navigate class="hover:text-[#27ad4c]">{{ $child->title }}</a></li>
                                             @endforeach
 
                                         </ul>
@@ -395,7 +395,7 @@
                                         </h3>
                                         <ul class="space-y-2">
                                             @foreach($solutionCategory->children as $child)
-                                            <li><a href="{{ url('/solutions') }}?category_id={{ $child->slug }}" class="hover:text-[#27ad4c]" wire:navigate>{{ $child->title }}</a></li>
+                                            <li><a href="{{ url('/solutions') }}?category_id={{ $child->id }}" class="hover:text-[#27ad4c]" wire:navigate>{{ $child->title }}</a></li>
                                             @endforeach
                                         </ul>
                                     </div>
