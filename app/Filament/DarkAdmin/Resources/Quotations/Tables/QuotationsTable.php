@@ -2,9 +2,12 @@
 
 namespace App\Filament\DarkAdmin\Resources\Quotations\Tables;
 
+use App\Models\Quotation;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -15,22 +18,107 @@ class QuotationsTable
     {
         return $table
             ->columns([
-            TextColumn::make('id')->sortable(),
-            TextColumn::make('customer_name'),
-            BadgeColumn::make('status'),
-            TextColumn::make('grand_total')->money('usd'),
-            TextColumn::make('created_at')->dateTime(),
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('customer_name')
+                    ->label('Customer')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('customer_email')
+                    ->label('Email')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                BadgeColumn::make('shipping_method')
+                    ->label('Shipping')
+                    ->colors([
+                        'info' => 'sea',
+                        'warning' => 'air',
+                    ])
+                    ->icons([
+                        'heroicon-o-truck' => 'sea',
+                        'heroicon-o-paper-airplane' => 'air',
+                    ])
+                    ->formatStateUsing(fn(string $state): string => strtoupper($state)),
+
+                BadgeColumn::make('pricing_tier')
+                    ->label('Pricing Tier')
+                    ->colors([
+                        'gray' => 'exwork',
+                        'primary' => 'fob',
+                        'info' => 'cfr',
+                        'success' => 'cif',
+                        'warning' => 'ddu_dap',
+                        'danger' => 'ddp',
+                        'secondary' => 'bdt_local',
+                    ])
+                    ->formatStateUsing(fn(string $state): string => strtoupper(str_replace('_', '/', $state))),
+
+                TextColumn::make('currency')
+                    ->label('Currency')
+                    ->toggleable(),
+
+                BadgeColumn::make('status')
+                    ->label('Status')
+                    ->colors([
+                        'gray' => 'draft',
+                        'primary' => 'sent',
+                        'success' => 'accepted',
+                        'danger' => 'rejected',
+                        'warning' => 'expired',
+                    ]),
+
+                TextColumn::make('grand_total')
+                    ->label('Grand Total')
+                    ->money('bdt')
+                    ->sortable()
+                    ->summarize([
+                        \Filament\Tables\Columns\Summarizers\Sum::make()
+                            ->money('bdt'),
+                    ]),
+
+                TextColumn::make('items_count')
+                    ->label('Items')
+                    ->counts('items')
+                    ->toggleable(),
+
+                TextColumn::make('created_at')
+                    ->label('Created')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('expires_at')
+                    ->label('Expires')
+                    ->date()
+                    ->sortable()
+                    ->toggleable(),
             ])
             ->filters([
                 //
             ])
-            ->recordActions([
+            ->actions([
+                Action::make('pdf')
+                    ->label('PDF')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('success')
+                    ->action(function (Quotation $record) {
+                        return response()->streamDownload(function () use ($record) {
+                            echo \Barryvdh\DomPDF\Facade\Pdf::loadView('quotations.pdf', ['quotation' => $record])->output();
+                        }, "quotation-{$record->id}.pdf");
+                    }),
                 EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->toolbarActions([
+            ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 }

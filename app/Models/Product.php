@@ -14,6 +14,7 @@ class Product extends Model
     ];
 
     protected $casts = [
+        'price' => 'decimal:6',
         'published_at' => 'datetime',
         'metafields' => 'array',
         'tags' => 'array',

@@ -31,11 +31,20 @@ class ProductForm
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (string $operation, ?string $state, $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                            ->afterStateUpdated(fn(string $operation, ?string $state, $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
                         TextInput::make('sku')
                             ->unique(ignoreRecord: true)
                             ->nullable()
                             ->maxLength(255)->columnSpan(1),
+
+                        TextInput::make('price')
+                            ->label('Price')
+                            ->numeric()
+                            ->prefix('$')
+                            ->nullable()
+                            ->helperText('Base product price')
+                            ->columnSpan(1),
+
                         TextInput::make('slug')
                             ->unique(ignoreRecord: true)
                             ->nullable(),
@@ -62,7 +71,7 @@ class ProductForm
                             ->default('draft')->columnSpan(1),
                         DateTimePicker::make('published_at')
                             ->nullable(),
-                             Select::make('countries')
+                        Select::make('countries')
                             ->relationship('countries', 'name')
                             ->multiple()
                             ->preload()
@@ -78,7 +87,7 @@ class ProductForm
                     ])->columns(3)->columnSpanFull(),
 
                 Section::make('Options')
-                ->hidden()
+                    ->hidden()
                     ->description('Create options like Color, Size, Material')
                     ->schema([
                         Repeater::make('options')
@@ -264,7 +273,7 @@ class ProductForm
                             ->reorderableWithButtons()
                             ->addActionLabel('Add New Section')
                             ->defaultItems(0)
-                            ->itemLabel(fn (array $state): ?string => $state['title'] ?? null),
+                            ->itemLabel(fn(array $state): ?string => $state['title'] ?? null),
                     ])->columnSpanFull(),
 
             ])->columns(2);

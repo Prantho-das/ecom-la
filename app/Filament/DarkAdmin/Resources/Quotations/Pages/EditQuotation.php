@@ -3,11 +3,10 @@
 namespace App\Filament\DarkAdmin\Resources\Quotations\Pages;
 
 use App\Filament\DarkAdmin\Resources\Quotations\QuotationResource;
-use App\Models\Quotation;
+use App\Services\QuotationCalculationService;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
-use Filament\Schemas\Components\Actions;
 
 class EditQuotation extends EditRecord
 {
@@ -16,19 +15,34 @@ class EditQuotation extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('recalculate')
+                ->label('Recalculate Costs')
+                ->icon('heroicon-o-calculator')
+                ->color('primary')
+                ->action(function () {
+                    $service = new QuotationCalculationService;
+                    $service->recalculateAllItems($this->record);
+
+                    $this->refreshFormData([
+                        'subtotal',
+                        'grand_total',
+                        'export_freight_total',
+                        'items',
+                    ]);
+
+                    \Filament\Notifications\Notification::make()
+                        ->title('Costs Recalculated')
+                        ->success()
+                        ->send();
+                }),
             DeleteAction::make(),
         ];
     }
-    // public static function infolist(Infolist $infolist): Infolist
-    // {
-    //     return $infolist
-    //         ->schema([
-    //             Actions::make([
-    //                 Action::make('convertToOrder')
-    //                     ->label('Convert to Order')
-    //                     ->color('success')
-    //                     ->action(fn(Quotation $record) => $record->convertToOrder()),
-    //             ])
-    //         ]);
-    // }
+
+    protected function afterSave(): void
+    {
+        // Automatically recalculate costs after saving
+        $service = new QuotationCalculationService;
+        $service->recalculateAllItems($this->record);
+    }
 }
