@@ -3,6 +3,7 @@
 namespace App\Filament\DarkAdmin\Resources\Quotations\Tables;
 
 use App\Models\Quotation;
+use Filament\Actions\Action as ActionsAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -102,17 +103,17 @@ class QuotationsTable
                 //
             ])
             ->actions([
-                Action::make('pdf')
-                    ->label('PDF')
-                    ->icon('heroicon-o-document-arrow-down')
-                    ->color('success')
-                    ->action(function (Quotation $record) {
-                        return response()->streamDownload(function () use ($record) {
-                            echo \Barryvdh\DomPDF\Facade\Pdf::loadView('quotations.pdf', ['quotation' => $record])->output();
-                        }, "quotation-{$record->id}.pdf");
-                    }),
-                EditAction::make(),
-                DeleteAction::make(),
+                // ActionsAction::make('pdf')
+                //     ->label('PDF')
+                //     ->icon('heroicon-o-document-arrow-down')
+                //     ->color('success')
+                //     ->action(function (Quotation $record) {
+                //         return response()->streamDownload(function () use ($record) {
+                //             echo \Barryvdh\DomPDF\Facade\Pdf::loadView('quotations.pdf', ['quotation' => $record])->output();
+                //         }, "quotation-{$record->id}.pdf");
+                //     }),
+                // EditAction::make(),
+                // DeleteAction::make(),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

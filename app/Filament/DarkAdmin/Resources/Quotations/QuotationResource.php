@@ -2,10 +2,8 @@
 
 namespace App\Filament\DarkAdmin\Resources\Quotations;
 
-use App\Filament\DarkAdmin\Resources\Quotations\Pages\CreateQuotation;
-use App\Filament\DarkAdmin\Resources\Quotations\Pages\EditQuotation;
 use App\Filament\DarkAdmin\Resources\Quotations\Pages\ListQuotations;
-use App\Filament\DarkAdmin\Resources\Quotations\Schemas\QuotationForm;
+use App\Filament\DarkAdmin\Resources\Quotations\Pages\QuotationBuilder;
 use App\Filament\DarkAdmin\Resources\Quotations\Tables\QuotationsTable;
 use App\Models\Quotation;
 use BackedEnum;
@@ -13,17 +11,18 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use UnitEnum;
+
 class QuotationResource extends Resource
 {
     protected static ?string $model = Quotation::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-list';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Shop';
+    protected static string|UnitEnum|null $navigationGroup = 'Shop';
 
     public static function form(Schema $schema): Schema
     {
-        return QuotationForm::configure($schema);
+        return $schema; // New system uses QuotationBuilder
     }
 
     public static function table(Table $table): Table
@@ -42,8 +41,7 @@ class QuotationResource extends Resource
     {
         return [
             'index' => ListQuotations::route('/'),
-            'create' => CreateQuotation::route('/create'),
-            'edit' => EditQuotation::route('/{record}/edit'),
+            'quotation-builder' => QuotationBuilder::route('/builder'),
         ];
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Filament\DarkAdmin\Resources\Quotations\Pages;
 
 use App\Filament\DarkAdmin\Resources\Quotations\QuotationResource;
-use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListQuotations extends ListRecords
@@ -13,7 +12,11 @@ class ListQuotations extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            \Filament\Actions\Action::make('create_new')
+                ->label('New Quotation System')
+                ->icon('heroicon-o-plus')
+                ->color('primary')
+                ->url(QuotationResource::getUrl('quotation-builder')),
         ];
     }
 }

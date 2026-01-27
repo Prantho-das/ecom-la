@@ -14,6 +14,19 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
+use Rats\Zkteco\Lib\ZKTeco;
+Route::get('/test-finger',function(){
+
+    //  1 s't parameter is string $ip Device IP Address
+    //  2 nd  parameter is integer $port Default: 4370
+
+        $zk = new ZKTeco('192.168.0.145');
+        $zk->connect();
+
+dd($zk);
+    //  or you can use with port
+    //    $zk = new ZKTeco('192.168.1.201', 8080);
+});
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
