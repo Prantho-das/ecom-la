@@ -10,6 +10,7 @@ class QuotationItem extends Model
     use HasFactory;
     protected $fillable = [
         'quotation_id',
+        'product_id',
         'shipment_mode',
         'incoterm',
         'product_name',
@@ -59,6 +60,11 @@ class QuotationItem extends Model
     public function quotation()
     {
         return $this->belongsTo(Quotation::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 
     /**

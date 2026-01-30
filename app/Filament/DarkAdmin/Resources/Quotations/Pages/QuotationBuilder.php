@@ -87,7 +87,7 @@ class QuotationBuilder extends Page
         foreach ($quotation->items as $item) {
             $this->tables[] = [
                 'id' => \Illuminate\Support\Str::uuid()->toString(),
-                'product_id' => '', // variant_id removed
+                'product_id' => $item->product_id, // variant_id removed
                 'selected_incoterm' => $item->incoterm ?? 'DDP',
                 'name' => $item->product_name,
                 'sku' => '', // sku removed from DB
@@ -220,6 +220,7 @@ class QuotationBuilder extends Page
             $costs = $breakdown['costs'];
 
             $quotation->items()->create([
+                'product_id' => $tableData['product_id'] ?: null,
                 'shipment_mode' => 'Sea', // Defaulting to Sea as it matches the previous logic's context
                 'product_name' => $tableData['name'] ?: 'Custom Item',
                 'incoterm' => $selectedIncoterm,
