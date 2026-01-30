@@ -138,8 +138,14 @@ class Quotation extends Model
 
     public function calculateTotals(): void
     {
-        $this->subtotal = $this->items()->sum('row_total');
-        $this->grand_total = $this->subtotal - $this->discount_total + $this->tax_total;
+        // final_unit_price already includes base price + costs + margin + tax + vat
+        $this->subtotal = $this->items()->sum('final_unit_price');
+        
+        // Since final_unit_price already includes tax/vat, we don't need to add tax_total here 
+        // unless discount_total is applied to the gross amount.
+        // For now, following the established pattern of subtotal being the sum of items.
+        $this->grand_total = $this->subtotal - ($this->discount_total ?? 0);
+        
         $this->save();
     }
 }
