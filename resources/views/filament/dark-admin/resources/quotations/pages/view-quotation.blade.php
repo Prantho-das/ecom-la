@@ -1,4 +1,6 @@
 <x-filament-panels::page>
+    <!-- DESIGN VERSION 2.0 -->
+    @vite(['resources/css/app.css'])
     <div class="flex flex-col gap-8">
         {{-- Action Bar --}}
         <div class="flex justify-between items-center bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 sticky top-0 z-10 mx-auto w-full max-w-[1000px]">

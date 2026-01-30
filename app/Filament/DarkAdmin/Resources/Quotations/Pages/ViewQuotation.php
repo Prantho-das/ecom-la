@@ -9,7 +9,10 @@ class ViewQuotation extends ViewRecord
 {
     protected static string $resource = QuotationResource::class;
 
-    protected string $view = 'filament.dark-admin.resources.quotations.pages.view-quotation';
+    public function getView(): string
+    {
+        return 'filament.dark-admin.resources.quotations.pages.view-quotation';
+    }
 
     protected function getHeaderActions(): array
     {
