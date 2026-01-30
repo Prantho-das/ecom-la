@@ -25,7 +25,7 @@
                 </h2>
             </div>
             <div class="flex gap-3">
-                <flux:button href="{{ route('filament.dark-admin.resources.quotations.builder', ['record' => $record->id]) }}" icon="pencil-square" variant="subtle">Edit</flux:button>
+                <flux:button href="{{ route('filament.dark-admin.resources.quotations.quotation-builder', ['record' => $record->id]) }}" icon="pencil-square" variant="subtle">Edit</flux:button>
                 <flux:button href="#" icon="printer" variant="primary">Print PDF</flux:button>
             </div>
         </div>
