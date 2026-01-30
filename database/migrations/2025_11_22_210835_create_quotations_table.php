@@ -24,15 +24,15 @@ return new class extends Migration
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
+
         Schema::create('quotation_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('quotation_id')->constrained()->onDelete('cascade');
-            $table->foreignId('variant_id')->constrained('product_variants')->onDelete('restrict');
-            $table->string('name');
-            $table->string('sku');
+            $table->string('product_name');
+            $table->string('sku')->nullable();
             $table->integer('quantity')->default(1);
-            $table->decimal('price', 16, 6);
-            $table->decimal('row_total', 16, 6);
+            $table->decimal('price', 16, 6)->default(0);
+            $table->decimal('row_total', 16, 6)->default(0);
             $table->timestamps();
         });
     }

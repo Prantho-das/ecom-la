@@ -4,7 +4,6 @@ namespace App\Filament\DarkAdmin\Resources\Quotations\Pages;
 
 use App\Filament\DarkAdmin\Resources\Quotations\QuotationResource;
 use App\Models\ProductVariant;
-use App\Models\Quotation;
 use App\Services\QuotationCalculationService;
 use BackedEnum;
 use Filament\Resources\Pages\Page;
@@ -28,6 +27,10 @@ class QuotationBuilder extends Page
     public $customer_name = '';
 
     public $customer_email = '';
+
+    public $quotation_date;
+
+    public ?int $quotationId = null;
 
     public $currency = 'USD';
 
@@ -54,9 +57,55 @@ class QuotationBuilder extends Page
 
     public $tables = [];
 
-    public function mount(): void
+    public function mount(?int $record = null): void
     {
-        $this->addTable();
+        if ($record) {
+            $this->quotationId = $record;
+            $this->loadQuotation($record);
+        } else {
+            $this->quotation_date = now()->format('Y-m-d');
+            $this->addTable();
+        }
+    }
+
+    public function loadQuotation(int $id): void
+    {
+        $quotation = \App\Models\Quotation::with('items')->findOrFail($id);
+
+        $this->customer_name = $quotation->customer_name;
+        $this->customer_email = $quotation->customer_email;
+        $this->quotation_date = $quotation->quotation_date?->format('Y-m-d') ?? now()->format('Y-m-d');
+        $this->currency = $quotation->currency;
+        $this->conversion_rate = (float) $quotation->conversion_rate;
+        $this->margin = (float) $quotation->margin_percentage;
+        $this->tax = (float) $quotation->tax_percentage;
+        $this->vat = (float) $quotation->vat_percentage;
+
+        // Add a title property or handle it in the view
+        $this->dispatch('update-title', title: 'Edit Quotation: '.$quotation->reference_number);
+
+        $this->tables = [];
+        foreach ($quotation->items as $item) {
+            $this->tables[] = [
+                'id' => \Illuminate\Support\Str::uuid()->toString(),
+                'variant_id' => '', // variant_id removed
+                'selected_incoterm' => $item->incoterm ?? 'DDP',
+                'name' => $item->product_name,
+                'sku' => '', // sku removed from DB
+                'unit_product_price' => (float) $item->unit_price,
+                'config' => [
+                    'export_freight_rate' => $item->unit_price > 0 ? $item->export_freight_local / $item->unit_price : 0,
+                    'export_clearance_rate' => $item->unit_price > 0 ? $item->export_clearance / $item->unit_price : 0,
+                    'origin_thc_rate' => $item->origin_thc,
+                    'origin_thc_qty' => 1,
+                    'int_freight_cbm' => $item->international_freight,
+                    'int_freight_kg' => 1,
+                    'insurance_rate' => $item->unit_price > 0 ? ($item->insurance / $item->unit_price) * 100 : 0,
+                    'import_duties_fixed' => $item->import_duties_taxes,
+                    'import_duties_multiplier' => 1.0,
+                ],
+            ];
+        }
     }
 
     public function addTable(): void
@@ -64,8 +113,8 @@ class QuotationBuilder extends Page
         $this->tables[] = [
             'id' => Str::uuid()->toString(),
             'variant_id' => '',
+            'selected_incoterm' => 'DDP',
             'name' => '',
-            'sku' => '',
             'unit_product_price' => 10000,
             'config' => $this->config,
         ];
@@ -73,13 +122,13 @@ class QuotationBuilder extends Page
 
     public function removeTable($id): void
     {
-        $this->tables = collect($this->tables)->filter(fn($t) => $t['id'] !== $id)->toArray();
+        $this->tables = collect($this->tables)->filter(fn ($t) => $t['id'] !== $id)->toArray();
         $this->tables = array_values($this->tables);
     }
 
     public function duplicateTable($id): void
     {
-        $table = collect($this->tables)->first(fn($t) => $t['id'] === $id);
+        $table = collect($this->tables)->first(fn ($t) => $t['id'] === $id);
         if ($table) {
             $newTable = $table;
             $newTable['id'] = Str::uuid()->toString();
@@ -94,10 +143,21 @@ class QuotationBuilder extends Page
             $variant = ProductVariant::find($value);
             if ($variant) {
                 $this->tables[$index]['name'] = $variant->title;
-                $this->tables[$index]['sku'] = $variant->sku;
                 $this->tables[$index]['unit_product_price'] = $variant->price ?? 10000;
             }
         }
+    }
+
+    public function getCurrencySymbol(): string
+    {
+        return match ($this->currency) {
+            'USD' => '$',
+            'EUR' => '€',
+            'GBP' => '£',
+            'BDT' => '৳',
+            'AED' => 'د.إ',
+            default => '$',
+        };
     }
 
     public function getCalculations(int $index): array
@@ -118,59 +178,81 @@ class QuotationBuilder extends Page
     public function save(): void
     {
         $this->validate([
-            'customer_name' => 'required',
-            'customer_email' => 'required|email',
+            'customer_name' => 'required|string|max:255',
+            'customer_email' => 'required|email|max:255',
+            'quotation_date' => 'required|date',
+            'currency' => 'required|string|in:USD,EUR,GBP,BDT,AED',
             'tables' => 'required|array|min:1',
         ]);
 
-        $quotation = Quotation::create([
-            'customer_name' => $this->customer_name,
-            'customer_email' => $this->customer_email,
-            'currency' => $this->currency,
-            'conversion_rate' => $this->conversion_rate,
-            'margin_percentage' => $this->margin,
-            'tax_percentage' => $this->tax,
-            'vat_percentage' => $this->vat,
-            'status' => 'draft',
-        ]);
+        if ($this->quotationId) {
+            $quotation = \App\Models\Quotation::findOrFail($this->quotationId);
+            $quotation->update([
+                'customer_name' => $this->customer_name,
+                'customer_email' => $this->customer_email,
+                'quotation_date' => $this->quotation_date,
+                'currency' => $this->currency,
+                'conversion_rate' => $this->conversion_rate,
+                'margin_percentage' => $this->margin,
+                'tax_percentage' => $this->tax,
+                'vat_percentage' => $this->vat,
+            ]);
 
-        foreach ($this->tables as $index => $tableData) {
-            $calcs = $this->getCalculations($index);
-
-            // We'll save the 'BDT' or 'DDP' breakdown as the canonical one
-            $breakdown = $calcs['BDT'] ?? $calcs['DDP'] ?? end($calcs);
-            $costs = $breakdown['costs'];
-
-            $quotation->items()->create([
-                'variant_id' => $tableData['variant_id'] ?: null,
-                'name' => $tableData['name'] ?: 'Custom Item',
-                'sku' => $tableData['sku'] ?: 'NA',
-                'quantity' => 1,
-                'unit_product_price' => $tableData['unit_product_price'],
-
-                // Detailed Costs
-                'export_freight' => $costs['ef'] ?? 0,
-                'export_clearance' => $costs['ec'] ?? 0,
-                'origin_handling' => $costs['oh'] ?? 0,
-                'international_freight' => $costs['inf'] ?? 0,
-                'insurance' => $costs['ins'] ?? 0,
-                'import_duties' => $costs['id'] ?? 0,
-                'handling_charges' => $costs['hc'] ?? 0,
-                'inland_transport' => $costs['it'] ?? 0,
-
-                // Computed Values
-                'cost_factor' => $breakdown['cf'],
-                'unit_price_with_costs' => $breakdown['up'],
-                'unit_price_with_margin' => $breakdown['up_mg'],
-                'final_unit_price' => $breakdown['final'],
-                'price' => $breakdown['final'],
-                'row_total' => $breakdown['final'], // 1 * final_unit_price
+            // Delete old items to recreate them
+            $quotation->items()->delete();
+        } else {
+            $quotation = \App\Models\Quotation::create([
+                'customer_name' => $this->customer_name,
+                'customer_email' => $this->customer_email,
+                'quotation_date' => $this->quotation_date,
+                'currency' => $this->currency,
+                'conversion_rate' => $this->conversion_rate,
+                'margin_percentage' => $this->margin,
+                'tax_percentage' => $this->tax,
+                'vat_percentage' => $this->vat,
+                'status' => 'draft',
             ]);
         }
 
-        // Calculate totals and save
+        foreach ($this->tables as $index => $tableData) {
+            $calcs = $this->getCalculations($index);
+            $selectedIncoterm = $tableData['selected_incoterm'] ?? 'DDP';
+            $breakdown = $calcs[$selectedIncoterm] ?? $calcs['DDP'];
+            $costs = $breakdown['costs'];
+
+            $quotation->items()->create([
+                'shipment_mode' => 'Sea', // Defaulting to Sea as it matches the previous logic's context
+                'product_name' => $tableData['name'] ?: 'Custom Item',
+                'incoterm' => $selectedIncoterm,
+                'currency' => $this->currency,
+                'unit_price' => $tableData['unit_product_price'],
+                'export_freight_local' => $costs['ef'] ?? 0,
+                'export_clearance' => $costs['ec'] ?? 0,
+                'origin_thc' => $costs['oh'] ?? 0,
+                'international_freight' => $costs['inf'] ?? 0,
+                'insurance' => $costs['ins'] ?? 0,
+                'import_duties_taxes' => $costs['id'] ?? 0,
+                'handling_charges_import' => $costs['hc'] ?? 0,
+                'inland_transport' => $costs['it'] ?? 0,
+                'conversion_rate' => $this->conversion_rate,
+                'cost_factor' => $breakdown['cf'],
+                'mg_amount' => (float) $breakdown['final'] - (float) $breakdown['up'], // Estimation of margin amount
+                'tax_percent' => $this->tax / 100,
+                'vat_percent' => $this->vat / 100,
+                'unit_price_exwork' => $breakdown['up'],
+                'unit_price_with_mg' => (float) $breakdown['up_mg'],
+                'final_unit_price' => (float) $breakdown['final'],
+            ]);
+        }
+
         $quotation->calculateTotals();
 
-        $this->redirect(QuotationResource::getUrl('index'));
+        \Filament\Notifications\Notification::make()
+            ->success()
+            ->title($this->quotationId ? 'Quotation Updated' : 'Quotation Created')
+            ->body('The quotation has been saved successfully.')
+            ->send();
+
+        $this->redirect(\App\Filament\DarkAdmin\Resources\Quotations\QuotationResource::getUrl('index'));
     }
 }

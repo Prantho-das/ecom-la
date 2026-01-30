@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Quotation extends Model
 {
+    use HasFactory;
     protected $fillable = [
+        'reference_number',
+        'quotation_date',
         'customer_name',
         'customer_email',
         'shipping_method',
@@ -35,9 +39,21 @@ class Quotation extends Model
         'expires_at',
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($quotation) {
+            if (empty($quotation->reference_number)) {
+                $latest = static::latest('id')->first();
+                $nextId = $latest ? $latest->id + 1 : 1;
+                $quotation->reference_number = 'QT-'.date('Ymd').'-'.str_pad($nextId, 4, '0', STR_PAD_LEFT);
+            }
+        });
+    }
+
     protected function casts(): array
     {
         return [
+            'quotation_date' => 'date',
             'expires_at' => 'datetime',
             'conversion_rate' => 'decimal:4',
             'margin_percentage' => 'decimal:2',
@@ -97,13 +113,13 @@ class Quotation extends Model
             );
 
             // Aggregate totals
-            $totals['export_freight'] += $item->export_freight;
+            $totals['export_freight'] += $item->export_freight_local;
             $totals['export_clearance'] += $item->export_clearance;
-            $totals['origin_handling'] += $item->origin_handling;
+            $totals['origin_handling'] += $item->origin_thc;
             $totals['international_freight'] += $item->international_freight;
             $totals['insurance'] += $item->insurance;
-            $totals['import_duties'] += $item->import_duties;
-            $totals['handling_charges'] += $item->handling_charges;
+            $totals['import_duties'] += $item->import_duties_taxes;
+            $totals['handling_charges'] += $item->handling_charges_import;
             $totals['inland_transport'] += $item->inland_transport;
         }
 

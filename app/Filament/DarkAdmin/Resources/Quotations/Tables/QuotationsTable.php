@@ -2,11 +2,10 @@
 
 namespace App\Filament\DarkAdmin\Resources\Quotations\Tables;
 
+use App\Filament\DarkAdmin\Resources\Quotations\QuotationResource;
 use App\Models\Quotation;
-use Filament\Actions\Action as ActionsAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\BadgeColumn;
@@ -29,6 +28,11 @@ class QuotationsTable
                     ->searchable()
                     ->sortable(),
 
+                TextColumn::make('quotation_date')
+                    ->label('Quotation Date')
+                    ->date()
+                    ->sortable(),
+
                 TextColumn::make('customer_email')
                     ->label('Email')
                     ->searchable()
@@ -44,7 +48,7 @@ class QuotationsTable
                         'heroicon-o-truck' => 'sea',
                         'heroicon-o-paper-airplane' => 'air',
                     ])
-                    ->formatStateUsing(fn(string $state): string => strtoupper($state)),
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state)),
 
                 BadgeColumn::make('pricing_tier')
                     ->label('Pricing Tier')
@@ -57,7 +61,7 @@ class QuotationsTable
                         'danger' => 'ddp',
                         'secondary' => 'bdt_local',
                     ])
-                    ->formatStateUsing(fn(string $state): string => strtoupper(str_replace('_', '/', $state))),
+                    ->formatStateUsing(fn (string $state): string => strtoupper(str_replace('_', '/', $state))),
 
                 TextColumn::make('currency')
                     ->label('Currency')
@@ -103,17 +107,12 @@ class QuotationsTable
                 //
             ])
             ->actions([
-                // ActionsAction::make('pdf')
-                //     ->label('PDF')
-                //     ->icon('heroicon-o-document-arrow-down')
-                //     ->color('success')
-                //     ->action(function (Quotation $record) {
-                //         return response()->streamDownload(function () use ($record) {
-                //             echo \Barryvdh\DomPDF\Facade\Pdf::loadView('quotations.pdf', ['quotation' => $record])->output();
-                //         }, "quotation-{$record->id}.pdf");
-                //     }),
-                // EditAction::make(),
-                // DeleteAction::make(),
+                Action::make('edit_builder')
+                    ->label('Edit')
+                    ->icon('heroicon-o-pencil-square')
+                    ->color('info')
+                    ->url(fn (Quotation $record) => QuotationResource::getUrl('quotation-builder', ['record' => $record->id])),
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

@@ -41,7 +41,7 @@ class QuotationResource extends Resource
     {
         return [
             'index' => ListQuotations::route('/'),
-            'quotation-builder' => QuotationBuilder::route('/builder'),
+            'quotation-builder' => QuotationBuilder::route('/builder/{record?}'),
         ];
     }
 }

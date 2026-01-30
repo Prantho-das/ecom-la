@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>Canon LiDE 220 - Try Silent Scan (No Modal if Possible)</title>
+    <script src="https://cdn.asprise.com/scannerjs/scanner.js"></script>
+    <style>
+        body { font-family: Arial; text-align: center; margin: 40px; }
+        button { padding: 15px 40px; font-size: 22px; background: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer; }
+        #status { margin: 20px; font-size: 18px; color: #dc3545; font-weight: bold; }
+        #images img { max-width: 450px; margin: 15px; border: 2px solid #007bff; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<h1>Canon LiDE 220 - Modal ছাড়া স্ক্যান ট্রাই (Silent Mode)</h1>
+<p>যদি modal এখনও আসে, তাহলে Canon ড্রাইভারের লিমিটেশন।</p>
+
+<button onclick="silentScan();">স্ক্যান শুরু করো (Silent Attempt)</button>
+
+<div id="images"></div>
+<div id="status"></div>
+
+<script>
+    function silentScan() {
+        document.getElementById('status').innerHTML = "স্ক্যান চেষ্টা করছি... (modal ছাড়া)";
+
+        scanner.scan(displayResult, {
+            "source_name": "default",                // অথবা exact name: "Canon CanoScan LiDE 220" বা "WIA-Canon LiDE 220"
+            "use_asprise_dialog": false,
+            "show_scanner_ui": false,                // ← Canon UI বন্ধ করার চেষ্টা
+            "scanner_settings": {                    // প্রি-সেট সবকিছু যাতে UI না লাগে
+                "ICAP_XRESOLUTION": 220,
+                "ICAP_YRESOLUTION": 220,
+                "ICAP_PIXELTYPE": "TWPT_RGB",        // Color
+                "ICAP_UNITS": "TWUN_INCHES",
+                "ICAP_SUPPORTEDSIZES": "TWSS_USLETTER"  // অথবা A4: TWSS_A4
+            },
+            "output_settings": [{
+                "type": "return-base64",
+                "format": "jpg"
+            }]
+        });
+    }
+
+    function displayResult(successful, mesg, response) {
+        document.getElementById('status').innerHTML = "";
+
+        if (!successful) {
+            document.getElementById('status').innerHTML = "ফেল: " + (mesg || "Scanner UI required or error");
+            console.error(mesg, response);
+            return;
+        }
+
+        var images = scanner.getScannedImages(response, true, false);
+        images.forEach(img => {
+            let el = document.createElement('img');
+            el.src = img.src;
+            document.getElementById('images').appendChild(el);
+        });
+
+        document.getElementById('status').innerHTML = "স্ক্যান সফল! (যদি modal না আসে)";
+    }
+
+    // Exact source name চেক করতে (Console-এ দেখুন)
+    scanner.listSources(function(suc, msg, sources) {
+        console.log("Available Scanners:", sources);
+    });
+</script>
+
+<p><small>F12 চাপুন → Console-এ স্ক্যানার নাম দেখুন। যদি "Canon CanoScan LiDE 220" বা "WIA-..." দেখেন, তাহলে source_name-এ সেটা দিন।</small></p>
+
+</body>
+</html>

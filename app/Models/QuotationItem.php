@@ -2,55 +2,56 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class QuotationItem extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'quotation_id',
-        'variant_id',
-        'name',
-        'sku',
-        'quantity',
-        'price',
-        'row_total',
-        'weight_kg',
-        'volume_cbm',
-        'unit_product_price',
-        'export_freight',
+        'shipment_mode',
+        'incoterm',
+        'product_name',
+        'currency',
+        'unit_price',
+        'export_freight_local',
         'export_clearance',
-        'origin_handling',
+        'origin_thc',
         'international_freight',
         'insurance',
-        'import_duties',
-        'handling_charges',
+        'import_duties_taxes',
+        'handling_charges_import',
         'inland_transport',
+        'conversion_rate',
         'cost_factor',
-        'unit_price_with_costs',
-        'unit_price_with_margin',
+        'mg_amount',
+        'tax_percent',
+        'vat_percent',
+        'unit_price_exwork',
+        'unit_price_with_mg',
         'final_unit_price',
     ];
 
     protected function casts(): array
     {
         return [
-            'quantity' => 'integer',
-            'weight_kg' => 'decimal:2',
-            'volume_cbm' => 'decimal:4',
-            'unit_product_price' => 'decimal:6',
-            'price' => 'decimal:6',
-            'row_total' => 'decimal:6',
-            'export_freight' => 'decimal:6',
+            'unit_price' => 'decimal:6',
+            'export_freight_local' => 'decimal:6',
             'export_clearance' => 'decimal:6',
-            'origin_handling' => 'decimal:6',
+            'origin_thc' => 'decimal:6',
             'international_freight' => 'decimal:6',
             'insurance' => 'decimal:6',
-            'import_duties' => 'decimal:6',
-            'handling_charges' => 'decimal:6',
+            'import_duties_taxes' => 'decimal:6',
+            'handling_charges_import' => 'decimal:6',
             'inland_transport' => 'decimal:6',
+            'conversion_rate' => 'decimal:4',
             'cost_factor' => 'decimal:6',
-            'unit_price_with_costs' => 'decimal:6',
-            'unit_price_with_margin' => 'decimal:6',
+            'mg_amount' => 'decimal:6',
+            'tax_percent' => 'decimal:4',
+            'vat_percent' => 'decimal:4',
+            'unit_price_exwork' => 'decimal:6',
+            'unit_price_with_mg' => 'decimal:6',
             'final_unit_price' => 'decimal:6',
         ];
     }
@@ -58,11 +59,6 @@ class QuotationItem extends Model
     public function quotation()
     {
         return $this->belongsTo(Quotation::class);
-    }
-
-    public function variant()
-    {
-        return $this->belongsTo(ProductVariant::class, 'variant_id');
     }
 
     /**
@@ -77,7 +73,7 @@ class QuotationItem extends Model
         float $taxPercentage,
         float $vatPercentage
     ): void {
-        $basePrice = $this->unit_product_price;
+        $basePrice = $this->unit_price;
 
         // Reset all costs first
         $this->resetCosts();
@@ -108,23 +104,19 @@ class QuotationItem extends Model
         }
 
         // Calculate cost factor (sum of all additional costs)
-        $this->cost_factor = $this->export_freight + $this->export_clearance +
-            $this->origin_handling + $this->international_freight +
-            $this->insurance + $this->import_duties +
-            $this->handling_charges + $this->inland_transport;
+        $this->cost_factor = $this->export_freight_local + $this->export_clearance +
+            $this->origin_thc + $this->international_freight +
+            $this->insurance + $this->import_duties_taxes +
+            $this->handling_charges_import + $this->inland_transport;
 
         // Unit price with all costs
-        $this->unit_price_with_costs = $basePrice + $this->cost_factor;
+        $this->unit_price_exwork = $basePrice + $this->cost_factor;
 
         // Apply margin (MG%)
-        $this->unit_price_with_margin = $this->unit_price_with_costs * (1 + $marginPercentage / 100);
+        $this->unit_price_with_mg = $this->unit_price_exwork * (1 + $marginPercentage / 100);
 
         // Apply tax and VAT
-        $this->final_unit_price = round($this->unit_price_with_margin * (1 + $taxPercentage + $vatPercentage), 0);
-
-        // Update price and row total
-        $this->price = $this->final_unit_price;
-        $this->row_total = $this->final_unit_price * $this->quantity;
+        $this->final_unit_price = round($this->unit_price_with_mg * (1 + $taxPercentage + $vatPercentage), 0);
 
         $this->save();
     }
@@ -134,13 +126,13 @@ class QuotationItem extends Model
      */
     private function resetCosts(): void
     {
-        $this->export_freight = 0;
+        $this->export_freight_local = 0;
         $this->export_clearance = 0;
-        $this->origin_handling = 0;
+        $this->origin_thc = 0;
         $this->international_freight = 0;
         $this->insurance = 0;
-        $this->import_duties = 0;
-        $this->handling_charges = 0;
+        $this->import_duties_taxes = 0;
+        $this->handling_charges_import = 0;
         $this->inland_transport = 0;
     }
 
@@ -161,16 +153,16 @@ class QuotationItem extends Model
     private function calculateFOB(float $basePrice, ShippingConfiguration $config): void
     {
         // Export freight = Base Price × 3%
-        $this->export_freight = $basePrice * $config->export_freight_rate;
+        $this->export_freight_local = $basePrice * $config->export_freight_rate;
 
         // Export clearance = Base Price × 1.5%
         $this->export_clearance = $basePrice * $config->export_clearance_rate;
 
         // Origin handling (THC for sea, airport handling for air)
         if ($this->quotation->shipping_method === 'sea') {
-            $this->origin_handling = ($this->volume_cbm ?? 0) * $config->origin_thc_per_cbm;
+            $this->origin_thc = ($this->volume_cbm ?? 0) * $config->origin_thc_per_cbm;
         } else {
-            $this->origin_handling = ($this->weight_kg ?? 0) * $config->airport_handling_per_kg;
+            $this->origin_thc = ($this->weight_kg ?? 0) * $config->airport_handling_per_kg;
         }
     }
 
@@ -214,7 +206,7 @@ class QuotationItem extends Model
         $this->calculateCIF($basePrice, $config);
 
         // Add handling charges (fixed)
-        $this->handling_charges = $config->handling_charges_fixed;
+        $this->handling_charges_import = $config->handling_charges_fixed;
 
         // Add inland transport (fixed)
         $this->inland_transport = $config->inland_transport_fixed;
@@ -230,7 +222,7 @@ class QuotationItem extends Model
         $this->calculateDDU($basePrice, $config);
 
         // Add import duties = Fixed amount × Multiplier
-        $this->import_duties = $config->import_duties_fixed * $config->import_duties_multiplier;
+        $this->import_duties_taxes = $config->import_duties_fixed * $config->import_duties_multiplier;
     }
 
     /**
