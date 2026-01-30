@@ -52,9 +52,9 @@
                 <div wire:key="table-{{ $table['id'] }}" class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
                     <div class="px-6 py-4 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
                         <div class="flex items-center gap-4">
-                            <flux:select wire:model.live="tables.{{ $t_idx }}.variant_id" placeholder="Choose a product model..." class="w-80">
-                                @foreach(\App\Models\ProductVariant::with('product')->get() as $v)
-                                    <flux:select.option value="{{ $v->id }}">{{ $v->product->name }} ({{ $v->title }})</flux:select.option>
+                            <flux:select wire:model.live="tables.{{ $t_idx }}.product_id" placeholder="Choose a product..." class="w-80">
+                                @foreach(\App\Models\Product::all() as $p)
+                                    <flux:select.option value="{{ $p->id }}">{{ $p->name }}</flux:select.option>
                                 @endforeach
                             </flux:select>
                         </div>

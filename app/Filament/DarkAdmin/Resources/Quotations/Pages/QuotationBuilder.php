@@ -3,7 +3,6 @@
 namespace App\Filament\DarkAdmin\Resources\Quotations\Pages;
 
 use App\Filament\DarkAdmin\Resources\Quotations\QuotationResource;
-use App\Models\ProductVariant;
 use App\Services\QuotationCalculationService;
 use BackedEnum;
 use Filament\Resources\Pages\Page;
@@ -88,7 +87,7 @@ class QuotationBuilder extends Page
         foreach ($quotation->items as $item) {
             $this->tables[] = [
                 'id' => \Illuminate\Support\Str::uuid()->toString(),
-                'variant_id' => '', // variant_id removed
+                'product_id' => '', // variant_id removed
                 'selected_incoterm' => $item->incoterm ?? 'DDP',
                 'name' => $item->product_name,
                 'sku' => '', // sku removed from DB
@@ -112,7 +111,7 @@ class QuotationBuilder extends Page
     {
         $this->tables[] = [
             'id' => Str::uuid()->toString(),
-            'variant_id' => '',
+            'product_id' => '',
             'selected_incoterm' => 'DDP',
             'name' => '',
             'unit_product_price' => 10000,
@@ -138,12 +137,12 @@ class QuotationBuilder extends Page
 
     public function updatedTables($value, $key): void
     {
-        if (Str::endsWith($key, '.variant_id')) {
+        if (Str::endsWith($key, '.product_id')) {
             $index = explode('.', $key)[0];
-            $variant = ProductVariant::find($value);
-            if ($variant) {
-                $this->tables[$index]['name'] = $variant->title;
-                $this->tables[$index]['unit_product_price'] = $variant->price ?? 10000;
+            $product = \App\Models\Product::find($value);
+            if ($product) {
+                $this->tables[$index]['name'] = $product->name;
+                $this->tables[$index]['unit_product_price'] = $product->price ?? 10000;
             }
         }
     }
