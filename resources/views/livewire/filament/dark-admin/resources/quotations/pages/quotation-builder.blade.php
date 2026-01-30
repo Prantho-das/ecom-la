@@ -23,6 +23,18 @@
                     @error('quotation_date') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </flux:field>
                 <flux:field>
+                    <flux:label>Attn</flux:label>
+                    <flux:input wire:model="attn" placeholder="Contact person" />
+                </flux:field>
+                <flux:field>
+                    <flux:label>Payment Term</flux:label>
+                    <flux:input wire:model="payment_term" placeholder="e.g. TT Before Delivery" />
+                </flux:field>
+                <flux:field>
+                    <flux:label>Customer PO</flux:label>
+                    <flux:input wire:model="customer_po" placeholder="PO Number" />
+                </flux:field>
+                <flux:field>
                     <flux:label>Currency <span class="text-red-500">*</span></flux:label>
                     <flux:select wire:model.live="currency" class="min-w-[120px]">
                         <flux:select.option value="USD">USD ($)</flux:select.option>
@@ -34,7 +46,23 @@
                     @error('currency') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </flux:field>
             </div>
-            <div class="flex gap-3 w-full md:w-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+                <flux:field class="md:col-span-2">
+                    <flux:label>Customer Address</flux:label>
+                    <flux:textarea wire:model="customer_address" placeholder="Full address" rows="2" />
+                </flux:field>
+                <div class="space-y-4">
+                    <flux:field>
+                        <flux:label>Phone</flux:label>
+                        <flux:input wire:model="customer_phone" placeholder="Phone number" />
+                    </flux:field>
+                    <flux:field>
+                        <flux:label>Fax</flux:label>
+                        <flux:input wire:model="customer_fax" placeholder="Fax number" />
+                    </flux:field>
+                </div>
+            </div>
+            <div class="flex gap-3 w-full md:w-auto self-end">
                 <flux:button wire:click="addTable" icon="plus" variant="subtle">Add Product</flux:button>
                 <flux:button wire:click="save" variant="primary" icon="check" wire:loading.attr="disabled">
                     <span wire:loading.remove wire:target="save">Save Quotation</span>
@@ -69,6 +97,8 @@
                             <thead>
                                 <tr class="bg-zinc-50 dark:bg-zinc-800/30 border-b border-zinc-200 dark:border-zinc-800">
                                     <th class="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 w-32">Incoterm</th>
+                                    <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 w-24">Qty</th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 w-24">Uom</th>
                                     <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[160px]">Unit Product Price</th>
                                     <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[140px]">Export Freight</th>
                                     <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[140px]">Export Clearance</th>
@@ -92,6 +122,12 @@
                                 {{-- Config Row --}}
                                 <tr class="bg-zinc-50/50 dark:bg-zinc-800/20">
                                     <td class="px-4 py-3 font-bold text-zinc-400 border-r border-zinc-200 dark:border-zinc-800 text-xs">-- CONFIG --</td>
+                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                        <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.quantity" class="text-right w-20" />
+                                    </td>
+                                    <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800">
+                                        <flux:input size="sm" wire:model.live="tables.{{ $t_idx }}.uom" class="w-20" />
+                                    </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                         <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.unit_product_price" class="text-right font-bold text-indigo-600 dark:text-indigo-400 w-36" />
                                     </td>
@@ -148,6 +184,12 @@
                                             <flux:select.option value="DDP">DDP</flux:select.option>
                                         </flux:select>
                                     </td>
+                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
+                                        {{ number_format($table['quantity'], 0) }}
+                                    </td>
+                                    <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
+                                        {{ $table['uom'] }}
+                                    </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
                                         {{ number_format($table['unit_product_price'], 0) }}
                                     </td>
@@ -199,6 +241,12 @@
                                 @if($bdtCalc)
                                 <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors bg-indigo-50/30 dark:bg-indigo-500/5">
                                     <td class="px-4 py-3 border-r border-zinc-200 dark:border-zinc-800 font-bold text-indigo-600 dark:text-indigo-400 text-sm">BDT</td>
+                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
+                                        {{ number_format($table['quantity'], 0) }}
+                                    </td>
+                                    <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
+                                        {{ $table['uom'] }}
+                                    </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
                                         {{ number_format($table['unit_product_price'], 0) }}
                                     </td>
@@ -256,7 +304,12 @@
                                 {{-- BDT (Local) Row --}}
                                 @if($bdtLocalCalc)
                                 <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors bg-indigo-50/30 dark:bg-indigo-500/5">
-                                    <td class="px-4 py-3 border-r border-zinc-200 dark:border-zinc-800 font-bold text-indigo-600 dark:text-indigo-400 text-sm">BDT (Local)</td>
+                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
+                                        {{ number_format($table['quantity'], 0) }}
+                                    </td>
+                                    <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
+                                        {{ $table['uom'] }}
+                                    </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">—</td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
                                         {{ $bdtLocalCalc['costs']['ef'] ? number_format($bdtLocalCalc['costs']['ef'], 0) : '—' }}

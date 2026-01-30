@@ -13,6 +13,12 @@ class Quotation extends Model
         'quotation_date',
         'customer_name',
         'customer_email',
+        'customer_address',
+        'customer_phone',
+        'customer_fax',
+        'attn',
+        'payment_term',
+        'customer_po',
         'shipping_method',
         'pricing_tier',
         'currency',
@@ -138,8 +144,8 @@ class Quotation extends Model
 
     public function calculateTotals(): void
     {
-        // final_unit_price already includes base price + costs + margin + tax + vat
-        $this->subtotal = $this->items()->sum('final_unit_price');
+        // row_total already includes final_unit_price * quantity
+        $this->subtotal = $this->items()->sum('row_total');
         
         // Since final_unit_price already includes tax/vat, we don't need to add tax_total here 
         // unless discount_total is applied to the gross amount.

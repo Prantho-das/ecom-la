@@ -11,6 +11,8 @@ class QuotationItem extends Model
     protected $fillable = [
         'quotation_id',
         'product_id',
+        'quantity',
+        'uom',
         'shipment_mode',
         'incoterm',
         'product_name',
@@ -32,6 +34,7 @@ class QuotationItem extends Model
         'unit_price_exwork',
         'unit_price_with_mg',
         'final_unit_price',
+        'row_total',
     ];
 
     protected function casts(): array
@@ -54,6 +57,7 @@ class QuotationItem extends Model
             'unit_price_exwork' => 'decimal:6',
             'unit_price_with_mg' => 'decimal:6',
             'final_unit_price' => 'decimal:6',
+            'row_total' => 'decimal:6',
         ];
     }
 
@@ -123,6 +127,7 @@ class QuotationItem extends Model
 
         // Apply tax and VAT
         $this->final_unit_price = round($this->unit_price_with_mg * (1 + $taxPercentage + $vatPercentage), 0);
+        $this->row_total = $this->final_unit_price * ($this->quantity ?? 1);
 
         $this->save();
     }

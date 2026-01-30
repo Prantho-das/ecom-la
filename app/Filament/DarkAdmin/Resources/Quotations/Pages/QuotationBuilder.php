@@ -26,7 +26,12 @@ class QuotationBuilder extends Page
     public $customer_name = '';
 
     public $customer_email = '';
-
+    public $customer_address = '';
+    public $customer_phone = '';
+    public $customer_fax = '';
+    public $attn = '';
+    public $payment_term = 'TT Before Delivery';
+    public $customer_po = '';
     public $quotation_date;
 
     public ?int $quotationId = null;
@@ -73,6 +78,12 @@ class QuotationBuilder extends Page
 
         $this->customer_name = $quotation->customer_name;
         $this->customer_email = $quotation->customer_email;
+        $this->customer_address = $quotation->customer_address;
+        $this->customer_phone = $quotation->customer_phone;
+        $this->customer_fax = $quotation->customer_fax;
+        $this->attn = $quotation->attn;
+        $this->payment_term = $quotation->payment_term ?? 'TT Before Delivery';
+        $this->customer_po = $quotation->customer_po;
         $this->quotation_date = $quotation->quotation_date?->format('Y-m-d') ?? now()->format('Y-m-d');
         $this->currency = $quotation->currency;
         $this->conversion_rate = (float) $quotation->conversion_rate;
@@ -87,10 +98,11 @@ class QuotationBuilder extends Page
         foreach ($quotation->items as $item) {
             $this->tables[] = [
                 'id' => \Illuminate\Support\Str::uuid()->toString(),
-                'product_id' => $item->product_id, // variant_id removed
+                'product_id' => $item->product_id, 
                 'selected_incoterm' => $item->incoterm ?? 'DDP',
                 'name' => $item->product_name,
-                'sku' => '', // sku removed from DB
+                'quantity' => $item->quantity ?? 1,
+                'uom' => $item->uom ?? 'UNIT',
                 'unit_product_price' => (float) $item->unit_price,
                 'config' => [
                     'export_freight_rate' => $item->unit_price > 0 ? $item->export_freight_local / $item->unit_price : 0,
@@ -114,6 +126,8 @@ class QuotationBuilder extends Page
             'product_id' => '',
             'selected_incoterm' => 'DDP',
             'name' => '',
+            'quantity' => 1,
+            'uom' => 'UNIT',
             'unit_product_price' => 10000,
             'config' => $this->config,
         ];
@@ -189,6 +203,12 @@ class QuotationBuilder extends Page
             $quotation->update([
                 'customer_name' => $this->customer_name,
                 'customer_email' => $this->customer_email,
+                'customer_address' => $this->customer_address,
+                'customer_phone' => $this->customer_phone,
+                'customer_fax' => $this->customer_fax,
+                'attn' => $this->attn,
+                'payment_term' => $this->payment_term,
+                'customer_po' => $this->customer_po,
                 'quotation_date' => $this->quotation_date,
                 'currency' => $this->currency,
                 'conversion_rate' => $this->conversion_rate,
@@ -203,6 +223,12 @@ class QuotationBuilder extends Page
             $quotation = \App\Models\Quotation::create([
                 'customer_name' => $this->customer_name,
                 'customer_email' => $this->customer_email,
+                'customer_address' => $this->customer_address,
+                'customer_phone' => $this->customer_phone,
+                'customer_fax' => $this->customer_fax,
+                'attn' => $this->attn,
+                'payment_term' => $this->payment_term,
+                'customer_po' => $this->customer_po,
                 'quotation_date' => $this->quotation_date,
                 'currency' => $this->currency,
                 'conversion_rate' => $this->conversion_rate,
@@ -221,6 +247,8 @@ class QuotationBuilder extends Page
 
             $quotation->items()->create([
                 'product_id' => $tableData['product_id'] ?: null,
+                'quantity' => $tableData['quantity'] ?? 1,
+                'uom' => $tableData['uom'] ?? 'UNIT',
                 'shipment_mode' => 'Sea', // Defaulting to Sea as it matches the previous logic's context
                 'product_name' => $tableData['name'] ?: 'Custom Item',
                 'incoterm' => $selectedIncoterm,
