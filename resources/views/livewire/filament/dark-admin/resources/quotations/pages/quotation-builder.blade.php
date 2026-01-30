@@ -65,13 +65,13 @@
                     <div class="md:col-span-1 space-y-6">
                         <flux:field>
                             <flux:label>Switch Currency <span class="text-red-500">*</span></flux:label>
-                            <flux:select wire:model.live="currency">
+                            {{-- <flux:select wire:model.live="currency">
                                 <flux:select.option value="USD">USD ($)</flux:select.option>
                                 <flux:select.option value="EUR">EUR (€)</flux:select.option>
                                 <flux:select.option value="GBP">GBP (£)</flux:select.option>
                                 <flux:select.option value="BDT">BDT (৳)</flux:select.option>
                                 <flux:select.option value="AED">AED (د.إ)</flux:select.option>
-                            </flux:select>
+                            </flux:select> --}}
                         </flux:field>
                         <flux:field>
                             <flux:label>Phone Number</flux:label>
@@ -103,11 +103,11 @@
                 <div wire:key="table-{{ $table['id'] }}" class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
                     <div class="px-6 py-4 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
                         <div class="flex items-center gap-4">
-                            <flux:select wire:model.live="tables.{{ $t_idx }}.product_id" placeholder="Choose a product..." class="w-80">
+                            {{-- <flux:select wire:model.live="tables.{{ $t_idx }}.product_id" placeholder="Choose a product..." class="w-80">
                                 @foreach(\App\Models\Product::all() as $p)
                                     <flux:select.option value="{{ $p->id }}">{{ $p->name }}</flux:select.option>
                                 @endforeach
-                            </flux:select>
+                            </flux:select> --}}
                         </div>
                         <div class="flex items-center gap-2">
                             <flux:button wire:click="duplicateTable('{{ $table['id'] }}')" size="sm" variant="ghost" icon="square-2-stack">Duplicate</flux:button>
@@ -198,14 +198,14 @@
                                 {{-- USD Incoterm Row (Consolidated with Dropdown) --}}
                                 <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
                                     <td class="px-4 py-3 border-r border-zinc-200 dark:border-zinc-800">
-                                        <flux:select wire:model.live="tables.{{ $t_idx }}.selected_incoterm" size="sm" class="min-w-[120px]">
+                                        {{-- <flux:select wire:model.live="tables.{{ $t_idx }}.selected_incoterm" size="sm" class="min-w-[120px]">
                                             <flux:select.option value="Exwork">Exwork</flux:select.option>
                                             <flux:select.option value="FOB">FOB</flux:select.option>
                                             <flux:select.option value="CFR">CFR</flux:select.option>
                                             <flux:select.option value="CIF">CIF</flux:select.option>
                                             <flux:select.option value="DDU/DAP">DDU/DAP</flux:select.option>
                                             <flux:select.option value="DDP">DDP</flux:select.option>
-                                        </flux:select>
+                                        </flux:select> --}}
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
                                         {{ number_format($table['quantity'], 0) }}
