@@ -28,11 +28,12 @@ return new class extends Migration
         Schema::create('quotation_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('quotation_id')->constrained()->onDelete('cascade');
-            $table->string('product_name');
-            $table->string('sku')->nullable();
+            $table->foreignId('variant_id')->constrained('product_variants')->onDelete('restrict');
+            $table->string('name');
+            $table->string('sku');
             $table->integer('quantity')->default(1);
-            $table->decimal('price', 16, 6)->default(0);
-            $table->decimal('row_total', 16, 6)->default(0);
+            $table->decimal('price', 16, 6);
+            $table->decimal('row_total', 16, 6);
             $table->timestamps();
         });
     }
