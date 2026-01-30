@@ -162,16 +162,15 @@ class QuotationBuilder extends Page
     }
 
     public function getCurrencySymbol(): string
-    {
-        return match ($this->currency) {
-            'USD' => '$',
-            'EUR' => '€',
-            'GBP' => '£',
-            'BDT' => '৳',
-            'AED' => 'د.إ',
-            default => '$',
-        };
-    }
+{
+    if ($this->currency === 'USD') return '$';
+    if ($this->currency === 'EUR') return '€';
+    if ($this->currency === 'GBP') return '£';
+    if ($this->currency === 'BDT') return '৳';
+    if ($this->currency === 'AED') return 'د.إ';
+    
+    return '$';
+}
 
     public function getCalculations(int $index): array
     {
