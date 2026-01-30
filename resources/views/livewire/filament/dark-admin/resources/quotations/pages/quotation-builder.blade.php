@@ -146,10 +146,10 @@
                                 <tr class="bg-zinc-50/50 dark:bg-zinc-800/20">
                                     <td class="px-4 py-3 font-bold text-zinc-400 border-r border-zinc-200 dark:border-zinc-800 text-xs">-- CONFIG --</td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                        <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.quantity" class="text-right w-20" />
+
                                     </td>
                                     <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800">
-                                        <flux:input size="sm" wire:model.live="tables.{{ $t_idx }}.uom" class="w-20" />
+
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                         <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.unit_product_price" class="text-right font-bold text-indigo-600 dark:text-indigo-400 w-36" />
