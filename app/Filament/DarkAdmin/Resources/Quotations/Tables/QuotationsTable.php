@@ -11,6 +11,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Actions\ViewAction;
 
 class QuotationsTable
 {
@@ -96,17 +97,15 @@ class QuotationsTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-
-                TextColumn::make('expires_at')
-                    ->label('Expires')
-                    ->date()
-                    ->sortable()
-                    ->toggleable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                ViewAction::make()
+                    ->label('View')
+                    ->icon('heroicon-o-eye')
+                    ->color('success'),
                 Action::make('edit_builder')
                     ->label('Edit')
                     ->icon('heroicon-o-pencil-square')

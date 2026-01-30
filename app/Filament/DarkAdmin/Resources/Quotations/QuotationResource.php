@@ -4,6 +4,7 @@ namespace App\Filament\DarkAdmin\Resources\Quotations;
 
 use App\Filament\DarkAdmin\Resources\Quotations\Pages\ListQuotations;
 use App\Filament\DarkAdmin\Resources\Quotations\Pages\QuotationBuilder;
+use App\Filament\DarkAdmin\Resources\Quotations\Pages\ViewQuotation;
 use App\Filament\DarkAdmin\Resources\Quotations\Tables\QuotationsTable;
 use App\Models\Quotation;
 use BackedEnum;
@@ -42,6 +43,7 @@ class QuotationResource extends Resource
         return [
             'index' => ListQuotations::route('/'),
             'quotation-builder' => QuotationBuilder::route('/builder/{record?}'),
+            'view' => ViewQuotation::route('/{record}'),
         ];
     }
 }
