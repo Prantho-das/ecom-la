@@ -22,6 +22,7 @@
         'outline' => 2,
         'mini' => 2.25,
         'micro' => 2.5,
+        default => 2,
     };
 @endphp
 
