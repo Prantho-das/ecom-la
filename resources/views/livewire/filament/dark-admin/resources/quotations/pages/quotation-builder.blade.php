@@ -31,7 +31,7 @@
                     <div class="md:col-span-1 space-y-6">
                         <flux:field>
                             <flux:label>Customer Name <span class="text-red-500">*</span></flux:label>
-                            <flux:input wire:model="customer_name" placeholder="Business or Name" variant="pill" />
+                            <flux:input wire:model="customer_name" placeholder="Business or Name" />
                             @error('customer_name') <span class="text-red-500 text-[10px] font-bold">{{ $message }}</span> @enderror
                         </flux:field>
                         <flux:field>
