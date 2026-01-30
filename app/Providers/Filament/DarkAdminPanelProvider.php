@@ -36,7 +36,9 @@ class DarkAdminPanelProvider extends PanelProvider
             ->default()
             ->colors([
                 'primary' => Color::Green,
-            ])->spa()->sidebarCollapsibleOnDesktop()
+            ])
+            ->spa()
+            ->sidebarCollapsibleOnDesktop()
             ->brandLogo(function () use ($site_logo) {
                 if (!empty($site_logo)) {
                     $logoUrl = asset('storage/' . $site_logo);

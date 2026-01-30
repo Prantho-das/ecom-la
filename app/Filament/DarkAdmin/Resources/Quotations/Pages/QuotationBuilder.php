@@ -5,6 +5,7 @@ namespace App\Filament\DarkAdmin\Resources\Quotations\Pages;
 use App\Filament\DarkAdmin\Resources\Quotations\QuotationResource;
 use App\Models\ProductVariant;
 use App\Models\Quotation;
+use App\Services\QuotationCalculationService;
 use BackedEnum;
 use Filament\Resources\Pages\Page;
 use Filament\Support\Icons\Heroicon;
@@ -72,13 +73,13 @@ class QuotationBuilder extends Page
 
     public function removeTable($id): void
     {
-        $this->tables = collect($this->tables)->filter(fn ($t) => $t['id'] !== $id)->toArray();
+        $this->tables = collect($this->tables)->filter(fn($t) => $t['id'] !== $id)->toArray();
         $this->tables = array_values($this->tables);
     }
 
     public function duplicateTable($id): void
     {
-        $table = collect($this->tables)->first(fn ($t) => $t['id'] === $id);
+        $table = collect($this->tables)->first(fn($t) => $t['id'] === $id);
         if ($table) {
             $newTable = $table;
             $newTable['id'] = Str::uuid()->toString();
@@ -99,6 +100,21 @@ class QuotationBuilder extends Page
         }
     }
 
+    public function getCalculations(int $index): array
+    {
+        $table = $this->tables[$index];
+        $service = app(QuotationCalculationService::class);
+
+        return $service->calculateMatrix(
+            (float) $table['unit_product_price'],
+            $table['config'],
+            (float) $this->conversion_rate,
+            (float) $this->margin,
+            (float) $this->tax,
+            (float) $this->vat
+        );
+    }
+
     public function save(): void
     {
         $this->validate([
@@ -107,7 +123,6 @@ class QuotationBuilder extends Page
             'tables' => 'required|array|min:1',
         ]);
 
-        // For now, saving as a draft quotation with items based on DDP row logic
         $quotation = Quotation::create([
             'customer_name' => $this->customer_name,
             'customer_email' => $this->customer_email,
@@ -119,18 +134,42 @@ class QuotationBuilder extends Page
             'status' => 'draft',
         ]);
 
-        foreach ($this->tables as $tableData) {
-            // Logic to persist the chosen model and its calculated DDP price
-            // (Assuming user wants to save the DDP version or we save the whole matrix configuration)
+        foreach ($this->tables as $index => $tableData) {
+            $calcs = $this->getCalculations($index);
+
+            // We'll save the 'BDT' or 'DDP' breakdown as the canonical one
+            $breakdown = $calcs['BDT'] ?? $calcs['DDP'] ?? end($calcs);
+            $costs = $breakdown['costs'];
+
             $quotation->items()->create([
                 'variant_id' => $tableData['variant_id'] ?: null,
                 'name' => $tableData['name'] ?: 'Custom Item',
                 'sku' => $tableData['sku'] ?: 'NA',
-                'unit_product_price' => $tableData['unit_product_price'],
                 'quantity' => 1,
-                // Additional cost fields map to the model attributes...
+                'unit_product_price' => $tableData['unit_product_price'],
+
+                // Detailed Costs
+                'export_freight' => $costs['ef'] ?? 0,
+                'export_clearance' => $costs['ec'] ?? 0,
+                'origin_handling' => $costs['oh'] ?? 0,
+                'international_freight' => $costs['inf'] ?? 0,
+                'insurance' => $costs['ins'] ?? 0,
+                'import_duties' => $costs['id'] ?? 0,
+                'handling_charges' => $costs['hc'] ?? 0,
+                'inland_transport' => $costs['it'] ?? 0,
+
+                // Computed Values
+                'cost_factor' => $breakdown['cf'],
+                'unit_price_with_costs' => $breakdown['up'],
+                'unit_price_with_margin' => $breakdown['up_mg'],
+                'final_unit_price' => $breakdown['final'],
+                'price' => $breakdown['final'],
+                'row_total' => $breakdown['final'], // 1 * final_unit_price
             ]);
         }
+
+        // Calculate totals and save
+        $quotation->calculateTotals();
 
         $this->redirect(QuotationResource::getUrl('index'));
     }
