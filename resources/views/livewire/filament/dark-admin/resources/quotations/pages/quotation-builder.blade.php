@@ -5,69 +5,92 @@
     @vite(['resources/css/app.css'])
     <div class="space-y-8">
         {{-- Header Section --}}
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white dark:bg-zinc-900 p-6 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800">
-            <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-                <flux:field>
-                    <flux:label>Customer Name <span class="text-red-500">*</span></flux:label>
-                    <flux:input wire:model="customer_name" placeholder="Enter customer name" />
-                    @error('customer_name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </flux:field>
-                <flux:field>
-                    <flux:label>Email Address <span class="text-red-500">*</span></flux:label>
-                    <flux:input type="email" wire:model="customer_email" placeholder="Enter email address" />
-                    @error('customer_email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </flux:field>
-                <flux:field>
-                    <flux:label>Quotation Date <span class="text-red-500">*</span></flux:label>
-                    <flux:input type="date" wire:model="quotation_date" />
-                    @error('quotation_date') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </flux:field>
-                <flux:field>
-                    <flux:label>Attn</flux:label>
-                    <flux:input wire:model="attn" placeholder="Contact person" />
-                </flux:field>
-                <flux:field>
-                    <flux:label>Payment Term</flux:label>
-                    <flux:input wire:model="payment_term" placeholder="e.g. TT Before Delivery" />
-                </flux:field>
-                <flux:field>
-                    <flux:label>Customer PO</flux:label>
-                    <flux:input wire:model="customer_po" placeholder="PO Number" />
-                </flux:field>
-                <flux:field>
-                    <flux:label>Currency <span class="text-red-500">*</span></flux:label>
-                    <flux:select wire:model.live="currency" class="min-w-[120px]">
-                        <flux:select.option value="USD">USD ($)</flux:select.option>
-                        <flux:select.option value="EUR">EUR (€)</flux:select.option>
-                        <flux:select.option value="GBP">GBP (£)</flux:select.option>
-                        <flux:select.option value="BDT">BDT (৳)</flux:select.option>
-                        <flux:select.option value="AED">AED (د.إ)</flux:select.option>
-                    </flux:select>
-                    @error('currency') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </flux:field>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                <flux:field class="md:col-span-2">
-                    <flux:label>Customer Address</flux:label>
-                    <flux:textarea wire:model="customer_address" placeholder="Full address" rows="2" />
-                </flux:field>
-                <div class="space-y-4">
-                    <flux:field>
-                        <flux:label>Phone</flux:label>
-                        <flux:input wire:model="customer_phone" placeholder="Phone number" />
-                    </flux:field>
-                    <flux:field>
-                        <flux:label>Fax</flux:label>
-                        <flux:input wire:model="customer_fax" placeholder="Fax number" />
-                    </flux:field>
+        <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-zinc-100 dark:border-zinc-800/50 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-800/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-600/20">
+                        <flux:icon icon="document-text" class="w-5 h-5" />
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black uppercase tracking-widest text-zinc-900 dark:text-zinc-100">Customer Metadata</h3>
+                        <p class="text-[10px] font-bold text-zinc-400 uppercase">Specify recipient & reference details</p>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <flux:button wire:click="addTable" icon="plus" variant="subtle" size="sm" class="font-black uppercase text-[10px] tracking-widest">Add Product</flux:button>
+                    <flux:button wire:click="save" variant="primary" icon="check" size="sm" wire:loading.attr="disabled" class="font-black uppercase text-[10px] tracking-widest shadow-lg shadow-indigo-600/20">
+                        <span wire:loading.remove wire:target="save">Save Quote</span>
+                        <span wire:loading wire:target="save">Saving...</span>
+                    </flux:button>
                 </div>
             </div>
-            <div class="flex gap-3 w-full md:w-auto self-end">
-                <flux:button wire:click="addTable" icon="plus" variant="subtle">Add Product</flux:button>
-                <flux:button wire:click="save" variant="primary" icon="check" wire:loading.attr="disabled">
-                    <span wire:loading.remove wire:target="save">Save Quotation</span>
-                    <span wire:loading wire:target="save">Saving...</span>
-                </flux:button>
+
+            <div class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    {{-- Basic Info --}}
+                    <div class="md:col-span-1 space-y-6">
+                        <flux:field>
+                            <flux:label>Customer Name <span class="text-red-500">*</span></flux:label>
+                            <flux:input wire:model="customer_name" placeholder="Business or Name" variant="pill" />
+                            @error('customer_name') <span class="text-red-500 text-[10px] font-bold">{{ $message }}</span> @enderror
+                        </flux:field>
+                        <flux:field>
+                            <flux:label>Email Address <span class="text-red-500">*</span></flux:label>
+                            <flux:input type="email" wire:model="customer_email" placeholder="email@example.com" />
+                            @error('customer_email') <span class="text-red-500 text-[10px] font-bold">{{ $message }}</span> @enderror
+                        </flux:field>
+                        <flux:field>
+                            <flux:label>Quotation Date <span class="text-red-500">*</span></flux:label>
+                            <flux:input type="date" wire:model="quotation_date" />
+                        </flux:field>
+                    </div>
+
+                    {{-- References --}}
+                    <div class="md:col-span-1 space-y-6">
+                        <flux:field>
+                            <flux:label>Attention To</flux:label>
+                            <flux:input wire:model="attn" placeholder="Contact Person" />
+                        </flux:field>
+                        <flux:field>
+                            <flux:label>Payment Term</flux:label>
+                            <flux:input wire:model="payment_term" placeholder="TT Before Delivery" />
+                        </flux:field>
+                        <flux:field>
+                            <flux:label>Customer PO Ref</flux:label>
+                            <flux:input wire:model="customer_po" placeholder="PO-12345" />
+                        </flux:field>
+                    </div>
+
+                    {{-- Communication --}}
+                    <div class="md:col-span-1 space-y-6">
+                        <flux:field>
+                            <flux:label>Switch Currency <span class="text-red-500">*</span></flux:label>
+                            <flux:select wire:model.live="currency">
+                                <flux:select.option value="USD">USD ($)</flux:select.option>
+                                <flux:select.option value="EUR">EUR (€)</flux:select.option>
+                                <flux:select.option value="GBP">GBP (£)</flux:select.option>
+                                <flux:select.option value="BDT">BDT (৳)</flux:select.option>
+                                <flux:select.option value="AED">AED (د.إ)</flux:select.option>
+                            </flux:select>
+                        </flux:field>
+                        <flux:field>
+                            <flux:label>Phone Number</flux:label>
+                            <flux:input wire:model="customer_phone" placeholder="+00 000 0000" />
+                        </flux:field>
+                        <flux:field>
+                            <flux:label>Fax Number</flux:label>
+                            <flux:input wire:model="customer_fax" placeholder="+00 000 0000" />
+                        </flux:field>
+                    </div>
+
+                    {{-- Full Address --}}
+                    <div class="md:col-span-1">
+                        <flux:field class="h-full">
+                            <flux:label>Office Address</flux:label>
+                            <flux:textarea wire:model="customer_address" placeholder="Line 1, Line 2, Zip, Country" class="h-[calc(100%-2rem)]" rows="8" />
+                        </flux:field>
+                    </div>
+                </div>
             </div>
         </div>
 
