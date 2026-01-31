@@ -122,7 +122,7 @@
                                     <th class="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 w-32">Incoterm</th>
                                     <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 w-24">Qty</th>
                                     <th class="px-4 py-3 text-left text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 w-24">Uom</th>
-                                    <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[160px]">Unit Product Price</th>
+                                    <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Unit Price / Curr</th>
                                     <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[140px]">Export Freight</th>
                                     <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[140px]">Export Clearance</th>
                                     <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[180px]">Origin THC (Rate/Qty)</th>
@@ -134,10 +134,11 @@
                                     <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Conv. Rate</th>
                                     <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Factor</th>
                                     <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Unit Price</th>
+                                    <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[100px]">MG %</th>
                                     <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Price + MG</th>
-                                    <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">MG</th>
-                                    <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">TAX</th>
-                                    <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">VAT</th>
+                                    <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[80px]">TAX %</th>
+                                    <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[80px]">VAT %</th>
+                                    <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[80px]">Disc %</th>
                                     <th class="px-4 py-3 text-right text-xs font-semibold text-white bg-indigo-600 dark:bg-indigo-500 uppercase tracking-wider rounded-tr-xl">Final Price</th>
                                 </tr>
                             </thead>
@@ -152,7 +153,16 @@
 
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                        <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.unit_product_price" class="text-right font-bold text-indigo-600 dark:text-indigo-400 w-36" />
+                                        <div class="flex gap-1">
+                                            <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.unit_product_price" class="text-right font-bold text-indigo-600 dark:text-indigo-400 w-24" />
+                                            <flux:select size="sm" wire:model.live="tables.{{ $t_idx }}.currency" class="w-20">
+                                                <flux:select.option value="USD">USD</flux:select.option>
+                                                <flux:select.option value="EUR">EUR</flux:select.option>
+                                                <flux:select.option value="GBP">GBP</flux:select.option>
+                                                <flux:select.option value="BDT">BDT</flux:select.option>
+                                                <flux:select.option value="AED">AED</flux:select.option>
+                                            </flux:select>
+                                        </div>
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                         <flux:input size="sm" type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.export_freight_rate" class="text-right w-32" />
@@ -247,16 +257,30 @@
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
                                         {{ number_format($selectedCalc['up'], 0) }}
                                     </td>
+                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-amber-600 font-bold text-sm">
+                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.margin" size="sm" class="text-right w-16" />
+                                    </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm font-medium">
                                         {{ number_format($selectedCalc['up_mg'], 0) }}
                                     </td>
-                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-amber-600 font-bold text-sm">
-                                        {{ $margin }}%
+                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
+                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.tax" size="sm" class="text-right w-16" />
                                     </td>
-                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">—</td>
-                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">—</td>
+                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
+                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.vat" size="sm" class="text-right w-16" />
+                                    </td>
+                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
+                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.discount" size="sm" class="text-right w-16" />
+                                    </td>
                                     <td class="px-4 py-3 text-right font-bold text-sm text-indigo-600 dark:text-indigo-400">
-                                        {{ $this->getCurrencySymbol() }}{{ number_format($selectedCalc['final'], 0) }}
+                                        {{-- Use the table specific currency symbol based on selection if needed, or global? User asked for product wise currency. --}}
+                                        @php
+                                            $curr = $table['currency'] ?? $this->currency;
+                                            $sym = match($curr) {
+                                                'USD' => '$', 'EUR' => '€', 'GBP' => '£', 'BDT' => '৳', 'AED' => 'د.إ', default => '$'
+                                            };
+                                        @endphp
+                                        <span class="text-xs text-gray-400 mr-1">{{ $curr }}</span>{{ $sym }}{{ number_format($selectedCalc['final'], 0) }}
                                     </td>
                                 </tr>
 
@@ -310,13 +334,13 @@
                                         {{ number_format($bdtCalc['up_mg'], 0) }}
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-amber-600 font-bold text-sm">
-                                        {{ $margin }}%
+                                        {{ $table['margin'] ?? 0 }}%
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                        {{ $tax }}%
+                                        {{ $table['tax'] ?? 0 }}%
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                        {{ $vat }}%
+                                        {{ $table['vat'] ?? 0 }}%
                                     </td>
                                     <td class="px-4 py-3 text-right font-bold text-sm text-purple-700 dark:text-purple-400">
                                         ৳{{ number_format($bdtCalc['final'], 0) }}
@@ -369,13 +393,13 @@
                                         {{ number_format($bdtLocalCalc['up_mg'], 0) }}
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-amber-600 font-bold text-sm">
-                                        {{ $margin }}%
+                                        {{ $table['margin'] ?? 0 }}%
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                        {{ $tax }}%
+                                        {{ $table['tax'] ?? 0 }}%
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                        {{ $vat }}%
+                                        {{ $table['vat'] ?? 0 }}%
                                     </td>
                                     <td class="px-4 py-3 text-right font-bold text-sm text-purple-700 dark:text-purple-400">
                                         ৳{{ number_format($bdtLocalCalc['final'], 0) }}

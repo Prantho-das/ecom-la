@@ -104,6 +104,11 @@ class QuotationBuilder extends Page
                 'quantity' => $item->quantity ?? 1,
                 'uom' => $item->uom ?? 'UNIT',
                 'unit_product_price' => (float) $item->unit_price,
+                'currency' => $item->currency ?? $this->currency,
+                'margin' => (float) $item->margin_percentage,
+                'tax' => (float) ($item->tax_percent * 100),
+                'vat' => (float) ($item->vat_percent * 100),
+                'discount' => (float) $item->discount_percentage,
                 'config' => [
                     'export_freight_rate' => $item->unit_price > 0 ? $item->export_freight_local / $item->unit_price : 0,
                     'export_clearance_rate' => $item->unit_price > 0 ? $item->export_clearance / $item->unit_price : 0,
@@ -129,6 +134,11 @@ class QuotationBuilder extends Page
             'quantity' => 1,
             'uom' => 'UNIT',
             'unit_product_price' => 10000,
+            'currency' => $this->currency,
+            'margin' => $this->margin,
+            'tax' => $this->tax,
+            'vat' => $this->vat,
+            'discount' => 0,
             'config' => $this->config,
         ];
     }
@@ -181,9 +191,10 @@ class QuotationBuilder extends Page
             (float) $table['unit_product_price'],
             $table['config'],
             (float) $this->conversion_rate,
-            (float) $this->margin,
-            (float) $this->tax,
-            (float) $this->vat
+            (float) ($table['margin'] ?? 0),
+            (float) ($table['tax'] ?? 0),
+            (float) ($table['vat'] ?? 0),
+            (float) ($table['discount'] ?? 0)
         );
     }
 
@@ -251,7 +262,7 @@ class QuotationBuilder extends Page
                 'shipment_mode' => 'Sea', // Defaulting to Sea as it matches the previous logic's context
                 'product_name' => $tableData['name'] ?: 'Custom Item',
                 'incoterm' => $selectedIncoterm,
-                'currency' => $this->currency,
+                'currency' => $tableData['currency'] ?? $this->currency,
                 'unit_price' => $tableData['unit_product_price'],
                 'export_freight_local' => $costs['ef'] ?? 0,
                 'export_clearance' => $costs['ec'] ?? 0,
@@ -264,8 +275,10 @@ class QuotationBuilder extends Page
                 'conversion_rate' => $this->conversion_rate,
                 'cost_factor' => $breakdown['cf'],
                 'mg_amount' => (float) $breakdown['final'] - (float) $breakdown['up'], // Estimation of margin amount
-                'tax_percent' => $this->tax / 100,
-                'vat_percent' => $this->vat / 100,
+                'tax_percent' => ($tableData['tax'] ?? 0) / 100,
+                'vat_percent' => ($tableData['vat'] ?? 0) / 100,
+                'margin_percentage' => $tableData['margin'] ?? 0,
+                'discount_percentage' => $tableData['discount'] ?? 0,
                 'unit_price_exwork' => $breakdown['up'],
                 'unit_price_with_mg' => (float) $breakdown['up_mg'],
                 'final_unit_price' => (float) $breakdown['final'],

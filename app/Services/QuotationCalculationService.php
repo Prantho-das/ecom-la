@@ -43,16 +43,18 @@ class QuotationCalculationService
             $quotation->pricing_tier,
             $config,
             $quotation->conversion_rate,
-            $quotation->margin_percentage,
-            $quotation->tax_percentage,
-            $quotation->vat_percentage
+            (float) $item->margin_percentage,
+            (float) ($item->tax_percent * 100),
+            (float) ($item->vat_percent * 100)
+            // Note: calculateItemCosts on model needs update if we want to support discount usage there too, 
+            // but the builder uses calculateMatrix directly.
         );
     }
 
     /**
      * Calculate a matrix of incoterms based on provided parameters
      */
-    public function calculateMatrix(float $base, array $conf, float $conversionRate, float $margin, float $tax, float $vat): array
+    public function calculateMatrix(float $base, array $conf, float $conversionRate, float $margin, float $tax, float $vat, float $discount = 0): array
     {
         $c_ef = $base * ($conf['export_freight_rate'] / 100);
         $c_ec = $base * ($conf['export_clearance_rate'] / 100);
@@ -91,7 +93,7 @@ class QuotationCalculationService
 
             $up_mg = $up * (1 + $margin / 100);
             $tax_vat_multiplier = 1 + ($tax + $vat) / 100;
-            $final = $up_mg * $tax_vat_multiplier;
+            $final = ($up_mg * $tax_vat_multiplier) * (1 - $discount / 100);
 
             $results[$name] = [
                 'costs' => $v,

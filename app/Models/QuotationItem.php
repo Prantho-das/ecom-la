@@ -35,6 +35,8 @@ class QuotationItem extends Model
         'unit_price_with_mg',
         'final_unit_price',
         'row_total',
+        'margin_percentage',
+        'discount_percentage',
     ];
 
     protected function casts(): array
@@ -58,6 +60,8 @@ class QuotationItem extends Model
             'unit_price_with_mg' => 'decimal:6',
             'final_unit_price' => 'decimal:6',
             'row_total' => 'decimal:6',
+            'margin_percentage' => 'decimal:2',
+            'discount_percentage' => 'decimal:2',
         ];
     }
 
