@@ -9,14 +9,13 @@ export default {
         extend: {},
     },
 
-    // ⛔ Turn OFF dark mode completely
-    darkMode: false,
+    // ✅ Enable dark mode via class
+    darkMode: "class",
 
     plugins: [require("daisyui")],
 
     daisyui: {
-        themes: ["light"], // ✔ Only light theme
-        darkTheme: false,  // ⛔ Disable dark theme
+        themes: ["light", "dark"], // ✅ Support both themes
         base: true,
     },
 };

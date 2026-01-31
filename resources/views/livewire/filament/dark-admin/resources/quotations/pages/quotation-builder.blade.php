@@ -6,7 +6,7 @@
     <div class="space-y-8">
         {{-- Header Section --}}
         <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-sm overflow-hidden">
-            <div class="p-6 border-b border-zinc-100 dark:border-zinc-800/50 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-800/20">
+            <div class="p-6 border-b border-zinc-200 dark:border-zinc-800/50 flex justify-between items-center bg-zinc-50 dark:bg-zinc-800/40">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-600/20">
                         <flux:icon icon="document-text" class="w-5 h-5" />
@@ -171,7 +171,7 @@
                                         </thead>
                                         <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">
                                             {{-- Config Row --}}
-                                            <tr class="bg-zinc-50/50 dark:bg-zinc-800/20">
+                                            <tr class="bg-zinc-50 dark:bg-zinc-800/40">
                                                 <td class="px-4 py-3 font-bold text-zinc-400 border-r border-zinc-200 dark:border-zinc-800 text-xs">-- CONFIG --</td>
                                                 <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
 
@@ -227,7 +227,7 @@
                                                 <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                                     <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.inland_transport_global" class="text-right w-40" />
                                                 </td>
-                                                <td colspan="9" class="p-4 bg-gray-50/30 dark:bg-gray-800/20"></td>
+                                                <td colspan="9" class="p-4 bg-zinc-100 dark:bg-zinc-800/60 font-black text-[9px] text-zinc-400 uppercase tracking-[0.2em] text-center italic">Pricing Configuration Inputs</td>
                                             </tr>
 
                                             {{-- Breakdown Rows --}}

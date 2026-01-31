@@ -55,8 +55,8 @@
                             <div class="font-black text-xl tracking-tight mb-2">{{ $record->customer_name }}</div>
                             <div class="text-xs font-bold text-zinc-500 mb-4">{{ $record->customer_email }}</div>
                             
-                            @if($record->customer_address)
-                                <div class="text-sm whitespace-pre-line text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-[320px]">{{ $record->customer_address }}</div>
+                             @if($record->customer_address)
+                                <div class="text-sm border-l-4 border-indigo-100 dark:border-indigo-900/30 pl-4 whitespace-pre-line text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-[320px]">{{ $record->customer_address }}</div>
                             @else
                                 <div class="text-zinc-300 dark:text-zinc-600 italic text-sm">No office address registered</div>
                             @endif
@@ -192,17 +192,17 @@
                     </div>
 
                     <div class="space-y-6">
-                        <div class="bg-zinc-900 dark:bg-zinc-100 p-6 rounded-xl text-zinc-100 dark:text-zinc-900 shadow-xl shadow-zinc-900/10">
-                            <h3 class="font-black uppercase tracking-[0.2em] mb-4 text-[9px] opacity-60">Settlement Account</h3>
-                            <div class="space-y-3">
+                        <div class="bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-xl text-zinc-900 dark:text-zinc-100 shadow-sm border border-zinc-100 dark:border-zinc-800">
+                            <h3 class="font-black uppercase tracking-[0.2em] mb-4 text-[9px] text-zinc-400">Settlement Account</h3>
+                            <div class="space-y-4">
                                 <div>
-                                    <div class="font-black text-sm uppercase mb-0.5">CIMB Bank Berhad</div>
-                                    <div class="text-[9px] opacity-70 uppercase leading-snug">Wisma Esther Robert, Lorong Batu Nilam 4B, Bandar Bukit Tinggi, 41200 Klang, Selangor</div>
+                                    <div class="font-black text-sm uppercase mb-1 tracking-tight text-indigo-600 dark:text-indigo-400">CIMB Bank Berhad</div>
+                                    <div class="text-[9px] text-zinc-500 uppercase leading-snug">Wisma Esther Robert, Lorong Batu Nilam 4B, Bandar Bukit Tinggi, 41200 Klang, Selangor</div>
                                 </div>
-                                <div class="pt-3 border-t border-white/10 dark:border-black/10">
-                                    <div class="text-[8px] uppercase font-black mb-1 opacity-50">Account Number</div>
-                                    <div class="font-black text-lg tracking-wider text-indigo-400 dark:text-indigo-600">800004305840</div>
-                                    <div class="text-[9px] font-bold mt-1">SWIFT: CIMBBMYKL (for {{ $record->currency }} transfers)</div>
+                                <div class="pt-4 border-t border-zinc-200 dark:border-zinc-700">
+                                    <div class="text-[8px] uppercase font-black mb-1 text-zinc-400">Account Number</div>
+                                    <div class="font-black text-2xl tracking-tighter text-zinc-900 dark:text-zinc-100">800004305840</div>
+                                    <div class="text-[9px] font-bold mt-1 text-zinc-500 tracking-tight">SWIFT: CIMBBMYKL (for {{ $record->currency }} transfers)</div>
                                 </div>
                             </div>
                         </div>
