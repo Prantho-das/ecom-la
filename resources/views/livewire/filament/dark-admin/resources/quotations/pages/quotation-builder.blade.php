@@ -64,16 +64,6 @@
                     {{-- Communication --}}
                     <div class="md:col-span-1 space-y-6">
                         <flux:field>
-                            <flux:label>Switch Currency <span class="text-red-500">*</span></flux:label>
-                            <flux:select wire:model.live="currency">
-                                <flux:select.option value="USD">USD ($)</flux:select.option>
-                                <flux:select.option value="EUR">EUR (€)</flux:select.option>
-                                <flux:select.option value="GBP">GBP (£)</flux:select.option>
-                                <flux:select.option value="BDT">BDT (৳)</flux:select.option>
-                                <flux:select.option value="AED">AED (د.إ)</flux:select.option>
-                            </flux:select>
-                        </flux:field>
-                        <flux:field>
                             <flux:label>Phone Number</flux:label>
                             <flux:input wire:model="customer_phone" placeholder="+00 000 0000" />
                         </flux:field>
@@ -430,24 +420,7 @@
                     </div>
                 </flux:field>
 
-                <flux:field>
-                    <flux:label>Global Margin (%)</flux:label>
-                    <div class="flex items-center gap-2">
-                        <flux:input type="number" wire:model.live="margin" class="w-full font-bold text-amber-600" />
-                        <span class="text-sm font-bold text-zinc-500">%</span>
-                    </div>
-                </flux:field>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <flux:field>
-                        <flux:label>Tax (%)</flux:label>
-                        <flux:input type="number" wire:model.live="tax" />
-                    </flux:field>
-                    <flux:field>
-                        <flux:label>VAT (%)</flux:label>
-                        <flux:input type="number" wire:model.live="vat" />
-                    </flux:field>
-                </div>
+                <div class="md:col-span-2"></div>
 
                 <div class="flex items-center justify-end">
                     <div class="text-right">
