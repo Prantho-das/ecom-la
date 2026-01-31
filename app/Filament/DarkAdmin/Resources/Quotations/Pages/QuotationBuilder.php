@@ -112,17 +112,17 @@ class QuotationBuilder extends Page
                 'vat' => (float) ($item->vat_percent * 100),
                 'discount' => (float) $item->discount_percentage,
                 'config' => [
-                    'export_freight_rate' => $item->unit_price > 0 ? $item->export_freight_local / $item->unit_price : 0,
-                    'export_clearance_rate' => $item->unit_price > 0 ? $item->export_clearance / $item->unit_price : 0,
-                    'origin_thc_rate' => $item->origin_thc,
-                    'origin_thc_qty' => 1,
-                    'int_freight_cbm' => $item->international_freight,
-                    'int_freight_kg' => 1,
-                    'insurance_rate' => $item->unit_price > 0 ? ($item->insurance / $item->unit_price) * 100 : 0,
-                    'import_duties_fixed' => $item->import_duties_taxes,
-                    'import_duties_multiplier' => 1.0,
-                    'handling_charges_global' => $item->handling_charges_import,
-                    'inland_transport_global' => $item->inland_transport,
+                    'export_freight_rate' => (float) $item->export_freight_rate,
+                    'export_clearance_rate' => (float) $item->export_clearance_rate,
+                    'origin_thc_rate' => (float) $item->origin_thc_rate,
+                    'origin_thc_qty' => (float) $item->origin_thc_qty,
+                    'int_freight_cbm' => (float) $item->int_freight_rate_1,
+                    'int_freight_kg' => (float) $item->int_freight_rate_2,
+                    'insurance_rate' => (float) $item->insurance_rate,
+                    'import_duties_fixed' => (float) $item->import_duties_fixed,
+                    'import_duties_multiplier' => (float) $item->import_duties_multiplier,
+                    'handling_charges_global' => (float) $item->handling_charges_global,
+                    'inland_transport_global' => (float) $item->inland_transport_global,
                 ],
             ];
         }
@@ -137,7 +137,7 @@ class QuotationBuilder extends Page
             'name' => '',
             'quantity' => 1,
             'uom' => 'UNIT',
-            'unit_product_price' => 10000,
+            'unit_product_price' => 0,
             'currency' => $this->currency,
             'margin' => $this->margin,
             'tax' => $this->tax,
@@ -170,7 +170,7 @@ class QuotationBuilder extends Page
             $product = \App\Models\Product::find($value);
             if ($product) {
                 $this->tables[$index]['name'] = $product->name;
-                $this->tables[$index]['unit_product_price'] = $product->price ?? 10000;
+                $this->tables[$index]['unit_product_price'] = $product->price ?? 0;
             }
         }
     }
@@ -276,9 +276,20 @@ class QuotationBuilder extends Page
                 'import_duties_taxes' => $costs['id'] ?? 0,
                 'handling_charges_import' => $costs['hc'] ?? 0,
                 'inland_transport' => $costs['it'] ?? 0,
+                'export_freight_rate' => $tableData['config']['export_freight_rate'] ?? 0,
+                'export_clearance_rate' => $tableData['config']['export_clearance_rate'] ?? 0,
+                'origin_thc_rate' => $tableData['config']['origin_thc_rate'] ?? 0,
+                'origin_thc_qty' => $tableData['config']['origin_thc_qty'] ?? 1,
+                'int_freight_rate_1' => $tableData['config']['int_freight_cbm'] ?? 0,
+                'int_freight_rate_2' => $tableData['config']['int_freight_kg'] ?? 1,
+                'insurance_rate' => $tableData['config']['insurance_rate'] ?? 0,
+                'import_duties_fixed' => $tableData['config']['import_duties_fixed'] ?? 0,
+                'import_duties_multiplier' => $tableData['config']['import_duties_multiplier'] ?? 1,
+                'handling_charges_global' => $tableData['config']['handling_charges_global'] ?? 0,
+                'inland_transport_global' => $tableData['config']['inland_transport_global'] ?? 0,
                 'conversion_rate' => $this->conversion_rate,
                 'cost_factor' => $breakdown['cf'],
-                'mg_amount' => (float) $breakdown['final'] - (float) $breakdown['up'], // Estimation of margin amount
+                'mg_amount' => (float) $breakdown['up_mg'] - (float) $breakdown['up'], // Corrected: price_with_mg - cost_factor_total_price
                 'tax_percent' => ($tableData['tax'] ?? 0) / 100,
                 'vat_percent' => ($tableData['vat'] ?? 0) / 100,
                 'margin_percentage' => $tableData['margin'] ?? 0,

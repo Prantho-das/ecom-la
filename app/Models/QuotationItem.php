@@ -37,6 +37,17 @@ class QuotationItem extends Model
         'row_total',
         'margin_percentage',
         'discount_percentage',
+        'export_freight_rate',
+        'export_clearance_rate',
+        'origin_thc_rate',
+        'origin_thc_qty',
+        'int_freight_rate_1',
+        'int_freight_rate_2',
+        'insurance_rate',
+        'import_duties_fixed',
+        'import_duties_multiplier',
+        'handling_charges_global',
+        'inland_transport_global',
     ];
 
     protected function casts(): array
@@ -62,6 +73,17 @@ class QuotationItem extends Model
             'row_total' => 'decimal:6',
             'margin_percentage' => 'decimal:2',
             'discount_percentage' => 'decimal:2',
+            'export_freight_rate' => 'decimal:4',
+            'export_clearance_rate' => 'decimal:4',
+            'origin_thc_rate' => 'decimal:2',
+            'origin_thc_qty' => 'decimal:2',
+            'int_freight_rate_1' => 'decimal:2',
+            'int_freight_rate_2' => 'decimal:2',
+            'insurance_rate' => 'decimal:4',
+            'import_duties_fixed' => 'decimal:2',
+            'import_duties_multiplier' => 'decimal:4',
+            'handling_charges_global' => 'decimal:2',
+            'inland_transport_global' => 'decimal:2',
         ];
     }
 

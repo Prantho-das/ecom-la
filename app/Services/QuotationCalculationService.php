@@ -81,7 +81,7 @@ class QuotationCalculationService
         foreach ($incotermsConfig as $name => $v) {
             if (isset($v['is_local'])) {
                 $cf = 0;
-                $up = 1831250; // Hardcoded baseline from index.html example
+                $up = $base * $conversionRate;
                 $cf_disp = '—';
             } else {
                 $cf = $v['ef'] + $v['ec'] + $v['oh'] + $v['inf'] + $v['ins'] + $v['id'] + $v['hc'] + $v['it'];
@@ -91,7 +91,7 @@ class QuotationCalculationService
 
             if (isset($v['is_bdt'])) {
                 $up = $up * $conversionRate;
-                $cf_disp = number_format($cf / $base, 2);
+                $cf_disp = $base > 0 ? number_format($cf / $base, 2) : '0.00';
             }
 
             $up_mg = $up * (1 + $margin / 100);

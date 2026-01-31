@@ -227,7 +227,7 @@
                                                 <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                                     <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.inland_transport_global" class="text-right w-40" />
                                                 </td>
-                                                <td colspan="8" class="bg-zinc-100/50 dark:bg-zinc-900/50"></td>
+                                                <td colspan="9" class="p-4 bg-gray-50/30 dark:bg-gray-800/20"></td>
                                             </tr>
 
                                             {{-- Breakdown Rows --}}
