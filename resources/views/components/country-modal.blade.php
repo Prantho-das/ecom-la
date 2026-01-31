@@ -10,8 +10,14 @@
                 'continents',
                 fn() => DB::table('continents')->orderBy('name')->get(),
             );
-            $firstContinent = $continents->first()->id;
+            $firstContinent = $continents->first()?->id;
         @endphp
+
+        @if($continents->isEmpty())
+            <div class="p-8 text-center text-gray-500">
+                No continent data available.
+            </div>
+        @else
 
 
         <div class="flex h-full" x-data="{ activeTab: '{{ $firstContinent }}' }">
@@ -68,5 +74,6 @@
 
             </div>
         </div>
+        @endif
     </div>
 </dialog>

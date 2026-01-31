@@ -11,12 +11,15 @@ class CountrySeeder extends Seeder
      */
     public function run(): void
     {
+        $northAmerica = \App\Models\Continent::where('name', 'North America')->first()->id;
+        $europe = \App\Models\Continent::where('name', 'Europe')->first()->id;
+
         \App\Models\Country::insert([
-            ['name' => 'United States', 'code' => 'US'],
-            ['name' => 'Canada', 'code' => 'CA'],
-            ['name' => 'United Kingdom', 'code' => 'GB'],
-            ['name' => 'Germany', 'code' => 'DE'],
-            ['name' => 'France', 'code' => 'FR'],
+            ['name' => 'United States', 'code' => 'US', 'continent_id' => $northAmerica],
+            ['name' => 'Canada', 'code' => 'CA', 'continent_id' => $northAmerica],
+            ['name' => 'United Kingdom', 'code' => 'GB', 'continent_id' => $europe],
+            ['name' => 'Germany', 'code' => 'DE', 'continent_id' => $europe],
+            ['name' => 'France', 'code' => 'FR', 'continent_id' => $europe],
         ]);
     }
 }

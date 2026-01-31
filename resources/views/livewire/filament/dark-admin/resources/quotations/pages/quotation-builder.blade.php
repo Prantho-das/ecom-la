@@ -262,7 +262,7 @@
 
                                 {{-- BDT Row --}}
                                 @if($bdtCalc)
-                                <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors bg-indigo-50/30 dark:bg-indigo-500/5">
+                                <tr class="hidden hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors bg-indigo-50/30 dark:bg-indigo-500/5">
                                     <td class="px-4 py-3 border-r border-zinc-200 dark:border-zinc-800 font-bold text-indigo-600 dark:text-indigo-400 text-sm">BDT</td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
                                         {{ number_format($table['quantity'], 0) }}
@@ -326,7 +326,7 @@
 
                                 {{-- BDT (Local) Row --}}
                                 @if($bdtLocalCalc)
-                                <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors bg-indigo-50/30 dark:bg-indigo-500/5">
+                                <tr class="hidden hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors bg-indigo-50/30 dark:bg-indigo-500/5">
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
                                         {{ number_format($table['quantity'], 0) }}
                                     </td>
