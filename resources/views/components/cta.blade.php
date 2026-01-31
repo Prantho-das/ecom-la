@@ -1,3 +1,10 @@
+@props([
+    'title' => 'Ready to take your business to the next level?',
+    'description' => 'Contact us today to schedule a consultation and see how we can help you achieve your goals.',
+    'buttonLink' => '/contact',
+    'buttonText' => 'Contact Us',
+])
+
 <section class="bg-[#27ad4c]">
   <div class="container px-4 py-10 mx-auto lg:py-24 md:py-16">
     <div class="flex flex-col items-center justify-between gap-8 text-center lg:flex-row lg:text-start">
