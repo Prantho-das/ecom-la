@@ -199,16 +199,16 @@
                                                 </td>
                                                 <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                                     <div class="flex items-center gap-1 justify-end">
-                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.origin_thc_rate" class="text-right w-32" />
+                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.origin_thc_rate" class="text-right w-40" />
                                                         <span class="text-zinc-400 text-xs">/</span>
-                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.origin_thc_qty" class="text-right w-32" />
+                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.origin_thc_qty" class="text-right w-40" />
                                                     </div>
                                                 </td>
                                                 <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                                     <div class="flex items-center gap-1 justify-end">
-                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.int_freight_cbm" class="text-right w-32" />
+                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.int_freight_cbm" class="text-right w-40" />
                                                         <span class="text-zinc-400 text-xs">/</span>
-                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.int_freight_kg" class="text-right w-32" />
+                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.int_freight_kg" class="text-right w-40" />
                                                     </div>
                                                 </td>
                                                 <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
