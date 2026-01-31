@@ -208,7 +208,7 @@
                                         </flux:select>
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
-                                        {{ number_format($table['quantity'], 0) }}
+                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.quantity" size="sm" class="text-right w-20" />
                                     </td>
                                     <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
                                         {{ $table['uom'] }}
