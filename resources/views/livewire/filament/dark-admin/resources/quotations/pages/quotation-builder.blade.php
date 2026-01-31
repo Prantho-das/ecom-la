@@ -100,6 +100,43 @@
                             </flux:select>
                         </div>
                         <div class="flex items-center gap-2">
+                            <div x-data="{ open: false }">
+                                <flux:button x-on:click="open = ! open" size="sm" variant="ghost" icon="beaker">Show Logic</flux:button>
+                                
+                                <template x-teleport="body">
+                                    <div x-show="open" 
+                                         x-transition:enter="transition ease-out duration-300"
+                                         x-transition:enter-start="opacity-0 translate-y-4"
+                                         x-transition:enter-end="opacity-100 translate-y-0"
+                                         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-sm"
+                                         x-on:click.self="open = false">
+                                        <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-2xl overflow-hidden">
+                                            <div class="px-6 py-4 border-b border-zinc-100 dark:border-zinc-800/50 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-800/20">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-white">
+                                                        <flux:icon icon="beaker" class="w-4 h-4" />
+                                                    </div>
+                                                    <h3 class="text-sm font-black uppercase tracking-widest">{{ $table['name'] ?: 'Product' }} - Calculation Logic</h3>
+                                                </div>
+                                                <flux:button x-on:click="open = false" variant="ghost" size="sm" icon="x-mark" />
+                                            </div>
+                                            <div class="p-6 overflow-y-auto max-h-[70vh] space-y-4">
+                                                @foreach(($calculations[$table['selected_incoterm'] ?? 'DDP']['formulas'] ?? []) as $label => $formula)
+                                                    <div class="space-y-1">
+                                                        <span class="text-[10px] font-black uppercase text-zinc-400 tracking-wider">{{ $label }}</span>
+                                                        <div class="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl border border-zinc-100 dark:border-zinc-800 font-mono text-xs text-zinc-600 dark:text-zinc-300 break-all">
+                                                            {{ $formula }}
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                            <div class="p-4 bg-zinc-50 dark:bg-zinc-800/20 border-t border-zinc-100 dark:border-zinc-800/50 text-right">
+                                                <flux:button x-on:click="open = false" size="sm" variant="subtle">Close Breakdown</flux:button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
                             <flux:button wire:click="duplicateTable('{{ $table['id'] }}')" size="sm" variant="ghost" icon="square-2-stack">Duplicate</flux:button>
                             <flux:button wire:click="removeTable('{{ $table['id'] }}')" size="sm" variant="ghost" color="red" icon="trash">Remove</flux:button>
                         </div>

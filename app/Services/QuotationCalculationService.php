@@ -57,7 +57,7 @@ class QuotationCalculationService
     public function calculateMatrix(float $base, array $conf, float $conversionRate, float $margin, float $tax, float $vat, float $discount = 0): array
     {
         $c_ef = $base * ((float) ($conf['export_freight_rate'] ?? 0) / 100);
-        $c_ec = $base * (float) ($conf['export_clearance_rate'] ?? 0); // Unit Price * Input
+        $c_ec = $base * ((float) ($conf['export_clearance_rate'] ?? 0) / 100); // Unit Price * Input %
         $c_oh = (float) ($conf['origin_thc_rate'] ?? 0) * (float) ($conf['origin_thc_qty'] ?? 0);
         $c_if = (float) ($conf['int_freight_cbm'] ?? 0) * (float) ($conf['int_freight_kg'] ?? 0); // Input 1 * Input 2
         $c_ins = $base * ((float) ($conf['insurance_rate'] ?? 0) / 100); // Input % * Unit Price
@@ -106,6 +106,29 @@ class QuotationCalculationService
                 'up_mg' => $up_mg,
                 'final' => $final,
                 'is_bdt_row' => isset($v['is_bdt']) || isset($v['is_local']),
+                'formulas' => [
+                    'Export Freight' => "Base ($base) * (" . ($conf['export_freight_rate'] ?? 0) . " / 100) = " . number_format($v['ef'], 2),
+                    'Export Clearance' => "Base ($base) * (" . ($conf['export_clearance_rate'] ?? 0) . " / 100) = " . number_format($v['ec'], 2),
+                    'Origin THC' => "Rate (" . ($conf['origin_thc_rate'] ?? 0) . ") * Qty (" . ($conf['origin_thc_qty'] ?? 0) . ") = " . number_format($v['oh'], 2),
+                    'Int. Freight' => "CBM (" . ($conf['int_freight_cbm'] ?? 0) . ") * KG (" . ($conf['int_freight_kg'] ?? 0) . ") = " . number_format($v['inf'], 2),
+                    'Insurance' => "Base ($base) * (" . ($conf['insurance_rate'] ?? 0) . " / 100) = " . number_format($v['ins'], 2),
+                    'Import Duties' => "Fixed (" . ($conf['import_duties_fixed'] ?? 0) . ") * Mult (" . ($conf['import_duties_multiplier'] ?? 1) . ") = " . number_format($v['id'], 2),
+                    'Handling' => number_format($v['hc'], 2),
+                    'Inland' => number_format($v['it'], 2),
+                    'Total CF' => implode(' + ', array_filter([
+                        $v['ef'] ? number_format($v['ef'], 2) : null,
+                        $v['ec'] ? number_format($v['ec'], 2) : null,
+                        $v['oh'] ? number_format($v['oh'], 2) : null,
+                        $v['inf'] ? number_format($v['inf'], 2) : null,
+                        $v['ins'] ? number_format($v['ins'], 2) : null,
+                        $v['id'] ? number_format($v['id'], 2) : null,
+                        $v['hc'] ? number_format($v['hc'], 2) : null,
+                        $v['it'] ? number_format($v['it'], 2) : null,
+                    ])) . " = " . number_format($cf, 2),
+                    'Unit Price' => "Base ($base) + CF (" . number_format($cf, 2) . ") = " . number_format($up, 2),
+                    'Price + MG' => "UP (" . number_format($up, 2) . ") * (1 + $margin/100) = " . number_format($up_mg, 2),
+                    'Final Price' => "UP+MG (" . number_format($up_mg, 2) . ") * (1 + ($tax+$vat)/100) * (1 - $discount/100) = " . number_format($final, 2),
+                ],
             ];
         }
 
