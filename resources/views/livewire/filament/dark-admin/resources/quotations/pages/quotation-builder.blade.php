@@ -194,7 +194,13 @@
                                             <flux:input size="sm" type="number" step="0.01" wire:model.live="tables.{{ $t_idx }}.config.import_duties_multiplier" class="text-right w-28" />
                                         </div>
                                     </td>
-                                    <td colspan="10" class="bg-zinc-100/50 dark:bg-zinc-900/50"></td>
+                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                        <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.config.handling_charges_global" class="text-right w-24" />
+                                    </td>
+                                    <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                        <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.config.inland_transport_global" class="text-right w-24" />
+                                    </td>
+                                    <td colspan="8" class="bg-zinc-100/50 dark:bg-zinc-900/50"></td>
                                 </tr>
 
                                 {{-- Breakdown Rows --}}

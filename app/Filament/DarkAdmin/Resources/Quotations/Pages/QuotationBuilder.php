@@ -57,6 +57,8 @@ class QuotationBuilder extends Page
         'insurance_rate' => 2,
         'import_duties_fixed' => 2500,
         'import_duties_multiplier' => 1.1,
+        'handling_charges_global' => 200,
+        'inland_transport_global' => 200,
     ];
 
     public $tables = [];
@@ -119,6 +121,8 @@ class QuotationBuilder extends Page
                     'insurance_rate' => $item->unit_price > 0 ? ($item->insurance / $item->unit_price) * 100 : 0,
                     'import_duties_fixed' => $item->import_duties_taxes,
                     'import_duties_multiplier' => 1.0,
+                    'handling_charges_global' => $item->handling_charges_import,
+                    'inland_transport_global' => $item->inland_transport,
                 ],
             ];
         }

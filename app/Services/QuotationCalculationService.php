@@ -56,21 +56,24 @@ class QuotationCalculationService
      */
     public function calculateMatrix(float $base, array $conf, float $conversionRate, float $margin, float $tax, float $vat, float $discount = 0): array
     {
-        $c_ef = $base * ($conf['export_freight_rate'] / 100);
-        $c_ec = $base * ($conf['export_clearance_rate'] / 100);
-        $c_oh = $conf['origin_thc_rate'] * $conf['origin_thc_qty'];
-        $c_if = $conf['int_freight_cbm'];
-        $c_ins = $base * ($conf['insurance_rate'] / 100);
-        $c_id = $conf['import_duties_fixed'] * $conf['import_duties_multiplier'];
+        $c_ef = $base * ((float) ($conf['export_freight_rate'] ?? 0) / 100);
+        $c_ec = $base * (float) ($conf['export_clearance_rate'] ?? 0); // Unit Price * Input
+        $c_oh = (float) ($conf['origin_thc_rate'] ?? 0) * (float) ($conf['origin_thc_qty'] ?? 0);
+        $c_if = (float) ($conf['int_freight_cbm'] ?? 0) * (float) ($conf['int_freight_kg'] ?? 0); // Input 1 * Input 2
+        $c_ins = $base * ((float) ($conf['insurance_rate'] ?? 0) / 100); // Input % * Unit Price
+        $c_id = (float) ($conf['import_duties_fixed'] ?? 0) * (float) ($conf['import_duties_multiplier'] ?? 1); // Input 1 * Input 2
+        
+        $hc_global = (float) ($conf['handling_charges_global'] ?? 200);
+        $it_global = (float) ($conf['inland_transport_global'] ?? 200);
 
         $incotermsConfig = [
             'Exwork' => ['ef' => 0, 'ec' => 0, 'oh' => 0, 'inf' => 0, 'ins' => 0, 'id' => 0, 'hc' => 0, 'it' => 0],
             'FOB' => ['ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => 0, 'ins' => 0, 'id' => 0, 'hc' => 0, 'it' => 0],
             'CFR' => ['ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => 0, 'id' => 0, 'hc' => 0, 'it' => 0],
             'CIF' => ['ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => $c_ins, 'id' => 0, 'hc' => 0, 'it' => 0],
-            'DDU/DAP' => ['ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => $c_ins, 'id' => 0, 'hc' => 200, 'it' => 200],
-            'DDP' => ['ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => $c_ins, 'id' => $c_id, 'hc' => 200, 'it' => 200],
-            'BDT' => ['is_bdt' => true, 'ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => $c_ins, 'id' => $c_id, 'hc' => 200, 'it' => 200],
+            'DDU/DAP' => ['ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => $c_ins, 'id' => 0, 'hc' => $hc_global, 'it' => $it_global],
+            'DDP' => ['ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => $c_ins, 'id' => $c_id, 'hc' => $hc_global, 'it' => $it_global],
+            'BDT' => ['is_bdt' => true, 'ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => $c_ins, 'id' => $c_id, 'hc' => $hc_global, 'it' => $it_global],
             'BDT (Local)' => ['is_local' => true, 'ef' => 0, 'ec' => 0, 'oh' => 0, 'inf' => 0, 'ins' => 0, 'id' => 0, 'hc' => 0, 'it' => 0],
         ];
 
