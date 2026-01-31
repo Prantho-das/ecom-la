@@ -269,6 +269,7 @@ class QuotationBuilder extends Page
                 'unit_price_exwork' => $breakdown['up'],
                 'unit_price_with_mg' => (float) $breakdown['up_mg'],
                 'final_unit_price' => (float) $breakdown['final'],
+                'row_total' => (float) $breakdown['final'] * ($tableData['quantity'] ?? 1),
             ]);
         }
 
