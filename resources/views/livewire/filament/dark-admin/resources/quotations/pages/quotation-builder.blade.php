@@ -181,8 +181,8 @@
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                         <div class="flex gap-1">
-                                            <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.unit_product_price" class="text-right font-bold text-indigo-600 dark:text-indigo-400 w-24" />
-                                            <flux:select size="sm" wire:model.live="tables.{{ $t_idx }}.currency" class="w-20">
+                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.unit_product_price" class="text-right font-bold text-indigo-600 dark:text-indigo-400 w-32" />
+                                            <flux:select wire:model.live="tables.{{ $t_idx }}.currency" class="w-24">
                                                 <flux:select.option value="USD">USD</flux:select.option>
                                                 <flux:select.option value="EUR">EUR</flux:select.option>
                                                 <flux:select.option value="GBP">GBP</flux:select.option>
@@ -192,40 +192,40 @@
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                        <flux:input size="sm" type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.export_freight_rate" class="text-right w-32" />
+                                        <flux:input type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.export_freight_rate" class="text-right w-40" />
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                        <flux:input size="sm" type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.export_clearance_rate" class="text-right w-32" />
+                                        <flux:input type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.export_clearance_rate" class="text-right w-40" />
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                         <div class="flex items-center gap-1 justify-end">
-                                            <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.config.origin_thc_rate" class="text-right w-28" />
+                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.origin_thc_rate" class="text-right w-32" />
                                             <span class="text-zinc-400 text-xs">/</span>
-                                            <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.config.origin_thc_qty" class="text-right w-28" />
+                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.origin_thc_qty" class="text-right w-32" />
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                         <div class="flex items-center gap-1 justify-end">
-                                            <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.config.int_freight_cbm" class="text-right w-28" />
+                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.int_freight_cbm" class="text-right w-32" />
                                             <span class="text-zinc-400 text-xs">/</span>
-                                            <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.config.int_freight_kg" class="text-right w-28" />
+                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.int_freight_kg" class="text-right w-32" />
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                        <flux:input size="sm" type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.insurance_rate" class="text-right w-32" />
+                                        <flux:input type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.insurance_rate" class="text-right w-40" />
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                         <div class="flex items-center gap-1 justify-end">
-                                            <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.config.import_duties_fixed" class="text-right w-32" />
+                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.import_duties_fixed" class="text-right w-40" />
                                             <span class="text-zinc-400 text-xs">/</span>
-                                            <flux:input size="sm" type="number" step="0.01" wire:model.live="tables.{{ $t_idx }}.config.import_duties_multiplier" class="text-right w-28" />
+                                            <flux:input type="number" step="0.01" wire:model.live="tables.{{ $t_idx }}.config.import_duties_multiplier" class="text-right w-32" />
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                        <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.config.handling_charges_global" class="text-right w-24" />
+                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.handling_charges_global" class="text-right w-32" />
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                        <flux:input size="sm" type="number" wire:model.live="tables.{{ $t_idx }}.config.inland_transport_global" class="text-right w-24" />
+                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.inland_transport_global" class="text-right w-32" />
                                     </td>
                                     <td colspan="8" class="bg-zinc-100/50 dark:bg-zinc-900/50"></td>
                                 </tr>
@@ -241,7 +241,7 @@
                                 {{-- USD Incoterm Row (Consolidated with Dropdown) --}}
                                 <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
                                     <td class="px-4 py-3 border-r border-zinc-200 dark:border-zinc-800">
-                                        <flux:select wire:model.live="tables.{{ $t_idx }}.selected_incoterm" size="sm" class="min-w-[120px]">
+                                        <flux:select wire:model.live="tables.{{ $t_idx }}.selected_incoterm" class="min-w-[140px]">
                                             <flux:select.option value="Exwork">Exwork</flux:select.option>
                                             <flux:select.option value="FOB">FOB</flux:select.option>
                                             <flux:select.option value="CFR">CFR</flux:select.option>
@@ -251,7 +251,7 @@
                                         </flux:select>
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
-                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.quantity" size="sm" class="text-right w-20" />
+                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.quantity" class="text-right w-24" />
                                     </td>
                                     <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
                                         {{ $table['uom'] }}
@@ -291,19 +291,19 @@
                                         {{ number_format($selectedCalc['up'], 0) }}
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-amber-600 font-bold text-sm">
-                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.margin" size="sm" class="text-right w-16" />
+                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.margin" class="text-right w-20" />
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm font-medium">
                                         {{ number_format($selectedCalc['up_mg'], 0) }}
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.tax" size="sm" class="text-right w-16" />
+                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.tax" class="text-right w-20" />
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.vat" size="sm" class="text-right w-16" />
+                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.vat" class="text-right w-20" />
                                     </td>
                                     <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.discount" size="sm" class="text-right w-16" />
+                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.discount" class="text-right w-20" />
                                     </td>
                                     <td class="px-4 py-3 text-right font-bold text-sm text-indigo-600 dark:text-indigo-400">
                                         {{-- Use the table specific currency symbol based on selection if needed, or global? User asked for product wise currency. --}}
