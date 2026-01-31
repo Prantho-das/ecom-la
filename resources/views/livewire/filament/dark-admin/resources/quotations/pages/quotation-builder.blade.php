@@ -163,9 +163,9 @@
                                                 <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Unit Price</th>
                                                 <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[100px]">MG %</th>
                                                 <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Price + MG</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[80px]">TAX %</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[80px]">VAT %</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[80px]">Disc %</th>
+                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[140px]">TAX %</th>
+                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[140px]">VAT %</th>
+                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[140px]">Disc %</th>
                                                 <th class="px-4 py-3 text-right text-xs font-semibold text-white bg-indigo-600 dark:bg-indigo-500 uppercase tracking-wider rounded-tr-xl">Final Price</th>
                                             </tr>
                                         </thead>
@@ -241,7 +241,7 @@
                                             {{-- USD Incoterm Row (Consolidated with Dropdown) --}}
                                             <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
                                                 <td class="px-4 py-3 border-r border-zinc-200 dark:border-zinc-800">
-                                                    <flux:select wire:model.live="tables.{{ $t_idx }}.selected_incoterm" class="min-w-[140px]">
+                                                    <flux:select wire:model.live="tables.{{ $t_idx }}.selected_incoterm" class="min-w-[200px]">
                                                         <flux:select.option value="Exwork">Exwork</flux:select.option>
                                                         <flux:select.option value="FOB">FOB</flux:select.option>
                                                         <flux:select.option value="CFR">CFR</flux:select.option>
