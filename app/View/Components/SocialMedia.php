@@ -2,7 +2,7 @@
 
 namespace App\View\Components;
 
-use App\Models\Setting;
+use App\Services\SettingService;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -14,9 +14,9 @@ class SocialMedia extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(SettingService $settingService)
     {
-        $settings = Setting::where('group', 'social_media')->pluck('value', 'key');
+        $settings = $settingService->getSettings('social_media');
 
         $this->socialMediaLinks = $settings->get('social_media_links', []);
     }

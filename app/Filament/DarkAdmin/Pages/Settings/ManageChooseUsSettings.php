@@ -16,13 +16,14 @@ use UnitEnum;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Section;
 use Filament\Tables\Columns\Layout\Grid;
+use Illuminate\Support\Facades\Cache;
 
 class ManageChooseUsSettings extends Page
 {
     use InteractsWithForms;
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-check-badge';
 
     protected static string $settings = 'choose-us';
 
@@ -165,9 +166,11 @@ class ManageChooseUsSettings extends Page
 
         $this->mutateFormDataBeforeSave($data);
 
+        Cache::forget('settings.' . static::$settings);
+
         Notification::make()
             ->title('Saved Successfully')
-            ->body('About section settings updated.')
+            ->body('Choose Us section settings updated.')
             ->success()
             ->send();
     }

@@ -18,7 +18,7 @@ class SiteSettings extends Page
 
     protected string $view = 'volt-livewire::filament.dark-admin.pages.site-settings';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cog-8-tooth';
 
     public $site_title;
 

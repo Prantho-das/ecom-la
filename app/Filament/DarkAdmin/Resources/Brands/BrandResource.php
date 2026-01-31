@@ -19,13 +19,14 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use UnitEnum;
+
 class BrandResource extends Resource
 {
     protected static ?string $model = Brand::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-building-storefront';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-tag';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Shop';
+    protected static string|UnitEnum|null $navigationGroup = 'Shop';
 
     public static function form(Schema $schema): Schema
     {

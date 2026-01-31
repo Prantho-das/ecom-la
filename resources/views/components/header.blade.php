@@ -91,9 +91,9 @@
                 <!-- Desktop Links -->
                 <div class="items-center hidden space-x-4 lg:flex">
                     <a href="#" class="font-medium text-slate-700 hover:text-[#27ad4c]">Login</a>
-                    <a href="#"
+                    <a href="{{ getSetting('cta_button_link', 'cta', '#') }}"
                         class="bg-[#27ad4c] text-white font-bold py-2 px-4 rounded-md hover:bg-[#27ad4c] transition-colors">
-                        Get a Free Quotation
+                        {{ getSetting('cta_button_text', 'cta', 'Get a Free Quotation') }}
                     </a>
                 </div>
 
@@ -238,9 +238,9 @@
 
                                     <div class="flex flex-col pt-4 space-y-4">
                                         <a href="#" class="font-medium text-slate-700 hover:text-[#27ad4c]">Login</a>
-                                        <a href="#"
+                                        <a href="{{ getSetting('cta_button_link', 'cta', '#') }}"
                                             class="bg-[#27ad4c] text-white text-center font-bold py-2 px-4 rounded-md hover:bg-[#1e8b3a] transition">
-                                            Get a Free Quotation
+                                            {{ getSetting('cta_button_text', 'cta', 'Get a Free Quotation') }}
                                         </a>
                                     </div>
                                 </nav>

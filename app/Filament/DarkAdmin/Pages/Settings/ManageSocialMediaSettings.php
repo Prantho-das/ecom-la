@@ -12,13 +12,14 @@ use App\Filament\DarkAdmin\Pages\SiteSettings;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Cache;
 
 class ManageSocialMediaSettings extends Page
 {
     use InteractsWithForms;
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-share';
 
     protected static string $settings = 'social_media';
 
@@ -111,9 +112,11 @@ class ManageSocialMediaSettings extends Page
             );
         }
 
+        Cache::forget('settings.' . static::$settings);
+
         Notification::make()
             ->title('Saved Successfully')
-            ->body('Hero section settings updated.')
+            ->body('Social Media settings updated.')
             ->success()
             ->send();
     }

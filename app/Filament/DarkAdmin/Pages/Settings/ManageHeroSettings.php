@@ -10,13 +10,14 @@ use Filament\Notifications\Notification;
 use UnitEnum;
 use BackedEnum;
 use Livewire\Form;
+use Illuminate\Support\Facades\Cache;
 use Filament\Forms\Concerns\InteractsWithForms;
 class ManageHeroSettings extends Page
 {
     use InteractsWithForms;
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-photo';
 
     protected static ?string $title = 'Hero Section Settings';
 
@@ -91,6 +92,8 @@ class ManageHeroSettings extends Page
                 ]
             );
         }
+
+        Cache::forget('settings.' . static::$settings);
 
         Notification::make()
             ->title('Saved Successfully')

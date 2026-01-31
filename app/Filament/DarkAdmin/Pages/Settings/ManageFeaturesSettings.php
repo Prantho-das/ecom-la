@@ -10,6 +10,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Cache;
 use UnitEnum;
 
 class ManageFeaturesSettings extends Page
@@ -17,7 +18,7 @@ class ManageFeaturesSettings extends Page
     use InteractsWithForms;
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-sparkles';
 
     protected static string $settings = 'features';
 
@@ -97,6 +98,9 @@ class ManageFeaturesSettings extends Page
         $data = $this->form->getState();
 
        $this->mutateFormDataBeforeSave($data);
+
+        Cache::forget('settings.' . static::$settings);
+
         \Filament\Notifications\Notification::make()
             ->title('Saved Successfully')
             ->body('Features section settings updated.')

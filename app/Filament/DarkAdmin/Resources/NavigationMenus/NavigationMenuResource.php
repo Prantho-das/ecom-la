@@ -19,7 +19,7 @@ class NavigationMenuResource extends Resource
 {
     protected static ?string $model = NavigationMenu::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-bars-3';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-adjustments-horizontal';
 
     protected static string | UnitEnum | null $navigationGroup = 'Navigation';
 

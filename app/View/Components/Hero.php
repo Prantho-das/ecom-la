@@ -2,7 +2,7 @@
 
 namespace App\View\Components;
 
-use App\Models\Setting;
+use App\Services\SettingService;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -22,9 +22,9 @@ class Hero extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(SettingService $settingService)
     {
-        $settings = Setting::where('group', 'hero')->pluck('value', 'key');
+        $settings = $settingService->getSettings('hero');
 
         $this->title = $settings->get('hero_title', 'Default Title');
         $this->subtitle = $settings->get('hero_subtitle', 'Default Subtitle');

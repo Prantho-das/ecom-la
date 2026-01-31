@@ -11,14 +11,13 @@ use App\Models\Solution;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class SolutionResource extends Resource
 {
     protected static ?string $model = Solution::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-puzzle-piece';
 
     protected static ?string $recordTitleAttribute = 'titile';
 

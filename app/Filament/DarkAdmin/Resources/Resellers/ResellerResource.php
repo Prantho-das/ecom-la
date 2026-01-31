@@ -11,14 +11,13 @@ use App\Models\Reseller;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class ResellerResource extends Resource
 {
     protected static ?string $model = Reseller::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-briefcase';
 
     public static function form(Schema $schema): Schema
     {
