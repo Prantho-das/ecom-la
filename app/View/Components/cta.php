@@ -24,10 +24,15 @@ class Cta extends Component
     {
         $settings = $settingService->getSettings('cta');
 
-        $this->title = $settings->get('cta_title', 'Default CTA Title');
-        $this->description = $settings->get('cta_description', 'Default CTA Description');
-        $this->buttonText = $settings->get('cta_button_text', 'Get in Touch');
-        $this->buttonLink = $settings->get('cta_button_link', '#');
+        $getValue = function ($key, $default) use ($settings) {
+            $value = $settings->get($key, $default);
+            return is_array($value) ? ($value[0] ?? $default) : $value;
+        };
+
+        $this->title = $getValue('cta_title', 'Ready to take your business to the next level?');
+        $this->description = $getValue('cta_description', 'Contact us today to schedule a consultation and see how we can help you achieve your goals.');
+        $this->buttonText = $getValue('cta_button_text', 'Contact Us');
+        $this->buttonLink = $getValue('cta_button_link', '/contact');
     }
 
     /**

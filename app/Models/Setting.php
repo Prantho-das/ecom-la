@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
-    //updated at false
+    // updated at false
     public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
