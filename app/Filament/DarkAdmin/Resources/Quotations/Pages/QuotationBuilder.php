@@ -45,7 +45,7 @@ class QuotationBuilder extends Page
 
     public $currency = 'USD';
 
-    public $conversion_rate = 125;
+    public $conversion_rate = 1;
 
     public $margin = 30;
 
@@ -104,7 +104,7 @@ class QuotationBuilder extends Page
         $this->discount_percentage = (float) $quotation->discount_percentage;
 
         // Add a title property or handle it in the view
-        $this->dispatch('update-title', title: 'Edit Quotation: '.$quotation->reference_number);
+        $this->dispatch('update-title', title: 'Edit Quotation: ' . $quotation->reference_number);
 
         $this->tables = [];
         foreach ($quotation->items as $item) {
@@ -159,13 +159,13 @@ class QuotationBuilder extends Page
 
     public function removeTable($id): void
     {
-        $this->tables = collect($this->tables)->filter(fn ($t) => $t['id'] !== $id)->toArray();
+        $this->tables = collect($this->tables)->filter(fn($t) => $t['id'] !== $id)->toArray();
         $this->tables = array_values($this->tables);
     }
 
     public function duplicateTable($id): void
     {
-        $table = collect($this->tables)->first(fn ($t) => $t['id'] === $id);
+        $table = collect($this->tables)->first(fn($t) => $t['id'] === $id);
         if ($table) {
             $newTable = $table;
             $newTable['id'] = Str::uuid()->toString();
