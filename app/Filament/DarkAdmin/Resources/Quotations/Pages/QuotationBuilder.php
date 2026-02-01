@@ -26,12 +26,19 @@ class QuotationBuilder extends Page
     public $customer_name = '';
 
     public $customer_email = '';
+
     public $customer_address = '';
+
     public $customer_phone = '';
+
     public $customer_fax = '';
+
     public $attn = '';
+
     public $payment_term = 'TT Before Delivery';
+
     public $customer_po = '';
+
     public $quotation_date;
 
     public ?int $quotationId = null;
@@ -45,6 +52,8 @@ class QuotationBuilder extends Page
     public $tax = 5;
 
     public $vat = 10;
+
+    public $discount_percentage = 0;
 
     // Default configuration for new tables
     public $config = [
@@ -92,6 +101,7 @@ class QuotationBuilder extends Page
         $this->margin = (float) $quotation->margin_percentage;
         $this->tax = (float) $quotation->tax_percentage;
         $this->vat = (float) $quotation->vat_percentage;
+        $this->discount_percentage = (float) $quotation->discount_percentage;
 
         // Add a title property or handle it in the view
         $this->dispatch('update-title', title: 'Edit Quotation: '.$quotation->reference_number);
@@ -100,7 +110,7 @@ class QuotationBuilder extends Page
         foreach ($quotation->items as $item) {
             $this->tables[] = [
                 'id' => \Illuminate\Support\Str::uuid()->toString(),
-                'product_id' => $item->product_id, 
+                'product_id' => $item->product_id,
                 'selected_incoterm' => $item->incoterm ?? 'DDP',
                 'name' => $item->product_name,
                 'quantity' => $item->quantity ?? 1,
@@ -176,15 +186,25 @@ class QuotationBuilder extends Page
     }
 
     public function getCurrencySymbol(): string
-{
-    if ($this->currency === 'USD') return '$';
-    if ($this->currency === 'EUR') return '€';
-    if ($this->currency === 'GBP') return '£';
-    if ($this->currency === 'BDT') return '৳';
-    if ($this->currency === 'AED') return 'د.إ';
-    
-    return '$';
-}
+    {
+        if ($this->currency === 'USD') {
+            return '$';
+        }
+        if ($this->currency === 'EUR') {
+            return '€';
+        }
+        if ($this->currency === 'GBP') {
+            return '£';
+        }
+        if ($this->currency === 'BDT') {
+            return '৳';
+        }
+        if ($this->currency === 'AED') {
+            return 'د.إ';
+        }
+
+        return '$';
+    }
 
     public function getCalculations(int $index): array
     {
@@ -229,6 +249,7 @@ class QuotationBuilder extends Page
                 'margin_percentage' => $this->margin,
                 'tax_percentage' => $this->tax,
                 'vat_percentage' => $this->vat,
+                'discount_percentage' => $this->discount_percentage,
             ]);
 
             // Delete old items to recreate them
@@ -249,6 +270,7 @@ class QuotationBuilder extends Page
                 'margin_percentage' => $this->margin,
                 'tax_percentage' => $this->tax,
                 'vat_percentage' => $this->vat,
+                'discount_percentage' => $this->discount_percentage,
                 'status' => 'draft',
             ]);
         }

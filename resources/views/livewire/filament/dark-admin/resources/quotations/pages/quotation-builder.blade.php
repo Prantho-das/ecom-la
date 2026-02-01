@@ -457,12 +457,50 @@
                     </div>
                 </flux:field>
 
-                <div class="md:col-span-2"></div>
+                <flux:field>
+                    <flux:label>Global Discount (%)</flux:label>
+                    <div class="flex items-center gap-2">
+                        <flux:input type="number" step="0.01" wire:model.live="discount_percentage" class="w-full font-bold text-red-600 dark:text-red-400" />
+                        <span class="text-sm font-bold text-zinc-500">%</span>
+                    </div>
+                </flux:field>
 
                 <div class="flex items-center justify-end">
                     <div class="text-right">
                         <span class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Total Products</span>
                         <div class="text-4xl font-black text-indigo-600 dark:text-indigo-400">{{ count($tables) }}</div>
+                    </div>
+                </div>
+
+                @php
+                    $totalSubtotal = 0;
+                    foreach($tables as $idx => $table) {
+                        $calcs = $this->getCalculations($idx);
+                        $selected = $table['selected_incoterm'] ?? 'DDP';
+                        $totalSubtotal += ($calcs[$selected]['final'] ?? 0) * ($table['quantity'] ?? 1);
+                    }
+                    $globalDiscountAmount = $totalSubtotal * (($discount_percentage ?? 0) / 100);
+                    $totalGrandTotal = $totalSubtotal - $globalDiscountAmount;
+                @endphp
+
+                <div class="flex flex-col gap-2 text-right">
+                    <div>
+                        <span class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Subtotal</span>
+                        <div class="text-xl font-bold text-zinc-900 dark:text-zinc-100">{{ $this->getCurrencySymbol() }}{{ number_format($totalSubtotal, 0) }}</div>
+                    </div>
+                    @if($discount_percentage > 0)
+                    <div>
+                        <span class="text-xs font-bold text-red-400 uppercase tracking-widest">Discount ({{ $discount_percentage }}%)</span>
+                        <div class="text-xl font-bold text-red-600 dark:text-red-400">
+                            - {{ $this->getCurrencySymbol() }}{{ number_format($globalDiscountAmount, 0) }}
+                        </div>
+                    </div>
+                    @endif
+                    <div class="pt-4 border-t border-zinc-200 dark:border-zinc-800">
+                        <span class="text-xs font-black text-zinc-400 uppercase tracking-widest">Grand Total</span>
+                        <div class="text-4xl font-black text-indigo-600 dark:text-indigo-400">
+                            {{ $this->getCurrencySymbol() }}{{ number_format($totalGrandTotal, 0) }}
+                        </div>
                     </div>
                 </div>
             </div>

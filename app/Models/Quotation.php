@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Quotation extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'reference_number',
         'quotation_date',
@@ -26,6 +27,7 @@ class Quotation extends Model
         'margin_percentage',
         'tax_percentage',
         'vat_percentage',
+        'discount_percentage',
         'status',
         'subtotal',
         'discount_total',
@@ -65,6 +67,7 @@ class Quotation extends Model
             'margin_percentage' => 'decimal:2',
             'tax_percentage' => 'decimal:4',
             'vat_percentage' => 'decimal:4',
+            'discount_percentage' => 'decimal:2',
             'subtotal' => 'decimal:6',
             'discount_total' => 'decimal:6',
             'tax_total' => 'decimal:6',
@@ -146,12 +149,13 @@ class Quotation extends Model
     {
         // row_total already includes final_unit_price * quantity
         $this->subtotal = $this->items()->sum('row_total');
-        
-        // Since final_unit_price already includes tax/vat, we don't need to add tax_total here 
-        // unless discount_total is applied to the gross amount.
-        // For now, following the established pattern of subtotal being the sum of items.
+
+        // Calculate global discount
+        $this->discount_total = $this->subtotal * ($this->discount_percentage / 100);
+
+        // Final grand total
         $this->grand_total = $this->subtotal - ($this->discount_total ?? 0);
-        
+
         $this->save();
     }
 }
