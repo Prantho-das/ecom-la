@@ -87,351 +87,351 @@
         {{-- Tables Container --}}
         <div class="space-y-12">
             @foreach($tables as $t_idx => $table)
-                            @php
+                                                                                                                                                    @php
                 $calculations = $this->getCalculations($t_idx);
-                            @endphp
-                            <div wire:key="table-{{ $table['id'] }}" class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
-                                <div class="px-6 py-4 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-                                    <div class="flex items-center gap-4">
-                                        <flux:select wire:model.live="tables.{{ $t_idx }}.product_id" placeholder="Choose a product..." class="w-80">
-                                            @foreach(\App\Models\Product::all() as $p)
-                                                <flux:select.option value="{{ $p->id }}">{{ $p->name }}</flux:select.option>
-                                            @endforeach
-                                        </flux:select>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <div x-data="{ open: false }">
-                                            <flux:button x-on:click="open = ! open" size="sm" variant="ghost" icon="beaker">Show Logic</flux:button>
+                                                                                                                                                    @endphp
+                                                                                                                                                    <div wire:key="table-{{ $table['id'] }}" class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+                                                                                                                                                        <div class="px-6 py-4 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
+                                                                                                                                                            <div class="flex items-center gap-4">
+                                                                                                                                                                <flux:select wire:model.live="tables.{{ $t_idx }}.product_id" placeholder="Choose a product..." class="w-80">
+                                                                                                                                                                    @foreach(\App\Models\Product::all() as $p)
+                                                                                                                                                                        <flux:select.option value="{{ $p->id }}">{{ $p->name }}</flux:select.option>
+                                                                                                                                                                    @endforeach
+                                                                                                                                                                </flux:select>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="flex items-center gap-2">
+                                                                                                                                                                <div x-data="{ open: false }">
+                                                                                                                                                                    <flux:button x-on:click="open = ! open" size="sm" variant="ghost" icon="beaker">Show Logic</flux:button>
 
-                                            <template x-teleport="body">
-                                                <div x-show="open" 
-                                                     x-transition:enter="transition ease-out duration-300"
-                                                     x-transition:enter-start="opacity-0 translate-y-4"
-                                                     x-transition:enter-end="opacity-100 translate-y-0"
-                                                     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-sm"
-                                                     x-on:click.self="open = false">
-                                                    <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-2xl overflow-hidden">
-                                                        <div class="px-6 py-4 border-b border-zinc-100 dark:border-zinc-800/50 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-800/20">
-                                                            <div class="flex items-center gap-3">
-                                                                <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-white">
-                                                                    <flux:icon icon="beaker" class="w-4 h-4" />
-                                                                </div>
-                                                                <h3 class="text-sm font-black uppercase tracking-widest">{{ $table['name'] ?: 'Product' }} - Calculation Logic</h3>
-                                                            </div>
-                                                            <flux:button x-on:click="open = false" variant="ghost" size="sm" icon="x-mark" />
-                                                        </div>
-                                                        <div class="p-6 overflow-y-auto max-h-[70vh] space-y-4">
-                                                            @foreach(($calculations[$table['selected_incoterm'] ?? 'DDP']['formulas'] ?? []) as $label => $formula)
-                                                                <div class="space-y-1">
-                                                                    <span class="text-[10px] font-black uppercase text-zinc-400 tracking-wider">{{ $label }}</span>
-                                                                    <div class="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl border border-zinc-100 dark:border-zinc-800 font-mono text-xs text-zinc-600 dark:text-zinc-300 break-all">
-                                                                        {{ $formula }}
-                                                                    </div>
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
-                                                        <div class="p-4 bg-zinc-50 dark:bg-zinc-800/20 border-t border-zinc-100 dark:border-zinc-800/50 text-right">
-                                                            <flux:button x-on:click="open = false" size="sm" variant="subtle">Close Breakdown</flux:button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </template>
-                                        </div>
-                                        <flux:button wire:click="duplicateTable('{{ $table['id'] }}')" size="sm" variant="ghost" icon="square-2-stack">Duplicate</flux:button>
-                                        <flux:button wire:click="removeTable('{{ $table['id'] }}')" size="sm" variant="ghost" color="red" icon="trash">Remove</flux:button>
-                                    </div>
-                                </div>
+                                                                                                                                                                    <template x-teleport="body">
+                                                                                                                                                                        <div x-show="open" 
+                                                                                                                                                                             x-transition:enter="transition ease-out duration-300"
+                                                                                                                                                                             x-transition:enter-start="opacity-0 translate-y-4"
+                                                                                                                                                                             x-transition:enter-end="opacity-100 translate-y-0"
+                                                                                                                                                                             class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-sm"
+                                                                                                                                                                             x-on:click.self="open = false">
+                                                                                                                                                                            <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-2xl overflow-hidden">
+                                                                                                                                                                                <div class="px-6 py-4 border-b border-zinc-100 dark:border-zinc-800/50 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-800/20">
+                                                                                                                                                                                    <div class="flex items-center gap-3">
+                                                                                                                                                                                        <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-white">
+                                                                                                                                                                                            <flux:icon icon="beaker" class="w-4 h-4" />
+                                                                                                                                                                                        </div>
+                                                                                                                                                                                        <h3 class="text-sm font-black uppercase tracking-widest">{{ $table['name'] ?: 'Product' }} - Calculation Logic</h3>
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    <flux:button x-on:click="open = false" variant="ghost" size="sm" icon="x-mark" />
+                                                                                                                                                                                </div>
+                                                                                                                                                                                <div class="p-6 overflow-y-auto max-h-[70vh] space-y-4">
+                                                                                                                                                                                    @foreach(($calculations[$table['selected_incoterm'] ?? 'DDP']['formulas'] ?? []) as $label => $formula)
+                                                                                                                                                                                        <div class="space-y-1">
+                                                                                                                                                                                            <span class="text-[10px] font-black uppercase text-zinc-400 tracking-wider">{{ $label }}</span>
+                                                                                                                                                                                            <div class="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl border border-zinc-100 dark:border-zinc-800 font-mono text-xs text-zinc-600 dark:text-zinc-300 break-all">
+                                                                                                                                                                                                {{ $formula }}
+                                                                                                                                                                                            </div>
+                                                                                                                                                                                        </div>
+                                                                                                                                                                                    @endforeach
+                                                                                                                                                                                </div>
+                                                                                                                                                                                <div class="p-4 bg-zinc-50 dark:bg-zinc-800/20 border-t border-zinc-100 dark:border-zinc-800/50 text-right">
+                                                                                                                                                                                    <flux:button x-on:click="open = false" size="sm" variant="subtle">Close Breakdown</flux:button>
+                                                                                                                                                                                </div>
+                                                                                                                                                                            </div>
+                                                                                                                                                                        </div>
+                                                                                                                                                                    </template>
+                                                                                                                                                                </div>
+                                                                                                                                                                <flux:button wire:click="duplicateTable('{{ $table['id'] }}')" size="sm" variant="ghost" icon="square-2-stack">Duplicate</flux:button>
+                                                                                                                                                                <flux:button wire:click="removeTable('{{ $table['id'] }}')" size="sm" variant="ghost" color="red" icon="trash">Remove</flux:button>
+                                                                                                                                                            </div>
+                                                                                                                                                        </div>
 
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-left border-collapse">
-                                        <thead>
-                                            <tr class="bg-zinc-50 dark:bg-zinc-800/30 border-b border-zinc-200 dark:border-zinc-800">
-                                                <th class="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 w-32">Incoterm</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Qty</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Unit Price / Curr</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Export Freight</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Export Clearance</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Origin THC (Rate/Qty)</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Int. Freight (CBM/KG)</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Insurance</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Import Duties (Fixed/Mult)</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Handling</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Inland</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Conv. Rate</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Factor</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Unit Price</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">MG %</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Price + MG</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">TAX %</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">VAT %</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Disc %</th>
-                                                <th class="px-4 py-3 text-right text-xs font-semibold text-white bg-indigo-600 dark:bg-indigo-500 uppercase tracking-wider rounded-tr-xl">Final Price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">
-                                            {{-- Config Row --}}
-                                            <tr class="bg-zinc-50 dark:bg-zinc-800/40">
-                                                <td class="px-4 py-3 font-bold text-zinc-400 border-r border-zinc-200 dark:border-zinc-800 text-xs">-- CONFIG --</td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                        <div class="overflow-x-auto">
+                                                                                                                                                            <table class="w-full text-left border-collapse">
+                                                                                                                                                                <thead>
+                                                                                                                                                                    <tr class="bg-zinc-50 dark:bg-zinc-800/30 border-b border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                        <th class="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 w-32">Incoterm</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Qty</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Unit product Price (USD / EURO / CN)</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Export freight (local)- (From Exwork to Port)</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Export clearance (Fees and docs)</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Origin THC/FCL/LCL-CBMXRate/CBM</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">International freight (Sea/Air charges)- CBMXRate/CBM</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Insurance (FOB/CIF risk coverage)</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Import duties & taxes (Customs + VAT in BDT)</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Handling charges (Port handling, demurrage)</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Inland transport (From port to store)</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Conversion Rate (USD /  EURO / CN)</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Cost Factor</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Unit Price</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">MG %</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800">Price + MG</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">TAX %</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">VAT %</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-zinc-500 uppercase tracking-wider border-r border-zinc-200 dark:border-zinc-800 min-w-[200px]">Disc %</th>
+                                                                                                                                                                        <th class="px-4 py-3 text-right text-xs font-semibold text-white bg-indigo-600 dark:bg-indigo-500 uppercase tracking-wider rounded-tr-xl">Final Price</th>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                </thead>
+                                                                                                                                                                <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">
+                                                                                                                                                                    {{-- Config Row --}}
+                                                                                                                                                                    <tr class="bg-zinc-50 dark:bg-zinc-800/40">
+                                                                                                                                                                        <td class="px-4 py-3 font-bold text-zinc-400 border-r border-zinc-200 dark:border-zinc-800 text-xs">-- CONFIG --</td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
 
-                                                </td>
-                                                <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800">
 
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                                    <div class="flex gap-1">
-                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.unit_product_price" class="text-right font-bold text-indigo-600 dark:text-indigo-400 min-w-[200px]" />
-                                                        <flux:select wire:model.live="tables.{{ $t_idx }}.currency" class="min-w-[200px]">
-                                                            <flux:select.option value="USD">USD</flux:select.option>
-                                                            <flux:select.option value="EUR">EUR</flux:select.option>
-                                                            <flux:select.option value="GBP">GBP</flux:select.option>
-                                                            <flux:select.option value="BDT">BDT</flux:select.option>
-                                                            <flux:select.option value="AED">AED</flux:select.option>
-                                                        </flux:select>
-                                                    </div>
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                                    <flux:input type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.export_freight_rate" class="text-right min-w-[200px]" />
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                                    <flux:input type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.export_clearance_rate" class="text-right min-w-[200px]" />
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                                    <div class="flex items-center gap-1 justify-end">
-                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.origin_thc_rate" class="text-right min-w-[200px]" />
-                                                        <span class="text-zinc-400 text-xs">/</span>
-                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.origin_thc_qty" class="text-right min-w-[200px]" />
-                                                    </div>
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                                    <div class="flex items-center gap-1 justify-end">
-                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.int_freight_cbm" class="text-right min-w-[200px]" />
-                                                        <span class="text-zinc-400 text-xs">/</span>
-                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.int_freight_kg" class="text-right min-w-[200px]" />
-                                                    </div>
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                                    <flux:input type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.insurance_rate" class="text-right min-w-[200px]" />
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                                    <div class="flex items-center gap-1 justify-end">
-                                                        <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.import_duties_fixed" class="text-right min-w-[200px]" />
-                                                        <span class="text-zinc-400 text-xs">/</span>
-                                                        <flux:input type="number" step="0.01" wire:model.live="tables.{{ $t_idx }}.config.import_duties_multiplier" class="text-right min-w-[200px]" />
-                                                    </div>
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                                    <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.handling_charges_global" class="text-right min-w-[200px]" />
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                                    <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.inland_transport_global" class="text-right min-w-[200px]" />
-                                                </td>
-                                                <td colspan="8" class="p-4 bg-zinc-100 dark:bg-zinc-800/60 font-black text-[9px] text-zinc-400 uppercase tracking-[0.2em] text-center italic">Pricing Configuration Inputs</td>
-                                            </tr>
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                            <div class="flex gap-1">
+                                                                                                                                                                                <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.unit_product_price" class="text-right font-bold text-indigo-600 dark:text-indigo-400 min-w-[200px]" />
+                                                                                                                                                                                <flux:select wire:model.live="tables.{{ $t_idx }}.currency" class="min-w-[200px]">
+                                                                                                                                                                                    <flux:select.option value="USD">USD</flux:select.option>
+                                                                                                                                                                                    <flux:select.option value="EUR">EUR</flux:select.option>
+                                                                                                                                                                                    <flux:select.option value="GBP">GBP</flux:select.option>
+                                                                                                                                                                                    <flux:select.option value="BDT">BDT</flux:select.option>
+                                                                                                                                                                                    <flux:select.option value="AED">AED</flux:select.option>
+                                                                                                                                                                                </flux:select>
+                                                                                                                                                                            </div>
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                            <flux:input type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.export_freight_rate" class="text-right min-w-[200px]" />
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                            <flux:input type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.export_clearance_rate" class="text-right min-w-[200px]" />
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                            <div class="flex items-center gap-1 justify-end">
+                                                                                                                                                                                <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.origin_thc_rate" class="text-right min-w-[200px]" />
+                                                                                                                                                                                <span class="text-zinc-400 text-xs">/</span>
+                                                                                                                                                                                <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.origin_thc_qty" class="text-right min-w-[200px]" />
+                                                                                                                                                                            </div>
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                            <div class="flex items-center gap-1 justify-end">
+                                                                                                                                                                                <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.int_freight_cbm" class="text-right min-w-[200px]" />
+                                                                                                                                                                                <span class="text-zinc-400 text-xs">/</span>
+                                                                                                                                                                                <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.int_freight_kg" class="text-right min-w-[200px]" />
+                                                                                                                                                                            </div>
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                            <flux:input type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.insurance_rate" class="text-right min-w-[200px]" />
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                            <div class="flex items-center gap-1 justify-end">
+                                                                                                                                                                                <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.import_duties_fixed" class="text-right min-w-[200px]" />
+                                                                                                                                                                                <span class="text-zinc-400 text-xs">/</span>
+                                                                                                                                                                                <flux:input type="number" step="0.01" wire:model.live="tables.{{ $t_idx }}.config.import_duties_multiplier" class="text-right min-w-[200px]" />
+                                                                                                                                                                            </div>
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.handling_charges_global" class="text-right min-w-[200px]" />
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.inland_transport_global" class="text-right min-w-[200px]" />
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td colspan="8" class="p-4 bg-zinc-100 dark:bg-zinc-800/60 font-black text-[9px] text-zinc-400 uppercase tracking-[0.2em] text-center italic">Pricing Configuration Inputs</td>
+                                                                                                                                                                    </tr>
 
-                                            {{-- Breakdown Rows --}}
-                                            @php
+                                                                                                                                                                    {{-- Breakdown Rows --}}
+                                                                                                                                                                    @php
                 $selectedIncoterm = $table['selected_incoterm'] ?? 'DDP';
                 $selectedCalc = $calculations[$selectedIncoterm] ?? $calculations['DDP'];
                 $bdtCalc = $calculations['BDT'] ?? null;
                 $bdtLocalCalc = $calculations['BDT (Local)'] ?? null;
-                                            @endphp
+                                                                                                                                                                    @endphp
 
-                                            {{-- USD Incoterm Row (Consolidated with Dropdown) --}}
-                                            <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
-                                                <td class="px-4 py-3 border-r border-zinc-200 dark:border-zinc-800">
-                                                    <flux:select wire:model.live="tables.{{ $t_idx }}.selected_incoterm" class="min-w-[200px]">
-                                                        <flux:select.option value="Exwork">Exwork</flux:select.option>
-                                                        <flux:select.option value="FOB">FOB</flux:select.option>
-                                                        <flux:select.option value="CFR">CFR</flux:select.option>
-                                                        <flux:select.option value="CIF">CIF</flux:select.option>
-                                                        <flux:select.option value="DDU/DAP">DDU/DAP</flux:select.option>
-                                                        <flux:select.option value="DDP">DDP</flux:select.option>
-                                                    </flux:select>
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
-                                                    <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.quantity" class="text-right min-w-[200px]" />
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ number_format($table['unit_product_price'], 0) }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $selectedCalc['costs']['ef'] ? number_format($selectedCalc['costs']['ef'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $selectedCalc['costs']['ec'] ? number_format($selectedCalc['costs']['ec'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $selectedCalc['costs']['oh'] ? number_format($selectedCalc['costs']['oh'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $selectedCalc['costs']['inf'] ? number_format($selectedCalc['costs']['inf'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $selectedCalc['costs']['ins'] ? number_format($selectedCalc['costs']['ins'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $selectedCalc['costs']['id'] ? number_format($selectedCalc['costs']['id'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $selectedCalc['costs']['hc'] ? number_format($selectedCalc['costs']['hc'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $selectedCalc['costs']['it'] ? number_format($selectedCalc['costs']['it'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-sm">—</td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 font-medium text-purple-600 dark:text-purple-400 text-sm">
-                                                    {{ $selectedCalc['cf_disp'] }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
-                                                    {{ number_format($selectedCalc['up'], 0) }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-amber-600 font-bold text-sm">
-                                                    <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.margin" class="text-right min-w-[200px]" />
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm font-medium">
-                                                    {{ number_format($selectedCalc['up_mg'], 0) }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                                    <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.tax" class="text-right min-w-[200px]" />
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                                    <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.vat" class="text-right min-w-[200px]" />
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                                    <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.discount" class="text-right min-w-[200px]" />
-                                                </td>
-                                                <td class="px-4 py-3 text-right font-bold text-sm text-indigo-600 dark:text-indigo-400">
-                                                    {{ number_format($selectedCalc['final'], 0) }}
-                                                </td>
-                                            </tr>
+                                                                                                                                                                    {{-- USD Incoterm Row (Consolidated with Dropdown) --}}
+                                                                                                                                                                    <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+                                                                                                                                                                        <td class="px-4 py-3 border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                            <flux:select wire:model.live="tables.{{ $t_idx }}.selected_incoterm" class="min-w-[200px]">
+                                                                                                                                                                                <flux:select.option value="Exwork">Exwork</flux:select.option>
+                                                                                                                                                                                <flux:select.option value="FOB">FOB</flux:select.option>
+                                                                                                                                                                                <flux:select.option value="CFR">CFR</flux:select.option>
+                                                                                                                                                                                <flux:select.option value="CIF">CIF</flux:select.option>
+                                                                                                                                                                                <flux:select.option value="DDU/DAP">DDU/DAP</flux:select.option>
+                                                                                                                                                                                <flux:select.option value="DDP">DDP</flux:select.option>
+                                                                                                                                                                            </flux:select>
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
+                                                                                                                                                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.quantity" class="text-right min-w-[200px]" />
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ number_format($table['unit_product_price'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $selectedCalc['costs']['ef'] ? number_format($selectedCalc['costs']['ef'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $selectedCalc['costs']['ec'] ? number_format($selectedCalc['costs']['ec'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $selectedCalc['costs']['oh'] ? number_format($selectedCalc['costs']['oh'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $selectedCalc['costs']['inf'] ? number_format($selectedCalc['costs']['inf'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $selectedCalc['costs']['ins'] ? number_format($selectedCalc['costs']['ins'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $selectedCalc['costs']['id'] ? number_format($selectedCalc['costs']['id'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $selectedCalc['costs']['hc'] ? number_format($selectedCalc['costs']['hc'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $selectedCalc['costs']['it'] ? number_format($selectedCalc['costs']['it'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-sm">—</td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 font-medium text-purple-600 dark:text-purple-400 text-sm">
+                                                                                                                                                                            {{ $selectedCalc['cf_disp'] }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
+                                                                                                                                                                            {{ number_format($selectedCalc['up'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-amber-600 font-bold text-sm">
+                                                                                                                                                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.margin" class="text-right min-w-[200px]" />
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm font-medium">
+                                                                                                                                                                            {{ number_format($selectedCalc['up_mg'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
+                                                                                                                                                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.tax" class="text-right min-w-[200px]" />
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
+                                                                                                                                                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.vat" class="text-right min-w-[200px]" />
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
+                                                                                                                                                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.discount" class="text-right min-w-[200px]" />
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right font-bold text-sm text-indigo-600 dark:text-indigo-400">
+                                                                                                                                                                            {{ number_format($selectedCalc['final'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
 
-                                            {{-- BDT Row --}}
-                                            @if($bdtCalc)
-                                            <tr class="hidden hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors bg-indigo-50/30 dark:bg-indigo-500/5">
-                                                <td class="px-4 py-3 border-r border-zinc-200 dark:border-zinc-800 font-bold text-indigo-600 dark:text-indigo-400 text-sm">BDT</td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
-                                                    {{ number_format($table['quantity'], 0) }}
-                                                </td>
-                                                <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
-                                                    {{ $table['uom'] }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ number_format($table['unit_product_price'], 0) }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtCalc['costs']['ef'] ? number_format($bdtCalc['costs']['ef'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtCalc['costs']['ec'] ? number_format($bdtCalc['costs']['ec'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtCalc['costs']['oh'] ? number_format($bdtCalc['costs']['oh'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtCalc['costs']['inf'] ? number_format($bdtCalc['costs']['inf'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtCalc['costs']['ins'] ? number_format($bdtCalc['costs']['ins'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtCalc['costs']['id'] ? number_format($bdtCalc['costs']['id'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtCalc['costs']['hc'] ? number_format($bdtCalc['costs']['hc'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtCalc['costs']['it'] ? number_format($bdtCalc['costs']['it'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-sm">
-                                                    {{ $conversion_rate }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 font-medium text-purple-600 dark:text-purple-400 text-sm">
-                                                    {{ $bdtCalc['cf_disp'] }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
-                                                    {{ number_format($bdtCalc['up'], 0) }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm font-medium">
-                                                    {{ number_format($bdtCalc['up_mg'], 0) }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-amber-600 font-bold text-sm">
-                                                    {{ $table['margin'] ?? 0 }}%
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                                    {{ $table['tax'] ?? 0 }}%
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                                    {{ $table['vat'] ?? 0 }}%
-                                                </td>
-                                                <td class="px-4 py-3 text-right font-bold text-sm text-purple-700 dark:text-purple-400">
-                                                    {{ number_format($bdtCalc['final'], 0) }}
-                                                </td>
-                                            </tr>
-                                            @endif
+                                                                                                                                                                    {{-- BDT Row --}}
+                                                                                                                                                                    @if($bdtCalc)
+                                                                                                                                                                    <tr class="hidden hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors bg-indigo-50/30 dark:bg-indigo-500/5">
+                                                                                                                                                                        <td class="px-4 py-3 border-r border-zinc-200 dark:border-zinc-800 font-bold text-indigo-600 dark:text-indigo-400 text-sm">BDT</td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
+                                                                                                                                                                            {{ number_format($table['quantity'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
+                                                                                                                                                                            {{ $table['uom'] }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ number_format($table['unit_product_price'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtCalc['costs']['ef'] ? number_format($bdtCalc['costs']['ef'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtCalc['costs']['ec'] ? number_format($bdtCalc['costs']['ec'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtCalc['costs']['oh'] ? number_format($bdtCalc['costs']['oh'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtCalc['costs']['inf'] ? number_format($bdtCalc['costs']['inf'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtCalc['costs']['ins'] ? number_format($bdtCalc['costs']['ins'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtCalc['costs']['id'] ? number_format($bdtCalc['costs']['id'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtCalc['costs']['hc'] ? number_format($bdtCalc['costs']['hc'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtCalc['costs']['it'] ? number_format($bdtCalc['costs']['it'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-sm">
+                                                                                                                                                                            {{ $conversion_rate }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 font-medium text-purple-600 dark:text-purple-400 text-sm">
+                                                                                                                                                                            {{ $bdtCalc['cf_disp'] }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
+                                                                                                                                                                            {{ number_format($bdtCalc['up'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm font-medium">
+                                                                                                                                                                            {{ number_format($bdtCalc['up_mg'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-amber-600 font-bold text-sm">
+                                                                                                                                                                            {{ $table['margin'] ?? 0 }}%
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
+                                                                                                                                                                            {{ $table['tax'] ?? 0 }}%
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
+                                                                                                                                                                            {{ $table['vat'] ?? 0 }}%
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right font-bold text-sm text-purple-700 dark:text-purple-400">
+                                                                                                                                                                            {{ number_format($bdtCalc['final'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                    @endif
 
-                                            {{-- BDT (Local) Row --}}
-                                            @if($bdtLocalCalc)
-                                            <tr class="hidden hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors bg-indigo-50/30 dark:bg-indigo-500/5">
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
-                                                    {{ number_format($table['quantity'], 0) }}
-                                                </td>
-                                                <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
-                                                    {{ $table['uom'] }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">—</td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtLocalCalc['costs']['ef'] ? number_format($bdtLocalCalc['costs']['ef'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtLocalCalc['costs']['ec'] ? number_format($bdtLocalCalc['costs']['ec'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtLocalCalc['costs']['oh'] ? number_format($bdtLocalCalc['costs']['oh'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtLocalCalc['costs']['inf'] ? number_format($bdtLocalCalc['costs']['inf'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtLocalCalc['costs']['ins'] ? number_format($bdtLocalCalc['costs']['ins'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtLocalCalc['costs']['id'] ? number_format($bdtLocalCalc['costs']['id'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtLocalCalc['costs']['hc'] ? number_format($bdtLocalCalc['costs']['hc'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                    {{ $bdtLocalCalc['costs']['it'] ? number_format($bdtLocalCalc['costs']['it'], 0) : '—' }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-sm">—</td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 font-medium text-purple-600 dark:text-purple-400 text-sm">
-                                                    {{ $bdtLocalCalc['cf_disp'] }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
-                                                    {{ number_format($bdtLocalCalc['up'], 0) }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm font-medium">
-                                                    {{ number_format($bdtLocalCalc['up_mg'], 0) }}
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-amber-600 font-bold text-sm">
-                                                    {{ $table['margin'] ?? 0 }}%
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                                    {{ $table['tax'] ?? 0 }}%
-                                                </td>
-                                                <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
-                                                    {{ $table['vat'] ?? 0 }}%
-                                                </td>
-                                                <td class="px-4 py-3 text-right font-bold text-sm text-purple-700 dark:text-purple-400">
-                                                    {{ number_format($bdtLocalCalc['final'], 0) }}
-                                                </td>
-                                            </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                                                                                                                                                                    {{-- BDT (Local) Row --}}
+                                                                                                                                                                    @if($bdtLocalCalc)
+                                                                                                                                                                    <tr class="hidden hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors bg-indigo-50/30 dark:bg-indigo-500/5">
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
+                                                                                                                                                                            {{ number_format($table['quantity'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
+                                                                                                                                                                            {{ $table['uom'] }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">—</td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtLocalCalc['costs']['ef'] ? number_format($bdtLocalCalc['costs']['ef'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtLocalCalc['costs']['ec'] ? number_format($bdtLocalCalc['costs']['ec'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtLocalCalc['costs']['oh'] ? number_format($bdtLocalCalc['costs']['oh'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtLocalCalc['costs']['inf'] ? number_format($bdtLocalCalc['costs']['inf'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtLocalCalc['costs']['ins'] ? number_format($bdtLocalCalc['costs']['ins'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtLocalCalc['costs']['id'] ? number_format($bdtLocalCalc['costs']['id'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtLocalCalc['costs']['hc'] ? number_format($bdtLocalCalc['costs']['hc'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
+                                                                                                                                                                            {{ $bdtLocalCalc['costs']['it'] ? number_format($bdtLocalCalc['costs']['it'], 0) : '—' }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-sm">—</td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 font-medium text-purple-600 dark:text-purple-400 text-sm">
+                                                                                                                                                                            {{ $bdtLocalCalc['cf_disp'] }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm">
+                                                                                                                                                                            {{ number_format($bdtLocalCalc['up'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm font-medium">
+                                                                                                                                                                            {{ number_format($bdtLocalCalc['up_mg'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-amber-600 font-bold text-sm">
+                                                                                                                                                                            {{ $table['margin'] ?? 0 }}%
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
+                                                                                                                                                                            {{ $table['tax'] ?? 0 }}%
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-xs">
+                                                                                                                                                                            {{ $table['vat'] ?? 0 }}%
+                                                                                                                                                                        </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right font-bold text-sm text-purple-700 dark:text-purple-400">
+                                                                                                                                                                            {{ number_format($bdtLocalCalc['final'], 0) }}
+                                                                                                                                                                        </td>
+                                                                                                                                                                    </tr>
+                                                                                                                                                                    @endif
+                                                                                                                                                                </tbody>
+                                                                                                                                                            </table>
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
             @endforeach
         </div>
 
@@ -462,14 +462,14 @@
                 </div>
 
                 @php
-                    $totalSubtotal = 0;
-                    foreach($tables as $idx => $table) {
-                        $calcs = $this->getCalculations($idx);
-                        $selected = $table['selected_incoterm'] ?? 'DDP';
-                        $totalSubtotal += ($calcs[$selected]['final'] ?? 0) * ($table['quantity'] ?? 1);
-                    }
-                    $globalDiscountAmount = $totalSubtotal * (($discount_percentage ?? 0) / 100);
-                    $totalGrandTotal = $totalSubtotal - $globalDiscountAmount;
+$totalSubtotal = 0;
+foreach ($tables as $idx => $table) {
+    $calcs = $this->getCalculations($idx);
+    $selected = $table['selected_incoterm'] ?? 'DDP';
+    $totalSubtotal += ($calcs[$selected]['final'] ?? 0) * ($table['quantity'] ?? 1);
+}
+$globalDiscountAmount = $totalSubtotal * (($discount_percentage ?? 0) / 100);
+$totalGrandTotal = $totalSubtotal - $globalDiscountAmount;
                 @endphp
 
                 <div class="flex flex-col gap-2 text-right">
