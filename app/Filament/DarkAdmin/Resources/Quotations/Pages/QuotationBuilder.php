@@ -140,7 +140,7 @@ class QuotationBuilder extends Page
             'product_id' => '',
             'selected_incoterm' => 'DDP',
             'name' => '',
-            'quantity' => 1,
+            'quantity' => 0,
             'uom' => 'UNIT',
             'unit_product_price' => 0,
             'currency' => \App\Models\Currency::where('is_base', true)->first()?->code ?? 'USD',
