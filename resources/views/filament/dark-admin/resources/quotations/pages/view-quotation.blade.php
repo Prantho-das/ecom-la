@@ -118,8 +118,8 @@
                                 <th class="py-4 px-4 text-left">Description</th>
                                 <th class="py-4 px-4 text-center w-24">QTY</th>
                                 <th class="py-4 px-4 text-center w-20">UOM</th>
-                                <th class="py-4 px-4 text-right w-36">Price ({{ $record->currency }})</th>
-                                <th class="py-4 px-2 text-right w-40">Amount ({{ $record->currency }})</th>
+                                <th class="py-4 px-4 text-right w-44">Price</th>
+                                <th class="py-4 px-2 text-right w-48">Amount</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -135,17 +135,66 @@
                                 </td>
                                 <td class="py-6 px-4 align-top text-center font-black text-base">{{ $item->quantity }}</td>
                                 <td class="py-6 px-4 align-top text-center font-black text-zinc-400 uppercase text-xs pt-[26px]">{{ $item->uom }}</td>
-                                <td class="py-6 px-4 align-top text-right font-bold text-sm pt-[24px]">{{ number_format($item->final_unit_price, 2) }}</td>
-                                <td class="py-6 px-2 align-top text-right font-black text-base tracking-tighter pt-[24px]">{{ number_format($item->row_total, 2) }}</td>
+                                <td class="py-6 px-4 align-top text-right font-bold text-sm pt-[24px]">
+                                    <span class="text-[10px] text-zinc-400 mr-1">{{ $item->currency }}</span>{{ number_format($item->final_unit_price, 2) }}
+                                </td>
+                                <td class="py-6 px-2 align-top text-right font-black text-base tracking-tighter pt-[24px]">
+                                    <span class="text-xs text-zinc-400 mr-1">{{ $item->currency }}</span>{{ number_format($item->row_total, 2) }}
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <td colspan="4" class="py-8"></td>
-                                <td class="py-8 px-4 text-right font-black uppercase text-[10px] text-zinc-400 tracking-widest">Grand Total</td>
-                                <td class="py-6 px-2 text-right font-black text-2xl border-b-[4px] border-double border-zinc-900 dark:border-zinc-100 leading-none">
-                                    <span class="text-sm font-bold align-top mr-1">{{ $record->currency }}</span>{{ number_format($record->subtotal, 2) }}
+                            @php
+                                $currencySubtotals = $record->items->groupBy('currency')->map(fn($items) => $items->sum('row_total'));
+                                $discountPercentage = (float) $record->discount_percentage;
+                            @endphp
+                            
+                            @foreach($currencySubtotals as $curr => $subtotal)
+                                @php
+                                    $discountAmt = $subtotal * ($discountPercentage / 100);
+                                    $grandTotal = $subtotal - $discountAmt;
+                                @endphp
+                                
+                                {{-- Subtotal Row --}}
+                                <tr>
+                                    <td colspan="4" class="py-2"></td>
+                                    <td class="py-2 px-4 text-right font-black uppercase text-[9px] text-zinc-400 tracking-widest">{{ $curr }} Subtotal</td>
+                                    <td class="py-2 px-2 text-right font-bold text-sm text-zinc-600 dark:text-zinc-400 leading-none">
+                                        <span class="text-[10px] align-top mr-1">{{ $curr }}</span>{{ number_format($subtotal, 2) }}
+                                    </td>
+                                </tr>
+
+                                {{-- Discount Row (Optional) --}}
+                                @if($discountPercentage > 0)
+                                <tr>
+                                    <td colspan="4" class="py-1"></td>
+                                    <td class="py-1 px-4 text-right font-bold uppercase text-[9px] text-red-400 tracking-widest">Discount ({{ $discountPercentage }}%)</td>
+                                    <td class="py-1 px-2 text-right font-bold text-sm text-red-500 leading-none">
+                                        - <span class="text-[10px] align-top mr-1">{{ $curr }}</span>{{ number_format($discountAmt, 2) }}
+                                    </td>
+                                </tr>
+                                @endif
+
+                                {{-- Currency Grand Total Row --}}
+                                <tr>
+                                    <td colspan="4" class="py-2"></td>
+                                    <td class="py-2 px-4 text-right font-black uppercase text-[10px] text-indigo-600 dark:text-indigo-400 tracking-widest">{{ $curr }} Grand Total</td>
+                                    <td class="py-2 px-2 text-right font-black text-xl border-b-2 border-zinc-100 dark:border-zinc-800 leading-none">
+                                        <span class="text-xs font-bold align-top mr-1">{{ $curr }}</span>{{ number_format($grandTotal, 2) }}
+                                    </td>
+                                </tr>
+                                
+                                {{-- Spacer for next currency --}}
+                                <tr><td colspan="6" class="py-2"></td></tr>
+                            @endforeach
+
+                            {{-- Final Combined Total --}}
+                            <tr class="bg-zinc-50/50 dark:bg-zinc-800/30">
+                                <td colspan="4" class="py-6 rounded-l-xl"></td>
+                                <td class="py-6 px-4 text-right font-black uppercase text-[11px] text-indigo-600 dark:text-indigo-400 tracking-[0.2em]">Combined (BDT)</td>
+                                <td class="py-6 px-2 text-right font-black text-3xl border-b-[4px] border-double border-zinc-900 dark:border-zinc-100 leading-none rounded-r-xl">
+                                    <span class="text-sm font-bold align-top mr-1">৳</span>{{ number_format($record->grand_total, 2) }}
                                 </td>
                             </tr>
                         </tfoot>
@@ -158,9 +207,9 @@
                     $totalInWords = strtoupper($formatter->format($record->subtotal));
                 @endphp
                 <div class="relative mb-16">
-                    <div class="absolute -top-3 left-6 bg-white dark:bg-zinc-900 px-3 text-[9px] font-black uppercase tracking-[0.3em] text-indigo-500">Amount in Words</div>
+                    <div class="absolute -top-3 left-6 bg-white dark:bg-zinc-900 px-3 text-[9px] font-black uppercase tracking-[0.3em] text-indigo-500">Amount in Words (Combined BDT)</div>
                     <div class="bg-indigo-50/50 dark:bg-indigo-500/5 p-8 rounded-xl border-2 border-indigo-100 dark:border-indigo-900/30 text-sm font-black uppercase leading-relaxed tracking-tight text-indigo-900 dark:text-indigo-400 italic">
-                         {{ $record->currency }} {{ $totalInWords }} ONLY
+                         BDT {{ $totalInWords }} ONLY
                     </div>
                 </div>
 
@@ -202,7 +251,7 @@
                                 <div class="pt-4 border-t border-zinc-200 dark:border-zinc-700">
                                     <div class="text-[8px] uppercase font-black mb-1 text-zinc-400">Account Number</div>
                                     <div class="font-black text-2xl tracking-tighter text-zinc-900 dark:text-zinc-100">800004305840</div>
-                                    <div class="text-[9px] font-bold mt-1 text-zinc-500 tracking-tight">SWIFT: CIMBBMYKL (for {{ $record->currency }} transfers)</div>
+                                    <div class="text-[9px] font-bold mt-1 text-zinc-500 tracking-tight">SWIFT: CIMBBMYKL (for international transfers)</div>
                                 </div>
                             </div>
                         </div>

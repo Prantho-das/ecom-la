@@ -43,8 +43,6 @@ class QuotationBuilder extends Page
 
     public ?int $quotationId = null;
 
-    public $currency = 'USD';
-
     public $conversion_rate = 1;
 
     public $margin = 30;
@@ -96,10 +94,6 @@ class QuotationBuilder extends Page
         $this->payment_term = $quotation->payment_term ?? 'TT Before Delivery';
         $this->customer_po = $quotation->customer_po;
         $this->quotation_date = $quotation->quotation_date?->format('Y-m-d') ?? now()->format('Y-m-d');
-        $this->currency = $quotation->currency;
-        $this->conversion_rate = (float) $quotation->conversion_rate;
-        $this->margin = (float) $quotation->margin_percentage;
-        $this->tax = (float) $quotation->tax_percentage;
         $this->vat = (float) $quotation->vat_percentage;
         $this->discount_percentage = (float) $quotation->discount_percentage;
 
@@ -116,7 +110,7 @@ class QuotationBuilder extends Page
                 'quantity' => $item->quantity ?? 1,
                 'uom' => $item->uom ?? 'UNIT',
                 'unit_product_price' => (float) $item->unit_price,
-                'currency' => $item->currency ?? $this->currency,
+                'currency' => $item->currency,
                 'margin' => (float) $item->margin_percentage,
                 'tax' => (float) ($item->tax_percent * 100),
                 'vat' => (float) ($item->vat_percent * 100),
@@ -134,6 +128,7 @@ class QuotationBuilder extends Page
                     'handling_charges_global' => (float) $item->handling_charges_global,
                     'inland_transport_global' => (float) $item->inland_transport_global,
                 ],
+                'conversion_rate' => (float) ($item->conversion_rate ?? $this->conversion_rate),
             ];
         }
     }
@@ -148,12 +143,13 @@ class QuotationBuilder extends Page
             'quantity' => 1,
             'uom' => 'UNIT',
             'unit_product_price' => 0,
-            'currency' => $this->currency,
+            'currency' => \App\Models\Currency::where('is_base', true)->first()?->code ?? 'USD',
             'margin' => $this->margin,
             'tax' => $this->tax,
             'vat' => $this->vat,
             'discount' => 0,
             'config' => $this->config,
+            'conversion_rate' => $this->conversion_rate,
         ];
     }
 
@@ -177,33 +173,33 @@ class QuotationBuilder extends Page
     {
         if (Str::endsWith($key, '.product_id')) {
             $index = explode('.', $key)[0];
-            $product = \App\Models\Product::find($value);
+            $product = \App\Models\Product::with('currency')->find($value);
             if ($product) {
                 $this->tables[$index]['name'] = $product->name;
                 $this->tables[$index]['unit_product_price'] = $product->price ?? 0;
+                
+                if ($product->currency) {
+                    $this->tables[$index]['currency'] = $product->currency->code;
+                    $this->tables[$index]['conversion_rate'] = (float) $product->currency->exchange_rate;
+                }
+            }
+        }
+
+        if (Str::endsWith($key, '.currency')) {
+            $index = explode('.', $key)[0];
+            $currency = \App\Models\Currency::where('code', $value)->first();
+            if ($currency) {
+                $this->tables[$index]['conversion_rate'] = (float) $currency->exchange_rate;
             }
         }
     }
 
-    public function getCurrencySymbol(): string
+    public function getCurrencySymbol(?string $code = null): string
     {
-        if ($this->currency === 'USD') {
-            return '$';
-        }
-        if ($this->currency === 'EUR') {
-            return '€';
-        }
-        if ($this->currency === 'GBP') {
-            return '£';
-        }
-        if ($this->currency === 'BDT') {
-            return '৳';
-        }
-        if ($this->currency === 'AED') {
-            return 'د.إ';
-        }
-
-        return '$';
+        $code = $code ?? 'USD';
+        $currency = \App\Models\Currency::where('code', $code)->first();
+        
+        return $currency?->symbol ?? '$';
     }
 
     public function getCalculations(int $index): array
@@ -214,7 +210,7 @@ class QuotationBuilder extends Page
         return $service->calculateMatrix(
             (float) $table['unit_product_price'],
             $table['config'],
-            (float) $this->conversion_rate,
+            (float) ($table['conversion_rate'] ?? $this->conversion_rate),
             (float) ($table['margin'] ?? 0),
             (float) ($table['tax'] ?? 0),
             (float) ($table['vat'] ?? 0),
@@ -227,9 +223,14 @@ class QuotationBuilder extends Page
         $this->validate([
             'customer_name' => 'required|string|max:255',
             'customer_email' => 'required|email|max:255',
-            'quotation_date' => 'required|date',
-            'currency' => 'required|string|in:USD,EUR,GBP,BDT,AED',
             'tables' => 'required|array|min:1',
+            'tables.*.currency' => 'required|string',
+            'tables.*.quantity' => 'required|numeric|min:1',
+            'tables.*.unit_product_price' => 'required|numeric|min:0',
+            'tables.*.conversion_rate' => 'required|numeric|gt:0',
+        ], [
+            'tables.*.quantity.min' => 'Quantity must be at least 1.',
+            'tables.*.conversion_rate.gt' => 'Conversion rate must be greater than 0.',
         ]);
 
         if ($this->quotationId) {
@@ -244,8 +245,6 @@ class QuotationBuilder extends Page
                 'payment_term' => $this->payment_term,
                 'customer_po' => $this->customer_po,
                 'quotation_date' => $this->quotation_date,
-                'currency' => $this->currency,
-                'conversion_rate' => $this->conversion_rate,
                 'margin_percentage' => $this->margin,
                 'tax_percentage' => $this->tax,
                 'vat_percentage' => $this->vat,
@@ -265,8 +264,6 @@ class QuotationBuilder extends Page
                 'payment_term' => $this->payment_term,
                 'customer_po' => $this->customer_po,
                 'quotation_date' => $this->quotation_date,
-                'currency' => $this->currency,
-                'conversion_rate' => $this->conversion_rate,
                 'margin_percentage' => $this->margin,
                 'tax_percentage' => $this->tax,
                 'vat_percentage' => $this->vat,
@@ -288,7 +285,7 @@ class QuotationBuilder extends Page
                 'shipment_mode' => 'Sea', // Defaulting to Sea as it matches the previous logic's context
                 'product_name' => $tableData['name'] ?: 'Custom Item',
                 'incoterm' => $selectedIncoterm,
-                'currency' => $tableData['currency'] ?? $this->currency,
+                'currency' => $tableData['currency'] ?? 'USD',
                 'unit_price' => $tableData['unit_product_price'],
                 'export_freight_local' => $costs['ef'] ?? 0,
                 'export_clearance' => $costs['ec'] ?? 0,
@@ -309,7 +306,7 @@ class QuotationBuilder extends Page
                 'import_duties_multiplier' => $tableData['config']['import_duties_multiplier'] ?? 1,
                 'handling_charges_global' => $tableData['config']['handling_charges_global'] ?? 0,
                 'inland_transport_global' => $tableData['config']['inland_transport_global'] ?? 0,
-                'conversion_rate' => $this->conversion_rate,
+                'conversion_rate' => $tableData['conversion_rate'] ?? $this->conversion_rate,
                 'cost_factor' => $breakdown['cf'],
                 'mg_amount' => (float) $breakdown['up_mg'] - (float) $breakdown['up'], // Corrected: price_with_mg - cost_factor_total_price
                 'tax_percent' => ($tableData['tax'] ?? 0) / 100,

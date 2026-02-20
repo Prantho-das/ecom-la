@@ -2,6 +2,7 @@
 
 namespace App\Filament\DarkAdmin\Resources\Products\Schemas;
 
+use App\Models\Currency;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
@@ -31,16 +32,25 @@ class ProductForm
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn(string $operation, ?string $state, $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                            ->afterStateUpdated(fn (string $operation, ?string $state, $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
                         TextInput::make('sku')
                             ->unique(ignoreRecord: true)
                             ->nullable()
                             ->maxLength(255)->columnSpan(1),
 
+                        Select::make('currency_id')
+                            ->relationship('currency', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->label('Currency')
+                            ->default(fn () => Currency::where('is_base', true)->first()?->id)
+                            ->live()
+                            ->columnSpan(1),
+
                         TextInput::make('price')
                             ->label('Price')
                             ->numeric()
-                            ->prefix('$')
+                            ->prefix(fn ($get) => Currency::find($get('currency_id'))?->symbol ?? '$')
                             ->nullable()
                             ->helperText('Base product price')
                             ->columnSpan(1),
@@ -254,7 +264,7 @@ class ProductForm
 
                                         TextInput::make('value')
                                             ->label('Value')
-                                            ->placeholder('e.g., Dubai, +971...', '2020')
+                                            ->placeholder('e.g., Dubai, +971...')
                                             ->required()
                                             ->maxLength(1000)
                                             ->columnSpan(1),
@@ -273,7 +283,7 @@ class ProductForm
                             ->reorderableWithButtons()
                             ->addActionLabel('Add New Section')
                             ->defaultItems(0)
-                            ->itemLabel(fn(array $state): ?string => $state['title'] ?? null),
+                            ->itemLabel(fn (array $state): ?string => $state['title'] ?? null),
                     ])->columnSpanFull(),
 
             ])->columns(2);

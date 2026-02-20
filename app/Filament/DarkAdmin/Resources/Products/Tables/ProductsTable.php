@@ -5,7 +5,6 @@ namespace App\Filament\DarkAdmin\Resources\Products\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -17,10 +16,10 @@ class ProductsTable
     {
         return $table
             ->columns([
-               ImageColumn::make('thumbnail')
-    ->disk('public')
-    ->default('images/product-placeholder.png')
-    ->circular(),
+                ImageColumn::make('thumbnail')
+                    ->disk('public')
+                    ->default('images/product-placeholder.png')
+                    ->circular(),
 
                 TextColumn::make('name')
                     ->searchable()
@@ -28,6 +27,11 @@ class ProductsTable
                     ->weight('semibold'),
                 TextColumn::make('sku')
                     ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('price')
+                    ->label('Price')
+                    ->money(fn ($record) => $record->currency?->code ?? 'USD')
                     ->sortable(),
 
                 TextColumn::make('brand.name')

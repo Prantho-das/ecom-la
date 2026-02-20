@@ -75,4 +75,10 @@ class Product extends Model
     {
         return $this->belongsToMany(Country::class, 'country_product');
     }
+
+    /** Product belongs to a Currency */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
 }

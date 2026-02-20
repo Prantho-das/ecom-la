@@ -93,11 +93,16 @@
                                                                                                                                                     <div wire:key="table-{{ $table['id'] }}" class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
                                                                                                                                                         <div class="px-6 py-4 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
                                                                                                                                                             <div class="flex items-center gap-4">
-                                                                                                                                                                <flux:select wire:model.live="tables.{{ $t_idx }}.product_id" placeholder="Choose a product..." class="w-80">
-                                                                                                                                                                    @foreach(\App\Models\Product::all() as $p)
-                                                                                                                                                                        <flux:select.option value="{{ $p->id }}">{{ $p->name }}</flux:select.option>
-                                                                                                                                                                    @endforeach
-                                                                                                                                                                </flux:select>
+                                                                                                                                                                 <flux:select wire:model.live="tables.{{ $t_idx }}.product_id" placeholder="Choose a product..." class="w-80">
+                                                                                                                                                                     @foreach(\App\Models\Product::all() as $p)
+                                                                                                                                                                         <flux:select.option value="{{ $p->id }}">{{ $p->name }}</flux:select.option>
+                                                                                                                                                                     @endforeach
+                                                                                                                                                                 </flux:select>
+                                                                                                                                                                 <flux:select wire:model.live="tables.{{ $t_idx }}.currency" class="w-32">
+                                                                                                                                                                     @foreach(\App\Models\Currency::where('is_active', true)->get() as $c)
+                                                                                                                                                                         <flux:select.option value="{{ $c->code }}">{{ $c->code }}</flux:select.option>
+                                                                                                                                                                     @endforeach
+                                                                                                                                                                 </flux:select>
                                                                                                                                                             </div>
                                                                                                                                                             <div class="flex items-center gap-2">
                                                                                                                                                                 <div x-data="{ open: false }">
@@ -178,18 +183,11 @@
                                                                                                                                                                         <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800">
 
                                                                                                                                                                         </td>
-                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                                                                                                                                                            <div class="flex gap-1">
-                                                                                                                                                                                <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.unit_product_price" class="text-right font-bold text-indigo-600 dark:text-indigo-400 min-w-[200px]" />
-                                                                                                                                                                                <flux:select wire:model.live="tables.{{ $t_idx }}.currency" class="min-w-[200px]">
-                                                                                                                                                                                    <flux:select.option value="USD">USD</flux:select.option>
-                                                                                                                                                                                    <flux:select.option value="EUR">EUR</flux:select.option>
-                                                                                                                                                                                    <flux:select.option value="GBP">GBP</flux:select.option>
-                                                                                                                                                                                    <flux:select.option value="BDT">BDT</flux:select.option>
-                                                                                                                                                                                    <flux:select.option value="AED">AED</flux:select.option>
-                                                                                                                                                                                </flux:select>
-                                                                                                                                                                            </div>
-                                                                                                                                                                        </td>
+                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                             <div class="flex gap-1 justify-end">
+                                                                                                                                                                                 <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.unit_product_price" prefix="{{ $this->getCurrencySymbol($table['currency'] ?? null) }}" class="text-right font-bold text-indigo-600 dark:text-indigo-400 min-w-[200px]" />
+                                                                                                                                                                             </div>
+                                                                                                                                                                         </td>
                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                                                                                                                                                             <flux:input type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.export_freight_rate" class="text-right min-w-[200px]" />
                                                                                                                                                                         </td>
@@ -250,7 +248,7 @@
                                                                                                                                                                             </flux:select>
                                                                                                                                                                         </td>
                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
-                                                                                                                                                                            <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.quantity" class="text-right min-w-[200px]" />
+                                                                                                                                                                            <flux:input type="number" min="1" wire:model.live="tables.{{ $t_idx }}.quantity" class="text-right min-w-[200px]" />
                                                                                                                                                                         </td>
                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
                                                                                                                                                                             {{ number_format($table['unit_product_price'], 0) }}
@@ -343,9 +341,9 @@
                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
                                                                                                                                                                             {{ $bdtCalc['costs']['it'] ? number_format($bdtCalc['costs']['it'], 0) : '—' }}
                                                                                                                                                                         </td>
-                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-sm">
-                                                                                                                                                                            {{ $conversion_rate }}
-                                                                                                                                                                        </td>
+                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-500 text-sm">
+                                                                                                                                                                             {{ $table['conversion_rate'] ?? $conversion_rate }}
+                                                                                                                                                                         </td>
                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 font-medium text-purple-600 dark:text-purple-400 text-sm">
                                                                                                                                                                             {{ $bdtCalc['cf_disp'] }}
                                                                                                                                                                         </td>
@@ -438,13 +436,7 @@
         {{-- Global Configuration Footer --}}
         <div class="bg-white dark:bg-zinc-900 p-8 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <flux:field class="hidden">
-                    <flux:label>Exchange Rate (1 USD to BDT)</flux:label>
-                    <div class="flex items-center gap-2">
-                        <flux:input type="number" wire:model.live="conversion_rate" class="w-full font-bold text-indigo-600 dark:text-indigo-400" />
-                        <span class="text-sm font-bold text-zinc-500">BDT</span>
-                    </div>
-                </flux:field>
+
 
                 <flux:field>
                     <flux:label>Global Discount (%)</flux:label>
@@ -472,24 +464,70 @@ $globalDiscountAmount = $totalSubtotal * (($discount_percentage ?? 0) / 100);
 $totalGrandTotal = $totalSubtotal - $globalDiscountAmount;
                 @endphp
 
-                <div class="flex flex-col gap-2 text-right">
-                    <div>
-                        <span class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Subtotal</span>
-                        <div class="text-xl font-bold text-zinc-900 dark:text-zinc-100">{{ number_format($totalSubtotal, 0) }}</div>
-                    </div>
-                    @if($discount_percentage > 0)
-                    <div>
-                        <span class="text-xs font-bold text-red-400 uppercase tracking-widest">Discount ({{ $discount_percentage }}%)</span>
-                        <div class="text-xl font-bold text-red-600 dark:text-red-400">
-                             - {{ number_format($globalDiscountAmount, 0) }}
+                <div class="flex flex-col gap-6 text-right">
+                    @php
+                    $currencyTotals = [];
+                    foreach ($tables as $idx => $table) {
+                        $calcs = $this->getCalculations($idx);
+                        $currency = $table['currency'] ?? 'USD';
+                        $selected = $table['selected_incoterm'] ?? 'DDP';
+                        
+                        if (!isset($currencyTotals[$currency])) {
+                            $currencyTotals[$currency] = 0;
+                        }
+                        
+                        $currencyTotals[$currency] += ($calcs[$selected]['final'] ?? 0) * ($table['quantity'] ?? 1);
+                    }
+                    @endphp
+
+                    @foreach($currencyTotals as $curr => $subtotal)
+                        <div class="space-y-2 pb-4 border-b border-zinc-100 dark:border-zinc-800/50 last:border-0 last:pb-0">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-widest">{{ $curr }} Summary</span>
+                                <div class="flex justify-end items-baseline gap-2">
+                                    <span class="text-xs font-bold text-zinc-400">Subtotal:</span>
+                                    <span class="text-lg font-bold text-zinc-900 dark:text-zinc-100">{{ $this->getCurrencySymbol($curr) }} {{ number_format($subtotal, 0) }}</span>
+                                </div>
+                                
+                                @if($discount_percentage > 0)
+                                    @php
+                                        $discountAmt = $subtotal * ($discount_percentage / 100);
+                                        $grandTotal = $subtotal - $discountAmt;
+                                    @endphp
+                                    <div class="flex justify-end items-baseline gap-2">
+                                        <span class="text-[10px] font-bold text-red-400">Discount ({{ $discount_percentage }}%):</span>
+                                        <span class="text-xs font-bold text-red-600 dark:text-red-400">- {{ $this->getCurrencySymbol($curr) }} {{ number_format($discountAmt, 0) }}</span>
+                                    </div>
+                                    <div class="flex justify-end items-baseline gap-2 pt-1">
+                                        <span class="text-xs font-black text-zinc-400 uppercase tracking-wider">Grand Total:</span>
+                                        <span class="text-2xl font-black text-indigo-600 dark:text-indigo-400">{{ $this->getCurrencySymbol($curr) }} {{ number_format($grandTotal, 0) }}</span>
+                                    </div>
+                                @else
+                                    <div class="flex justify-end items-baseline gap-2 pt-1 border-t border-zinc-50 dark:border-zinc-800">
+                                        <span class="text-xs font-black text-zinc-400 uppercase tracking-wider">Grand Total:</span>
+                                        <span class="text-2xl font-black text-indigo-600 dark:text-indigo-400">{{ $this->getCurrencySymbol($curr) }} {{ number_format($subtotal, 0) }}</span>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
-                    </div>
-                    @endif
-                    <div class="pt-4 border-t border-zinc-200 dark:border-zinc-800">
-                        <span class="text-xs font-black text-zinc-400 uppercase tracking-widest">Grand Total</span>
-                        <div class="text-4xl font-black text-indigo-600 dark:text-indigo-400">
-                            {{ number_format($totalGrandTotal, 0) }}
+                    @endforeach
+
+                    {{-- Global BDT Summary (Hidden or Optional, but good for overview) --}}
+                    @php
+                    $totalSubtotalBDT = 0;
+                    foreach ($tables as $idx => $table) {
+                        $calcs = $this->getCalculations($idx);
+                        $totalSubtotalBDT += ($calcs['BDT']['final'] ?? 0) * ($table['quantity'] ?? 1);
+                    }
+                    $totalGrandTotalBDT = $totalSubtotalBDT * (1 - ($discount_percentage ?? 0) / 100);
+                    @endphp
+
+                    <div class="pt-4 mt-2 border-t-2 border-zinc-200 dark:border-zinc-700">
+                        <span class="text-[10px] font-black uppercase text-zinc-400 tracking-[0.2em] block mb-1">Estimated Combined Total</span>
+                        <div class="text-3xl font-black text-zinc-900 dark:text-zinc-100">
+                            ৳ {{ number_format($totalGrandTotalBDT, 0) }}
                         </div>
+                        <span class="text-[8px] font-bold text-zinc-500 uppercase italic">Calculated in BDT across all row conversion rates</span>
                     </div>
                 </div>
             </div>

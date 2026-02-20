@@ -63,7 +63,13 @@ class Currency extends Model
         }
 
         // Formula: (Amount / From Rate) * To Rate
-        return ($amount / (float) $from->exchange_rate) * (float) $to->exchange_rate;
+        $fromRate = (float) $from->exchange_rate;
+        
+        if ($fromRate <= 0) {
+            return 0; // Prevent division by zero
+        }
+
+        return ($amount / $fromRate) * (float) $to->exchange_rate;
     }
 
     /**
