@@ -45,27 +45,27 @@ class QuotationBuilder extends Page
 
     public $conversion_rate = 1;
 
-    public $margin = 30;
+    public $margin = 0;
 
-    public $tax = 5;
+    public $tax = 0;
 
-    public $vat = 10;
+    public $vat = 0;
 
     public $discount_percentage = 0;
 
     // Default configuration for new tables
     public $config = [
-        'export_freight_rate' => 3,
-        'export_clearance_rate' => 2,
-        'origin_thc_rate' => 15,
-        'origin_thc_qty' => 10,
-        'int_freight_cbm' => 20,
-        'int_freight_kg' => 50,
-        'insurance_rate' => 2,
-        'import_duties_fixed' => 2500,
-        'import_duties_multiplier' => 1.1,
-        'handling_charges_global' => 200,
-        'inland_transport_global' => 200,
+        'export_freight_rate' => 0,
+        'export_clearance_rate' => 0,
+        'origin_thc_rate' => 0,
+        'origin_thc_qty' => 0,
+        'int_freight_cbm' => 0,
+        'int_freight_kg' => 0,
+        'insurance_rate' => 0,
+        'import_duties_fixed' => 0,
+        'import_duties_multiplier' => 0,
+        'handling_charges_global' => 0,
+        'inland_transport_global' => 0,
     ];
 
     public $tables = [];
@@ -140,7 +140,7 @@ class QuotationBuilder extends Page
             'product_id' => '',
             'selected_incoterm' => 'DDP',
             'name' => '',
-            'quantity' => 1,
+            'quantity' => 0,
             'uom' => 'UNIT',
             'unit_product_price' => 0,
             'currency' => \App\Models\Currency::where('is_base', true)->first()?->code ?? 'USD',
@@ -225,11 +225,11 @@ class QuotationBuilder extends Page
             'customer_email' => 'required|email|max:255',
             'tables' => 'required|array|min:1',
             'tables.*.currency' => 'required|string',
-            'tables.*.quantity' => 'required|numeric|min:1',
+            'tables.*.quantity' => 'required|numeric|min:0',
             'tables.*.unit_product_price' => 'required|numeric|min:0',
             'tables.*.conversion_rate' => 'required|numeric|gt:0',
         ], [
-            'tables.*.quantity.min' => 'Quantity must be at least 1.',
+            'tables.*.quantity.min' => 'Quantity must be at least 0.',
             'tables.*.conversion_rate.gt' => 'Conversion rate must be greater than 0.',
         ]);
 

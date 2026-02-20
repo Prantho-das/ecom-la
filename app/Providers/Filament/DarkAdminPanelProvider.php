@@ -4,31 +4,29 @@ namespace App\Providers\Filament;
 
 use App\Filament\DarkAdmin\Pages\SiteSettings;
 use App\Filament\DarkAdmin\Widgets\StatsOverview;
-use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Filament\Navigation\NavigationItem;
 
 class DarkAdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         $site_logo = getSetting('logo', null);
+
         return $panel
             ->id('dark-admin')
             ->path('dark-admin')
@@ -38,12 +36,14 @@ class DarkAdminPanelProvider extends PanelProvider
                 'primary' => Color::Green,
             ])
             ->spa()
+            ->globalSearch(false)
             ->sidebarCollapsibleOnDesktop()
             ->brandLogo(function () use ($site_logo) {
-                if (!empty($site_logo)) {
-                    $logoUrl = asset('storage/' . $site_logo);
+                if (! empty($site_logo)) {
+                    $logoUrl = asset('storage/'.$site_logo);
+
                     return new \Illuminate\Support\HtmlString(
-                        '<img src="' . e($logoUrl) . '" alt="Site Logo" class="w-auto h-10 transition-transform duration-200 rounded-lg shadow-sm hover:scale-105">'
+                        '<img src="'.e($logoUrl).'" alt="Site Logo" class="w-auto h-10 transition-transform duration-200 rounded-lg shadow-sm hover:scale-105">'
                     );
                 }
 
@@ -55,7 +55,7 @@ class DarkAdminPanelProvider extends PanelProvider
             })
             ->profile()
             ->maxContentWidth(Width::Full)
-            ->sidebarWidth("16rem")
+            ->sidebarWidth('16rem')
             ->navigationItems([
                 NavigationItem::make()
                     ->label('Clear Cache')
@@ -71,7 +71,7 @@ class DarkAdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/DarkAdmin/Widgets'), for: 'App\Filament\DarkAdmin\Widgets')
             ->widgets([
-                StatsOverview::class
+                StatsOverview::class,
             ])
             ->middleware([
                 EncryptCookies::class,

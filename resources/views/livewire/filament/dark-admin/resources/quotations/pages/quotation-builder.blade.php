@@ -178,16 +178,9 @@
                                                                                                                                                                     <tr class="bg-zinc-50 dark:bg-zinc-800/40">
                                                                                                                                                                         <td class="px-4 py-3 font-bold text-zinc-400 border-r border-zinc-200 dark:border-zinc-800 text-xs">-- CONFIG --</td>
                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-
                                                                                                                                                                         </td>
                                                                                                                                                                         <td class="px-4 py-3 text-left border-r border-zinc-200 dark:border-zinc-800">
-
                                                                                                                                                                         </td>
-                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
-                                                                                                                                                                             <div class="flex gap-1 justify-end">
-                                                                                                                                                                                 <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.unit_product_price" prefix="{{ $this->getCurrencySymbol($table['currency'] ?? null) }}" class="text-right font-bold text-indigo-600 dark:text-indigo-400 min-w-[200px]" />
-                                                                                                                                                                             </div>
-                                                                                                                                                                         </td>
                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                                                                                                                                                             <flux:input type="number" step="0.001" wire:model.live="tables.{{ $t_idx }}.config.export_freight_rate" class="text-right min-w-[200px]" />
                                                                                                                                                                         </td>
@@ -224,6 +217,9 @@
                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
                                                                                                                                                                             <flux:input type="number" wire:model.live="tables.{{ $t_idx }}.config.inland_transport_global" class="text-right min-w-[200px]" />
                                                                                                                                                                         </td>
+                                                                                                                                                                        <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800">
+                                                                                                                                                                            <flux:input type="number" step="0.0001" wire:model.live="tables.{{ $t_idx }}.conversion_rate" class="text-right min-w-[200px]" />
+                                                                                                                                                                        </td>
                                                                                                                                                                         <td colspan="8" class="p-4 bg-zinc-100 dark:bg-zinc-800/60 font-black text-[9px] text-zinc-400 uppercase tracking-[0.2em] text-center italic">Pricing Configuration Inputs</td>
                                                                                                                                                                     </tr>
 
@@ -248,10 +244,12 @@
                                                                                                                                                                             </flux:select>
                                                                                                                                                                         </td>
                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-bold text-sm">
-                                                                                                                                                                            <flux:input type="number" min="1" wire:model.live="tables.{{ $t_idx }}.quantity" class="text-right min-w-[200px]" />
+                                                                                                                                                                            <flux:input type="number" min="0" wire:model.live="tables.{{ $t_idx }}.quantity" class="text-right min-w-[200px]" />
                                                                                                                                                                         </td>
                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
-                                                                                                                                                                            {{ number_format($table['unit_product_price'], 0) }}
+                                                                                                                                                                            <div class="flex gap-1 justify-end">
+                                                                                                                                                                                <flux:input type="number" step="0.01" wire:model.live="tables.{{ $t_idx }}.unit_product_price" prefix="{{ $this->getCurrencySymbol($table['currency'] ?? null) }}" class="text-right font-bold text-indigo-600 dark:text-indigo-400 min-w-[200px]" />
+                                                                                                                                                                            </div>
                                                                                                                                                                         </td>
                                                                                                                                                                         <td class="px-4 py-3 text-right border-r border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 text-sm">
                                                                                                                                                                             {{ $selectedCalc['costs']['ef'] ? number_format($selectedCalc['costs']['ef'], 0) : '—' }}
@@ -522,7 +520,7 @@ $totalGrandTotal = $totalSubtotal - $globalDiscountAmount;
                     $totalGrandTotalBDT = $totalSubtotalBDT * (1 - ($discount_percentage ?? 0) / 100);
                     @endphp
 
-                    <div class="pt-4 mt-2 border-t-2 border-zinc-200 dark:border-zinc-700">
+                    <div class="hidden pt-4 mt-2 border-t-2 border-zinc-200 dark:border-zinc-700">
                         <span class="text-[10px] font-black uppercase text-zinc-400 tracking-[0.2em] block mb-1">Estimated Combined Total</span>
                         <div class="text-3xl font-black text-zinc-900 dark:text-zinc-100">
                             ৳ {{ number_format($totalGrandTotalBDT, 0) }}
