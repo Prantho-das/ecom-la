@@ -524,7 +524,7 @@ $totalGrandTotal = $totalSubtotal - $globalDiscountAmount;
                     $totalGrandTotalBDT = $totalSubtotalBDT * (1 - ($globalDiscountPercent / 100));
                     @endphp
 
-                    <div class="pt-4 mt-2 border-t-2 border-zinc-200 dark:border-zinc-700">
+                    <div class="hidden pt-4 mt-2 border-t-2 border-zinc-200 dark:border-zinc-700">
                         <span class="text-[10px] font-black uppercase text-zinc-400 tracking-[0.2em] block mb-1">Estimated Combined Total</span>
                         <div class="text-3xl font-black text-zinc-900 dark:text-zinc-100">
                             ৳ {{ number_format($totalGrandTotalBDT, 0) }}
