@@ -77,7 +77,7 @@ class QuotationBuilder extends Page
             $this->loadQuotation($record);
         } else {
             $this->quotation_date = now()->format('Y-m-d');
-            $this->addTable();
+            // $this->addTable();
         }
     }
 
