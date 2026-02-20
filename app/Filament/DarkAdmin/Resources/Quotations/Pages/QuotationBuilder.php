@@ -140,7 +140,7 @@ class QuotationBuilder extends Page
             'product_id' => '',
             'selected_incoterm' => 'DDP',
             'name' => '',
-            'quantity' => 0,
+            'quantity' => 1,
             'uom' => 'UNIT',
             'unit_product_price' => 0,
             'currency' => \App\Models\Currency::where('is_base', true)->first()?->code ?? 'USD',
@@ -208,13 +208,13 @@ class QuotationBuilder extends Page
         $service = app(QuotationCalculationService::class);
 
         return $service->calculateMatrix(
-            (float) $table['unit_product_price'],
+            (float) (is_numeric($table['unit_product_price'] ?? null) ? $table['unit_product_price'] : 0),
             $table['config'],
-            (float) ($table['conversion_rate'] ?? $this->conversion_rate),
-            (float) ($table['margin'] ?? 0),
-            (float) ($table['tax'] ?? 0),
-            (float) ($table['vat'] ?? 0),
-            (float) ($table['discount'] ?? 0)
+            (float) (is_numeric($table['conversion_rate'] ?? null) ? $table['conversion_rate'] : (is_numeric($this->conversion_rate) ? $this->conversion_rate : 1)),
+            (float) (is_numeric($table['margin'] ?? null) ? $table['margin'] : 0),
+            (float) (is_numeric($table['tax'] ?? null) ? $table['tax'] : 0),
+            (float) (is_numeric($table['vat'] ?? null) ? $table['vat'] : 0),
+            (float) (is_numeric($table['discount'] ?? null) ? $table['discount'] : 0)
         );
     }
 

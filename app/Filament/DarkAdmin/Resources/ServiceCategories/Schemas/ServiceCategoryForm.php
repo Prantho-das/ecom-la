@@ -60,77 +60,68 @@ class ServiceCategoryForm
                         RichEditor::make('full_description')
                             ->columnSpanFull(),
 
-                        Repeater::make('links')
-                            ->schema([
-                                TextInput::make('label')->required(),
-                                TextInput::make('url')
-                                    ->url()
-                                    ->required(),
-                            ])
-                            ->columns(2)->columnSpanFull()
-                            ->collapsible(),
                     ])->columns(2)->columnSpanFull(),
 
-                Section::make('Industries & Benefits')
-                    ->schema([
-                        Repeater::make('industries')
-                            ->schema([
-                                TextInput::make('name')->label('Industry'),
-                            ])
-                            ->collapsible(),
-                        Repeater::make('benefits')
-                            ->label('Benefits List')
-                            ->schema([
-                                TextInput::make('title')->required(),
-                                Textarea::make('description')->required(),
-                            ])
-                            ->columns(2)
-                            ->collapsible(),
+                // Section::make('Industries & Benefits')
+                //     ->schema([
+                //         Repeater::make('industries')
+                //             ->schema([
+                //                 TextInput::make('name')->label('Industry'),
+                //             ])
+                //             ->collapsible(),
+                //         Repeater::make('benefits')
+                //             ->label('Benefits List')
+                //             ->schema([
+                //                 TextInput::make('title')->required(),
+                //                 Textarea::make('description')->required(),
+                //             ])
+                //             ->columns(2)
+                //             ->collapsible(),
 
-                        FileUpload::make('feature_image')
-                            ->image()
-                            ->imageEditor()
-                            ->disk('public')
-                            ->directory('service-categories')
-                            ->preserveFilenames(),
+                //         FileUpload::make('feature_image')
+                //             ->image()
+                //             ->imageEditor()
+                //             ->disk('public')
+                //             ->directory('service-categories')
+                //             ->preserveFilenames(),
 
-                        FileUpload::make('benefit_image')
-                            ->image()
-                            ->imageEditor()
-                            ->disk('public')
-                            ->directory('service-categories')
-                            ->preserveFilenames(),
-                    ])->columns(2)->columnSpanFull(),
+                //         FileUpload::make('benefit_image')
+                //             ->image()
+                //             ->imageEditor()
+                //             ->disk('public')
+                //             ->directory('service-categories')
+                //             ->preserveFilenames(),
+                //     ])->columns(2)->columnSpanFull(),
 
-                Section::make('Features')
-                    ->schema([
-                        Repeater::make('features')
-                            ->label('Features List')
-                            ->schema([
-                                TextInput::make('title')->required(),
-                                Textarea::make('description')->required(),
-                            ])
-                            ->columns(2)
-                            ->collapsible(),
-                    ]),
+                // Section::make('Features')
+                //     ->schema([
+                //         Repeater::make('features')
+                //             ->label('Features List')
+                //             ->schema([
+                //                 TextInput::make('title')->required(),
+                //                 Textarea::make('description')->required(),
+                //             ])
+                //             ->columns(2)
+                //             ->collapsible(),
+                //     ]),
 
-                Section::make('Related Services')
-                    ->schema([
-                        Select::make('related_services')
-                            ->multiple()
-                            ->label('Related Services')
-                            ->options(
-                                ServiceCategory::query()
-                                    ->where('published', true)
-                                    ->orderBy('title')
-                                    ->pluck('title', 'id')
-                            )
-                            ->searchable()
-                            ->preload()
-                            ->placeholder('Select related services...')
-                            ->columnSpanFull()
-                            ->default([]),
-                    ]),
+                // Section::make('Related Services')
+                //     ->schema([
+                //         Select::make('related_services')
+                //             ->multiple()
+                //             ->label('Related Services')
+                //             ->options(
+                //                 ServiceCategory::query()
+                //                     ->where('published', true)
+                //                     ->orderBy('title')
+                //                     ->pluck('title', 'id')
+                //             )
+                //             ->searchable()
+                //             ->preload()
+                //             ->placeholder('Select related services...')
+                //             ->columnSpanFull()
+                //             ->default([]),
+                //     ]),
             ]);
     }
 

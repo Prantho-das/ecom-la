@@ -453,12 +453,14 @@
 
                 @php
 $totalSubtotal = 0;
+$globalDiscountPercent = is_numeric($discount_percentage) ? (float) $discount_percentage : 0;
 foreach ($tables as $idx => $table) {
     $calcs = $this->getCalculations($idx);
     $selected = $table['selected_incoterm'] ?? 'DDP';
-    $totalSubtotal += ($calcs[$selected]['final'] ?? 0) * ($table['quantity'] ?? 1);
+    $qty = isset($table['quantity']) && is_numeric($table['quantity']) ? (float) $table['quantity'] : 0;
+    $totalSubtotal += ($calcs[$selected]['final'] ?? 0) * $qty;
 }
-$globalDiscountAmount = $totalSubtotal * (($discount_percentage ?? 0) / 100);
+$globalDiscountAmount = $totalSubtotal * ($globalDiscountPercent / 100);
 $totalGrandTotal = $totalSubtotal - $globalDiscountAmount;
                 @endphp
 
@@ -474,12 +476,13 @@ $totalGrandTotal = $totalSubtotal - $globalDiscountAmount;
                             $currencyTotals[$currency] = 0;
                         }
                         
-                        $currencyTotals[$currency] += ($calcs[$selected]['final'] ?? 0) * ($table['quantity'] ?? 1);
+                        $qty = isset($table['quantity']) && is_numeric($table['quantity']) ? (float) $table['quantity'] : 0;
+                        $currencyTotals[$currency] += ($calcs[$selected]['final'] ?? 0) * $qty;
                     }
                     @endphp
 
                     @foreach($currencyTotals as $curr => $subtotal)
-                        <div class="space-y-2 pb-4 border-b border-zinc-100 dark:border-zinc-800/50 last:border-0 last:pb-0">
+                        <div wire:key="curr-summary-{{ $curr }}" class="space-y-2 pb-4 border-b border-zinc-100 dark:border-zinc-800/50 last:border-0 last:pb-0">
                             <div class="flex flex-col">
                                 <span class="text-[10px] font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-widest">{{ $curr }} Summary</span>
                                 <div class="flex justify-end items-baseline gap-2">
@@ -489,7 +492,7 @@ $totalGrandTotal = $totalSubtotal - $globalDiscountAmount;
                                 
                                 @if($discount_percentage > 0)
                                     @php
-                                        $discountAmt = $subtotal * ($discount_percentage / 100);
+                                        $discountAmt = $subtotal * ($globalDiscountPercent / 100);
                                         $grandTotal = $subtotal - $discountAmt;
                                     @endphp
                                     <div class="flex justify-end items-baseline gap-2">
@@ -515,12 +518,13 @@ $totalGrandTotal = $totalSubtotal - $globalDiscountAmount;
                     $totalSubtotalBDT = 0;
                     foreach ($tables as $idx => $table) {
                         $calcs = $this->getCalculations($idx);
-                        $totalSubtotalBDT += ($calcs['BDT']['final'] ?? 0) * ($table['quantity'] ?? 1);
+                        $qty = isset($table['quantity']) && is_numeric($table['quantity']) ? (float) $table['quantity'] : 0;
+                        $totalSubtotalBDT += ($calcs['BDT']['final'] ?? 0) * $qty;
                     }
-                    $totalGrandTotalBDT = $totalSubtotalBDT * (1 - ($discount_percentage ?? 0) / 100);
+                    $totalGrandTotalBDT = $totalSubtotalBDT * (1 - ($globalDiscountPercent / 100));
                     @endphp
 
-                    <div class="hidden pt-4 mt-2 border-t-2 border-zinc-200 dark:border-zinc-700">
+                    <div class="pt-4 mt-2 border-t-2 border-zinc-200 dark:border-zinc-700">
                         <span class="text-[10px] font-black uppercase text-zinc-400 tracking-[0.2em] block mb-1">Estimated Combined Total</span>
                         <div class="text-3xl font-black text-zinc-900 dark:text-zinc-100">
                             ৳ {{ number_format($totalGrandTotalBDT, 0) }}
