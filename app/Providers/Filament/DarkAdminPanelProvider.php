@@ -97,6 +97,8 @@ class DarkAdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/DarkAdmin/Widgets'), for: 'App\Filament\DarkAdmin\Widgets')
             ->widgets([
+                \App\Filament\DarkAdmin\Widgets\QuotationChart::class,
+                \App\Filament\DarkAdmin\Widgets\CategoryChart::class,
                 StatsOverview::class,
             ])
             ->middleware([
