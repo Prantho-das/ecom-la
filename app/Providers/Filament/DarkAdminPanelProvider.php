@@ -63,6 +63,32 @@ class DarkAdminPanelProvider extends PanelProvider
                     ->url(url: url('clear-cache'))
                     ->sort(999),
             ])
+            ->renderHook(
+                \Filament\View\PanelsRenderHook::HEAD_END,
+                fn (): string => \Illuminate\Support\Facades\Blade::render('
+                    @vite(\'resources/css/app.css\')
+                    <style>
+                        a[href*="clear-cache"] {
+                            background-color: #dc2626 !important;
+                            color: white !important;
+                            border-radius: 0.5rem !important;
+                            margin-top: 1rem !important;
+                            transition: background-color 0.2s !important;
+                            padding: 0.5rem !important;
+                            font-weight: bold !important;
+                        }
+                        a[href*="clear-cache"]:hover {
+                            background-color: #b91c1c !important;
+                        }
+                        a[href*="clear-cache"] svg {
+                            color: white !important;
+                        }
+                        a[href*="clear-cache"] span {
+                            color: white !important;
+                        }
+                    </style>
+                ')
+            )
             ->discoverResources(in: app_path('Filament/DarkAdmin/Resources'), for: 'App\Filament\DarkAdmin\Resources')
             ->discoverPages(in: app_path('Filament/DarkAdmin/Pages'), for: 'App\Filament\DarkAdmin\Pages')
             ->pages([

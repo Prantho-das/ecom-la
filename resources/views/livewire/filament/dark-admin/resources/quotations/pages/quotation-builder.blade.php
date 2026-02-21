@@ -2,7 +2,6 @@
     <x-slot name="heading">
         {{ $quotationId ? 'Edit Quotation ' . (\App\Models\Quotation::find($quotationId)?->reference_number ?? '#' . $quotationId) : 'Create Quotation' }}
     </x-slot>
-    @vite(['resources/css/app.css'])
     <div class="space-y-8">
         {{-- Header Section --}}
         <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-sm overflow-hidden">
