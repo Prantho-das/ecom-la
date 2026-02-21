@@ -98,7 +98,7 @@ class QuotationBuilder extends Page
         $this->discount_percentage = (float) $quotation->discount_percentage;
 
         // Add a title property or handle it in the view
-        $this->dispatch('update-title', title: 'Edit Quotation: ' . $quotation->reference_number);
+        $this->dispatch('update-title', title: 'Edit Quotation: '.$quotation->reference_number);
 
         $this->tables = [];
         foreach ($quotation->items as $item) {
@@ -155,13 +155,13 @@ class QuotationBuilder extends Page
 
     public function removeTable($id): void
     {
-        $this->tables = collect($this->tables)->filter(fn($t) => $t['id'] !== $id)->toArray();
+        $this->tables = collect($this->tables)->filter(fn ($t) => $t['id'] !== $id)->toArray();
         $this->tables = array_values($this->tables);
     }
 
     public function duplicateTable($id): void
     {
-        $table = collect($this->tables)->first(fn($t) => $t['id'] === $id);
+        $table = collect($this->tables)->first(fn ($t) => $t['id'] === $id);
         if ($table) {
             $newTable = $table;
             $newTable['id'] = Str::uuid()->toString();
@@ -169,15 +169,15 @@ class QuotationBuilder extends Page
         }
     }
 
-    public function updatedTables($value, $key): void
+    public function updated($property, $value): void
     {
-        if (Str::endsWith($key, '.product_id')) {
-            $index = explode('.', $key)[0];
+        if (Str::startsWith($property, 'tables.') && Str::endsWith($property, '.product_id')) {
+            $index = explode('.', $property)[1];
             $product = \App\Models\Product::with('currency')->find($value);
             if ($product) {
                 $this->tables[$index]['name'] = $product->name;
                 $this->tables[$index]['unit_product_price'] = $product->price ?? 0;
-                
+
                 if ($product->currency) {
                     $this->tables[$index]['currency'] = $product->currency->code;
                     $this->tables[$index]['conversion_rate'] = (float) $product->currency->exchange_rate;
@@ -185,10 +185,27 @@ class QuotationBuilder extends Page
             }
         }
 
-        if (Str::endsWith($key, '.currency')) {
-            $index = explode('.', $key)[0];
+        if (Str::startsWith($property, 'tables.') && Str::endsWith($property, '.currency')) {
+            $index = explode('.', $property)[1];
             $currency = \App\Models\Currency::where('code', $value)->first();
+
             if ($currency) {
+                // Determine if we should automatically convert the price based on the product's original currency
+                if (! empty($this->tables[$index]['product_id'])) {
+                    $product = \App\Models\Product::with('currency')->find($this->tables[$index]['product_id']);
+                    if ($product && $product->currency) {
+                        $originalPrice = (float) ($product->price ?? 0);
+                        $originalRate = (float) $product->currency->exchange_rate;
+                        $newRate = (float) $currency->exchange_rate;
+
+                        // Convert calculation: (Original Price / Original Exchange Rate) * New Exchange Rate
+                        if ($originalRate > 0) {
+                            $basePrice = $originalPrice / $originalRate;
+                            $this->tables[$index]['unit_product_price'] = round($basePrice * $newRate, 2);
+                        }
+                    }
+                }
+
                 $this->tables[$index]['conversion_rate'] = (float) $currency->exchange_rate;
             }
         }
@@ -198,7 +215,7 @@ class QuotationBuilder extends Page
     {
         $code = $code ?? 'USD';
         $currency = \App\Models\Currency::where('code', $code)->first();
-        
+
         return $currency?->symbol ?? '$';
     }
 
