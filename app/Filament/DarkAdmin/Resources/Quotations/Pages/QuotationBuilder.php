@@ -181,6 +181,12 @@ class QuotationBuilder extends Page
                 if ($product->currency) {
                     $this->tables[$index]['currency'] = $product->currency->code;
                     $this->tables[$index]['conversion_rate'] = (float) $product->currency->exchange_rate;
+                } else {
+                    $baseCurrency = \App\Models\Currency::where('is_base', true)->first();
+                    if ($baseCurrency) {
+                        $this->tables[$index]['currency'] = $baseCurrency->code;
+                        $this->tables[$index]['conversion_rate'] = (float) $baseCurrency->exchange_rate;
+                    }
                 }
             }
         }
@@ -193,15 +199,19 @@ class QuotationBuilder extends Page
                 // Determine if we should automatically convert the price based on the product's original currency
                 if (! empty($this->tables[$index]['product_id'])) {
                     $product = \App\Models\Product::with('currency')->find($this->tables[$index]['product_id']);
-                    if ($product && $product->currency) {
-                        $originalPrice = (float) ($product->price ?? 0);
-                        $originalRate = (float) $product->currency->exchange_rate;
-                        $newRate = (float) $currency->exchange_rate;
+                    if ($product) {
+                        $productCurrency = $product->currency ?: \App\Models\Currency::where('is_base', true)->first();
 
-                        // Convert calculation: (Original Price / Original Exchange Rate) * New Exchange Rate
-                        if ($originalRate > 0) {
-                            $basePrice = $originalPrice / $originalRate;
-                            $this->tables[$index]['unit_product_price'] = round($basePrice * $newRate, 2);
+                        if ($productCurrency) {
+                            $originalPrice = (float) ($product->price ?? 0);
+                            $originalRate = (float) $productCurrency->exchange_rate;
+                            $newRate = (float) $currency->exchange_rate;
+
+                            // Convert calculation: (Original Price / Original Exchange Rate) * New Exchange Rate
+                            if ($originalRate > 0) {
+                                $basePrice = $originalPrice / $originalRate;
+                                $this->tables[$index]['unit_product_price'] = round($basePrice * $newRate, 2);
+                            }
                         }
                     }
                 }
