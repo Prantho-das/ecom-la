@@ -46,38 +46,53 @@ class QuotationCalculationService
             (float) $item->margin_percentage,
             (float) ($item->tax_percent * 100),
             (float) ($item->vat_percent * 100)
-            // Note: calculateItemCosts on model needs update if we want to support discount usage there too, 
-            // but the builder uses calculateMatrix directly.
         );
     }
 
     /**
-     * Calculate a matrix of incoterms based on provided parameters
+     * Calculate a matrix of incoterms based on provided parameters.
+     * Incoterms are loaded from the database; their boolean flags decide which cost components apply.
      */
     public function calculateMatrix(float $base, array $conf, float $conversionRate, float $margin, float $tax, float $vat, float $discount = 0): array
     {
         $c_ef = $base * ((float) ($conf['export_freight_rate'] ?? 0) / 100);
-        $c_ec = $base * ((float) ($conf['export_clearance_rate'] ?? 0) / 100); // Unit Price * Input %
+        $c_ec = $base * ((float) ($conf['export_clearance_rate'] ?? 0) / 100);
         $c_oh = (float) ($conf['origin_thc_rate'] ?? 0) * (float) ($conf['origin_thc_qty'] ?? 0);
-        $c_if = (float) ($conf['int_freight_cbm'] ?? 0) * (float) ($conf['int_freight_kg'] ?? 0); // Input 1 * Input 2
-        $c_ins = $base * ((float) ($conf['insurance_rate'] ?? 0) / 100); // Input % * Unit Price
-        $c_id = (float) ($conf['import_duties_fixed'] ?? 0) * (float) ($conf['import_duties_multiplier'] ?? 1); // Input 1 * Input 2
-        
-        $hc_global = (float) ($conf['handling_charges_global'] ?? 200);
-        $it_global = (float) ($conf['inland_transport_global'] ?? 200);
+        $c_if = (float) ($conf['int_freight_cbm'] ?? 0) * (float) ($conf['int_freight_kg'] ?? 0);
+        $c_ins = $base * ((float) ($conf['insurance_rate'] ?? 0) / 100);
+        $c_id = (float) ($conf['import_duties_fixed'] ?? 0) * (float) ($conf['import_duties_multiplier'] ?? 1);
 
-        $incotermsConfig = [
-            'Exwork' => ['ef' => 0, 'ec' => 0, 'oh' => 0, 'inf' => 0, 'ins' => 0, 'id' => 0, 'hc' => 0, 'it' => 0],
-            'FOB' => ['ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => 0, 'ins' => 0, 'id' => 0, 'hc' => 0, 'it' => 0],
-            'CFR' => ['ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => 0, 'id' => 0, 'hc' => 0, 'it' => 0],
-            'CIF' => ['ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => $c_ins, 'id' => 0, 'hc' => 0, 'it' => 0],
-            'DDU/DAP' => ['ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => $c_ins, 'id' => 0, 'hc' => $hc_global, 'it' => $it_global],
-            'DDP' => ['ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => $c_ins, 'id' => $c_id, 'hc' => $hc_global, 'it' => $it_global],
-            'BDT' => ['is_bdt' => true, 'ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if, 'ins' => $c_ins, 'id' => $c_id, 'hc' => $hc_global, 'it' => $it_global],
-            'BDT (Local)' => ['is_local' => true, 'ef' => 0, 'ec' => 0, 'oh' => 0, 'inf' => 0, 'ins' => 0, 'id' => 0, 'hc' => 0, 'it' => 0],
+        $hc_global = (float) ($conf['handling_charges_global'] ?? 0);
+        $it_global = (float) ($conf['inland_transport_global'] ?? 0);
+
+        // Build incoterm cost map from DB active records
+        $dbIncoterms = \App\Models\Incoterm::where('is_active', true)->get();
+        $incotermsConfig = [];
+
+        foreach ($dbIncoterms as $incoterm) {
+            $incotermsConfig[$incoterm->code] = [
+                'ef' => $incoterm->has_export_freight ? $c_ef : 0,
+                'ec' => $incoterm->has_export_clearance ? $c_ec : 0,
+                'oh' => $incoterm->has_origin_thc ? $c_oh : 0,
+                'inf' => $incoterm->has_int_freight ? $c_if : 0,
+                'ins' => $incoterm->has_insurance ? $c_ins : 0,
+                'id' => $incoterm->has_import_duties ? $c_id : 0,
+                'hc' => $incoterm->has_handling_charges ? $hc_global : 0,
+                'it' => $incoterm->has_inland_transport ? $it_global : 0,
+            ];
+        }
+
+        // Legacy BDT virtual rows (converted with conversionRate)
+        $ddpCosts = $incotermsConfig['DDP'] ?? [
+            'ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if,
+            'ins' => $c_ins, 'id' => $c_id, 'hc' => $hc_global, 'it' => $it_global,
         ];
 
+        $incotermsConfig['BDT'] = array_merge($ddpCosts, ['is_bdt' => true]);
+        $incotermsConfig['BDT (Local)'] = ['is_local' => true, 'ef' => 0, 'ec' => 0, 'oh' => 0, 'inf' => 0, 'ins' => 0, 'id' => 0, 'hc' => 0, 'it' => 0];
+
         $results = [];
+
         foreach ($incotermsConfig as $name => $v) {
             if (isset($v['is_local'])) {
                 $cf = 0;
@@ -107,12 +122,12 @@ class QuotationCalculationService
                 'final' => $final,
                 'is_bdt_row' => isset($v['is_bdt']) || isset($v['is_local']),
                 'formulas' => [
-                    'Export Freight' => "Base ($base) * (" . ($conf['export_freight_rate'] ?? 0) . " / 100) = " . number_format($v['ef'], 2),
-                    'Export Clearance' => "Base ($base) * (" . ($conf['export_clearance_rate'] ?? 0) . " / 100) = " . number_format($v['ec'], 2),
-                    'Origin THC' => "Rate (" . ($conf['origin_thc_rate'] ?? 0) . ") * Qty (" . ($conf['origin_thc_qty'] ?? 0) . ") = " . number_format($v['oh'], 2),
-                    'Int. Freight' => "CBM (" . ($conf['int_freight_cbm'] ?? 0) . ") * KG (" . ($conf['int_freight_kg'] ?? 0) . ") = " . number_format($v['inf'], 2),
-                    'Insurance' => "Base ($base) * (" . ($conf['insurance_rate'] ?? 0) . " / 100) = " . number_format($v['ins'], 2),
-                    'Import Duties' => "Fixed (" . ($conf['import_duties_fixed'] ?? 0) . ") * Mult (" . ($conf['import_duties_multiplier'] ?? 1) . ") = " . number_format($v['id'], 2),
+                    'Export Freight' => "Base ($base) * (".($conf['export_freight_rate'] ?? 0).' / 100) = '.number_format($v['ef'], 2),
+                    'Export Clearance' => "Base ($base) * (".($conf['export_clearance_rate'] ?? 0).' / 100) = '.number_format($v['ec'], 2),
+                    'Origin THC' => 'Rate ('.($conf['origin_thc_rate'] ?? 0).') * Qty ('.($conf['origin_thc_qty'] ?? 0).') = '.number_format($v['oh'], 2),
+                    'Int. Freight' => 'CBM ('.($conf['int_freight_cbm'] ?? 0).') * KG ('.($conf['int_freight_kg'] ?? 0).') = '.number_format($v['inf'], 2),
+                    'Insurance' => "Base ($base) * (".($conf['insurance_rate'] ?? 0).' / 100) = '.number_format($v['ins'], 2),
+                    'Import Duties' => 'Fixed ('.($conf['import_duties_fixed'] ?? 0).') * Mult ('.($conf['import_duties_multiplier'] ?? 1).') = '.number_format($v['id'], 2),
                     'Handling' => number_format($v['hc'], 2),
                     'Inland' => number_format($v['it'], 2),
                     'Total CF' => implode(' + ', array_filter([
@@ -124,10 +139,10 @@ class QuotationCalculationService
                         $v['id'] ? number_format($v['id'], 2) : null,
                         $v['hc'] ? number_format($v['hc'], 2) : null,
                         $v['it'] ? number_format($v['it'], 2) : null,
-                    ])) . " = " . number_format($cf, 2),
-                    'Unit Price' => "Base ($base) + CF (" . number_format($cf, 2) . ") = " . number_format($up, 2),
-                    'Price + MG' => "UP (" . number_format($up, 2) . ") * (1 + $margin/100) = " . number_format($up_mg, 2),
-                    'Final Price' => "UP+MG (" . number_format($up_mg, 2) . ") * (1 + ($tax+$vat)/100) * (1 - $discount/100) = " . number_format($final, 2),
+                    ])).' = '.number_format($cf, 2),
+                    'Unit Price' => "Base ($base) + CF (".number_format($cf, 2).') = '.number_format($up, 2),
+                    'Price + MG' => 'UP ('.number_format($up, 2).") * (1 + $margin/100) = ".number_format($up_mg, 2),
+                    'Final Price' => 'UP+MG ('.number_format($up_mg, 2).") * (1 + ($tax+$vat)/100) * (1 - $discount/100) = ".number_format($final, 2),
                 ],
             ];
         }

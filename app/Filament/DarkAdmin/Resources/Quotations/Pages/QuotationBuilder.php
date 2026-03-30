@@ -135,20 +135,28 @@ class QuotationBuilder extends Page
 
     public function addTable(): void
     {
+        $defaultIncoterm = \App\Models\Incoterm::where('is_active', true)->first();
+        $baseCurrency = \App\Models\Currency::where('is_base', true)->first();
+
+        $defaultIncotermCode = $defaultIncoterm?->code ?? 'DDP';
+        $defaultCurrencyCode = $baseCurrency?->code ?? 'USD';
+
+        $config = $this->resolveIncotermCurrencyDefaults($defaultIncotermCode, $defaultCurrencyCode);
+
         $this->tables[] = [
             'id' => Str::uuid()->toString(),
             'product_id' => '',
-            'selected_incoterm' => 'DDP',
+            'selected_incoterm' => $defaultIncotermCode,
             'name' => '',
             'quantity' => 1,
             'uom' => 'UNIT',
             'unit_product_price' => 0,
-            'currency' => \App\Models\Currency::where('is_base', true)->first()?->code ?? 'USD',
+            'currency' => $defaultCurrencyCode,
             'margin' => $this->margin,
             'tax' => $this->tax,
             'vat' => $this->vat,
             'discount' => 0,
-            'config' => $this->config,
+            'config' => $config,
             'conversion_rate' => $this->conversion_rate,
         ];
     }
@@ -174,6 +182,7 @@ class QuotationBuilder extends Page
         if (Str::startsWith($property, 'tables.') && Str::endsWith($property, '.product_id')) {
             $index = explode('.', $property)[1];
             $product = \App\Models\Product::with('currency')->find($value);
+
             if ($product) {
                 $this->tables[$index]['name'] = $product->name;
                 $this->tables[$index]['unit_product_price'] = $product->price ?? 0;
@@ -183,11 +192,18 @@ class QuotationBuilder extends Page
                     $this->tables[$index]['conversion_rate'] = (float) $product->currency->exchange_rate;
                 } else {
                     $baseCurrency = \App\Models\Currency::where('is_base', true)->first();
+
                     if ($baseCurrency) {
                         $this->tables[$index]['currency'] = $baseCurrency->code;
                         $this->tables[$index]['conversion_rate'] = (float) $baseCurrency->exchange_rate;
                     }
                 }
+
+                // Apply defaults for the current incoterm + new product currency
+                $this->tables[$index]['config'] = $this->resolveIncotermCurrencyDefaults(
+                    $this->tables[$index]['selected_incoterm'] ?? 'DDP',
+                    $this->tables[$index]['currency']
+                );
             }
         }
 
@@ -196,9 +212,9 @@ class QuotationBuilder extends Page
             $currency = \App\Models\Currency::where('code', $value)->first();
 
             if ($currency) {
-                // Determine if we should automatically convert the price based on the product's original currency
                 if (! empty($this->tables[$index]['product_id'])) {
                     $product = \App\Models\Product::with('currency')->find($this->tables[$index]['product_id']);
+
                     if ($product) {
                         $productCurrency = $product->currency ?: \App\Models\Currency::where('is_base', true)->first();
 
@@ -207,7 +223,6 @@ class QuotationBuilder extends Page
                             $originalRate = (float) $productCurrency->exchange_rate;
                             $newRate = (float) $currency->exchange_rate;
 
-                            // Convert calculation: (Original Price / Original Exchange Rate) * New Exchange Rate
                             if ($originalRate > 0) {
                                 $basePrice = $originalPrice / $originalRate;
                                 $this->tables[$index]['unit_product_price'] = round($basePrice * $newRate, 2);
@@ -217,8 +232,76 @@ class QuotationBuilder extends Page
                 }
 
                 $this->tables[$index]['conversion_rate'] = (float) $currency->exchange_rate;
+
+                // Apply defaults for current incoterm + new currency
+                $this->tables[$index]['config'] = $this->resolveIncotermCurrencyDefaults(
+                    $this->tables[$index]['selected_incoterm'] ?? 'DDP',
+                    $value
+                );
             }
         }
+
+        if (Str::startsWith($property, 'tables.') && Str::endsWith($property, '.selected_incoterm')) {
+            $index = explode('.', $property)[1];
+
+            // Apply defaults for new incoterm + current currency
+            $this->tables[$index]['config'] = $this->resolveIncotermCurrencyDefaults(
+                $value,
+                $this->tables[$index]['currency'] ?? 'USD'
+            );
+        }
+    }
+
+    /**
+     * Resolve the config defaults for a given incoterm code and currency code.
+     * If no specific preset exists for the currency, uses zeros as the baseline.
+     *
+     * @return array<string, float|int>
+     */
+    public function resolveIncotermCurrencyDefaults(string $incotermCode, string $currencyCode): array
+    {
+        $blank = [
+            'export_freight_rate' => 0,
+            'export_clearance_rate' => 0,
+            'origin_thc_rate' => 0,
+            'origin_thc_qty' => 1,
+            'int_freight_cbm' => 0,
+            'int_freight_kg' => 0,
+            'insurance_rate' => 0,
+            'import_duties_fixed' => 0,
+            'import_duties_multiplier' => 1,
+            'handling_charges_global' => 0,
+            'inland_transport_global' => 0,
+        ];
+
+        $incoterm = \App\Models\Incoterm::where('code', $incotermCode)
+            ->where('is_active', true)
+            ->first();
+
+        if (! $incoterm || empty($incoterm->currency_defaults)) {
+            return $blank;
+        }
+
+        $match = collect($incoterm->currency_defaults)
+            ->firstWhere('currency_code', $currencyCode);
+
+        if (! $match) {
+            return $blank;
+        }
+
+        return [
+            'export_freight_rate' => (float) ($match['export_freight_rate'] ?? 0),
+            'export_clearance_rate' => (float) ($match['export_clearance_rate'] ?? 0),
+            'origin_thc_rate' => (float) ($match['origin_thc_rate'] ?? 0),
+            'origin_thc_qty' => (float) ($match['origin_thc_qty'] ?? 1),
+            'int_freight_cbm' => (float) ($match['int_freight_cbm'] ?? 0),
+            'int_freight_kg' => (float) ($match['int_freight_kg'] ?? 0),
+            'insurance_rate' => (float) ($match['insurance_rate'] ?? 0),
+            'import_duties_fixed' => (float) ($match['import_duties_fixed'] ?? 0),
+            'import_duties_multiplier' => (float) ($match['import_duties_multiplier'] ?? 1),
+            'handling_charges_global' => (float) ($match['handling_charges_global'] ?? 0),
+            'inland_transport_global' => (float) ($match['inland_transport_global'] ?? 0),
+        ];
     }
 
     public function getCurrencySymbol(?string $code = null): string
