@@ -152,10 +152,10 @@ class QuotationBuilder extends Page
             'uom' => 'UNIT',
             'unit_product_price' => 0,
             'currency' => $defaultCurrencyCode,
-            'margin' => $this->margin,
-            'tax' => $this->tax,
-            'vat' => $this->vat,
-            'discount' => 0,
+            'margin' => $config['margin'] ?? $this->margin,
+            'tax' => $config['tax'] ?? $this->tax,
+            'vat' => $config['vat'] ?? $this->vat,
+            'discount' => $config['discount'] ?? 0,
             'config' => $config,
             'conversion_rate' => $this->conversion_rate,
         ];
@@ -200,10 +200,15 @@ class QuotationBuilder extends Page
                 }
 
                 // Apply defaults for the current incoterm + new product currency
-                $this->tables[$index]['config'] = $this->resolveIncotermCurrencyDefaults(
+                $config = $this->resolveIncotermCurrencyDefaults(
                     $this->tables[$index]['selected_incoterm'] ?? 'DDP',
                     $this->tables[$index]['currency']
                 );
+                $this->tables[$index]['config'] = $config;
+                $this->tables[$index]['margin'] = $config['margin'] ?? 0;
+                $this->tables[$index]['tax'] = $config['tax'] ?? 0;
+                $this->tables[$index]['vat'] = $config['vat'] ?? 0;
+                $this->tables[$index]['discount'] = $config['discount'] ?? 0;
             }
         }
 
@@ -234,10 +239,15 @@ class QuotationBuilder extends Page
                 $this->tables[$index]['conversion_rate'] = (float) $currency->exchange_rate;
 
                 // Apply defaults for current incoterm + new currency
-                $this->tables[$index]['config'] = $this->resolveIncotermCurrencyDefaults(
+                $config = $this->resolveIncotermCurrencyDefaults(
                     $this->tables[$index]['selected_incoterm'] ?? 'DDP',
                     $value
                 );
+                $this->tables[$index]['config'] = $config;
+                $this->tables[$index]['margin'] = $config['margin'] ?? 0;
+                $this->tables[$index]['tax'] = $config['tax'] ?? 0;
+                $this->tables[$index]['vat'] = $config['vat'] ?? 0;
+                $this->tables[$index]['discount'] = $config['discount'] ?? 0;
             }
         }
 
@@ -245,10 +255,15 @@ class QuotationBuilder extends Page
             $index = explode('.', $property)[1];
 
             // Apply defaults for new incoterm + current currency
-            $this->tables[$index]['config'] = $this->resolveIncotermCurrencyDefaults(
+            $config = $this->resolveIncotermCurrencyDefaults(
                 $value,
                 $this->tables[$index]['currency'] ?? 'USD'
             );
+            $this->tables[$index]['config'] = $config;
+            $this->tables[$index]['margin'] = $config['margin'] ?? 0;
+            $this->tables[$index]['tax'] = $config['tax'] ?? 0;
+            $this->tables[$index]['vat'] = $config['vat'] ?? 0;
+            $this->tables[$index]['discount'] = $config['discount'] ?? 0;
         }
     }
 
@@ -272,6 +287,10 @@ class QuotationBuilder extends Page
             'import_duties_multiplier' => 1,
             'handling_charges_global' => 0,
             'inland_transport_global' => 0,
+            'margin' => 0,
+            'tax' => 0,
+            'vat' => 0,
+            'discount' => 0,
         ];
 
         $incoterm = \App\Models\Incoterm::where('code', $incotermCode)
@@ -301,6 +320,10 @@ class QuotationBuilder extends Page
             'import_duties_multiplier' => (float) ($match['import_duties_multiplier'] ?? 1),
             'handling_charges_global' => (float) ($match['handling_charges_global'] ?? 0),
             'inland_transport_global' => (float) ($match['inland_transport_global'] ?? 0),
+            'margin' => (float) ($match['margin'] ?? 0),
+            'tax' => (float) ($match['tax'] ?? 0),
+            'vat' => (float) ($match['vat'] ?? 0),
+            'discount' => (float) ($match['discount'] ?? 0),
         ];
     }
 

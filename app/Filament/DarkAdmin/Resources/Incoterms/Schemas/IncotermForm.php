@@ -3,12 +3,11 @@
 namespace App\Filament\DarkAdmin\Resources\Incoterms\Schemas;
 
 use App\Models\Currency;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -82,7 +81,7 @@ class IncotermForm
                         Repeater::make('currency_defaults')
                             ->label('Currency Default Presets')
                             ->addActionLabel('Add Currency Preset')
-                            ->columns(3)
+                            ->columns(4)
                             ->schema([
                                 Select::make('currency_code')
                                     ->label('Currency')
@@ -90,6 +89,34 @@ class IncotermForm
                                     ->required()
                                     ->searchable()
                                     ->columnSpanFull(),
+
+                                // Group 1: General Business Rates
+                                TextInput::make('margin')
+                                    ->label('MG %')
+                                    ->numeric()
+                                    ->step(0.01)
+                                    ->default(0)
+                                    ->suffix('%'),
+                                TextInput::make('tax')
+                                    ->label('TAX %')
+                                    ->numeric()
+                                    ->step(0.01)
+                                    ->default(0)
+                                    ->suffix('%'),
+                                TextInput::make('vat')
+                                    ->label('VAT %')
+                                    ->numeric()
+                                    ->step(0.01)
+                                    ->default(0)
+                                    ->suffix('%'),
+                                TextInput::make('discount')
+                                    ->label('Disc %')
+                                    ->numeric()
+                                    ->step(0.01)
+                                    ->default(0)
+                                    ->suffix('%'),
+
+                                // Group 2: Single-value Costs
                                 TextInput::make('export_freight_rate')
                                     ->label('Export freight (local)- (From Exwork to Port)')
                                     ->numeric()
@@ -102,36 +129,6 @@ class IncotermForm
                                     ->step(0.001)
                                     ->default(0)
                                     ->suffix('%'),
-                                 Split::make([
-                                    TextInput::make('origin_thc_rate')
-                                        ->label('Rate')
-                                        ->grow(),
-                                    Placeholder::make('thc_sep')
-                                        ->label('')
-                                        ->content('/')
-                                        ->extraAttributes(['class' => 'self-center pt-8 px-2 text-gray-400 text-xl font-bold']),
-                                    TextInput::make('origin_thc_qty')
-                                        ->label('Qty')
-                                        ->grow(),
-                                ])->columnSpan(2),
-                                TextInput::make('insurance_rate')
-                                    ->label('Insurance (FOB/CIF risk coverage)')
-                                    ->numeric()
-                                    ->step(0.001)
-                                    ->default(0)
-                                    ->suffix('%'),
-                                 Split::make([
-                                    TextInput::make('import_duties_fixed')
-                                        ->label('Fixed')
-                                        ->grow(),
-                                    Placeholder::make('id_sep')
-                                        ->label('')
-                                        ->content('/')
-                                        ->extraAttributes(['class' => 'self-center pt-8 px-2 text-gray-400 text-xl font-bold']),
-                                    TextInput::make('import_duties_multiplier')
-                                        ->label('Multiplier')
-                                        ->grow(),
-                                ])->columnSpan(2),
                                 TextInput::make('handling_charges_global')
                                     ->label('Handling charges (Port handling, demurrage)')
                                     ->numeric()
@@ -140,6 +137,59 @@ class IncotermForm
                                     ->label('Inland transport (From port to store)')
                                     ->numeric()
                                     ->default(0),
+
+                                // Group 3: Compound Costs Row 1 (2 + 2 = 4)
+                                Fieldset::make('Origin THC/FCL/LCL')
+                                    ->schema([
+                                        TextInput::make('origin_thc_rate')
+                                            ->hiddenLabel()
+                                            ->numeric()
+                                            ->step(0.001)
+                                            ->default(0)
+                                            ->suffix('/'),
+                                        TextInput::make('origin_thc_qty')
+                                            ->hiddenLabel()
+                                            ->numeric()
+                                            ->step(0.001)
+                                            ->default(0),
+                                    ])->columns(2)->columnSpan(2),
+                                Fieldset::make('International Freight (CBM / KG)')
+                                    ->schema([
+                                        TextInput::make('int_freight_cbm')
+                                            ->hiddenLabel()
+                                            ->numeric()
+                                            ->step(0.001)
+                                            ->default(0)
+                                            ->suffix('/'),
+                                        TextInput::make('int_freight_kg')
+                                            ->hiddenLabel()
+                                            ->numeric()
+                                            ->step(0.001)
+                                            ->default(0),
+                                    ])->columns(2)->columnSpan(2),
+
+                                // Group 4: Compound Costs Row 2
+                                Fieldset::make('Import Duties (Fixed / Multiplier)')
+                                    ->schema([
+                                        TextInput::make('import_duties_fixed')
+                                            ->hiddenLabel()
+                                            ->numeric()
+                                            ->step(0.001)
+                                            ->default(0)
+                                            ->suffix('/'),
+                                        TextInput::make('import_duties_multiplier')
+                                            ->hiddenLabel()
+                                            ->numeric()
+                                            ->step(0.001)
+                                            ->default(0),
+                                    ])->columns(2)->columnSpan(2),
+                                TextInput::make('insurance_rate')
+                                    ->label('Insurance (FOB/CIF risk coverage)')
+                                    ->numeric()
+                                    ->step(0.001)
+                                    ->default(0)
+                                    ->suffix('%')
+                                    ->columnSpan(2),
                             ])
                             ->collapsible()
                             ->itemLabel(fn (array $state): ?string => $state['currency_code'] ? "Currency: {$state['currency_code']}" : null),
