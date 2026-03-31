@@ -3,10 +3,12 @@
 namespace App\Filament\DarkAdmin\Resources\Incoterms\Schemas;
 
 use App\Models\Currency;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -73,7 +75,8 @@ class IncotermForm
                             ->default(false),
                     ]),
 
-                Section::make('Currency Defaults')
+                Section::make('Pricing Configuration Defaults')
+                    ->columnSpanFull()
                     ->description('Set default cost configuration values for each currency. These will auto-fill when this incoterm + currency is selected in a quotation.')
                     ->schema([
                         Repeater::make('currency_defaults')
@@ -88,54 +91,53 @@ class IncotermForm
                                     ->searchable()
                                     ->columnSpanFull(),
                                 TextInput::make('export_freight_rate')
-                                    ->label('Export Freight Rate (%)')
+                                    ->label('Export freight (local)- (From Exwork to Port)')
                                     ->numeric()
                                     ->step(0.001)
                                     ->default(0)
                                     ->suffix('%'),
                                 TextInput::make('export_clearance_rate')
-                                    ->label('Export Clearance Rate (%)')
+                                    ->label('Export clearance (Fees and docs)')
                                     ->numeric()
                                     ->step(0.001)
                                     ->default(0)
                                     ->suffix('%'),
-                                TextInput::make('origin_thc_rate')
-                                    ->label('Origin THC Rate')
-                                    ->numeric()
-                                    ->default(0),
-                                TextInput::make('origin_thc_qty')
-                                    ->label('Origin THC Qty')
-                                    ->numeric()
-                                    ->default(1),
-                                TextInput::make('int_freight_cbm')
-                                    ->label('Int. Freight CBM Rate')
-                                    ->numeric()
-                                    ->default(0),
-                                TextInput::make('int_freight_kg')
-                                    ->label('Int. Freight KG/Qty')
-                                    ->numeric()
-                                    ->default(0),
+                                 Split::make([
+                                    TextInput::make('origin_thc_rate')
+                                        ->label('Rate')
+                                        ->grow(),
+                                    Placeholder::make('thc_sep')
+                                        ->label('')
+                                        ->content('/')
+                                        ->extraAttributes(['class' => 'self-center pt-8 px-2 text-gray-400 text-xl font-bold']),
+                                    TextInput::make('origin_thc_qty')
+                                        ->label('Qty')
+                                        ->grow(),
+                                ])->columnSpan(2),
                                 TextInput::make('insurance_rate')
-                                    ->label('Insurance Rate (%)')
+                                    ->label('Insurance (FOB/CIF risk coverage)')
                                     ->numeric()
                                     ->step(0.001)
                                     ->default(0)
                                     ->suffix('%'),
-                                TextInput::make('import_duties_fixed')
-                                    ->label('Import Duties (Fixed)')
-                                    ->numeric()
-                                    ->default(0),
-                                TextInput::make('import_duties_multiplier')
-                                    ->label('Import Duties Multiplier')
-                                    ->numeric()
-                                    ->step(0.01)
-                                    ->default(1),
+                                 Split::make([
+                                    TextInput::make('import_duties_fixed')
+                                        ->label('Fixed')
+                                        ->grow(),
+                                    Placeholder::make('id_sep')
+                                        ->label('')
+                                        ->content('/')
+                                        ->extraAttributes(['class' => 'self-center pt-8 px-2 text-gray-400 text-xl font-bold']),
+                                    TextInput::make('import_duties_multiplier')
+                                        ->label('Multiplier')
+                                        ->grow(),
+                                ])->columnSpan(2),
                                 TextInput::make('handling_charges_global')
-                                    ->label('Handling Charges')
+                                    ->label('Handling charges (Port handling, demurrage)')
                                     ->numeric()
                                     ->default(0),
                                 TextInput::make('inland_transport_global')
-                                    ->label('Inland Transport')
+                                    ->label('Inland transport (From port to store)')
                                     ->numeric()
                                     ->default(0),
                             ])
