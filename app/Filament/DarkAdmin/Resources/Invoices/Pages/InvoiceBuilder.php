@@ -42,10 +42,6 @@ class InvoiceBuilder extends Page
 
     public $office_address = '';
 
-    public $incoterm = '';
-
-    public $currency = '';
-
     public $tables = []; // Using 'tables' to match QuotationBuilder structure
 
     public function mount(?int $record = null): void
@@ -74,8 +70,6 @@ class InvoiceBuilder extends Page
         $this->phone_number = $invoice->phone_number;
         $this->fax_number = $invoice->fax_number;
         $this->office_address = $invoice->office_address;
-        $this->incoterm = $invoice->incoterm;
-        $this->currency = $invoice->currency;
 
         $this->tables = [];
         foreach ($invoice->items as $item) {
@@ -196,8 +190,6 @@ class InvoiceBuilder extends Page
             'phone_number' => $this->phone_number,
             'fax_number' => $this->fax_number,
             'office_address' => $this->office_address,
-            'incoterm' => $this->incoterm,
-            'currency' => $this->currency,
             'subtotal' => $subtotal,
             'grand_total' => $grandTotal,
             'status' => 'draft',

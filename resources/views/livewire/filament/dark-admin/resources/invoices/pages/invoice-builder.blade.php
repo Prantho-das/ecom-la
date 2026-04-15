@@ -91,34 +91,7 @@
             </div>
         </div>
 
-        {{-- Configuration Section --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                <div class="flex items-center gap-3 mb-6">
-                    <flux:icon icon="cog-6-tooth" class="w-5 h-5 text-zinc-400" />
-                    <h3 class="text-xs font-black uppercase tracking-widest text-zinc-500">Shipping & Currency</h3>
-                </div>
-                <div class="grid grid-cols-2 gap-6">
-                    <flux:field>
-                        <flux:label>Incoterm</flux:label>
-                        <flux:select wire:model="incoterm">
-                            <flux:select.option value="">Select Incoterm</flux:select.option>
-                            @foreach(\App\Models\Incoterm::all() as $i)
-                                <flux:select.option value="{{ $i->code }}">{{ $i->name }} ({{ $i->code }})</flux:select.option>
-                            @endforeach
-                        </flux:select>
-                    </flux:field>
-                    <flux:field>
-                        <flux:label>Currency</flux:label>
-                        <flux:select wire:model="currency">
-                            @foreach(\App\Models\Currency::where('is_active', true)->get() as $c)
-                                <flux:select.option value="{{ $c->code }}">{{ $c->code }}</flux:select.option>
-                            @endforeach
-                        </flux:select>
-                    </flux:field>
-                </div>
-            </div>
-        </div>
+
 
         {{-- Products Section --}}
         <div class="space-y-4">
