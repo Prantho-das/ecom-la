@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="flex gap-4">
-                <flux:button href="{{ route('filament.dark-admin.resources.invoices.invoice-builder', ['record' => $record->id]) }}" icon="pencil-square" variant="subtle" class="px-6">Edit Invoice</flux:button>
+                <flux:button href="{{ \App\Filament\DarkAdmin\Resources\Invoices\InvoiceResource::getUrl('edit', ['record' => $record->id]) }}" icon="pencil-square" variant="subtle" class="px-6">Edit Invoice</flux:button>
                 <flux:button href="#" icon="printer" variant="primary" class="px-6 shadow-lg shadow-indigo-500/20">Print PDF</flux:button>
             </div>
         </div>
