@@ -4,15 +4,11 @@ namespace App\Filament\DarkAdmin\Resources\Invoices\Pages;
 
 use App\Filament\DarkAdmin\Resources\Invoices\InvoiceResource;
 use App\Models\Invoice;
-use App\Models\InvoiceItem;
-use App\Models\QuotationItem;
 use App\Models\Product;
-use App\Models\Incoterm;
-use App\Models\Currency;
-use Filament\Resources\Pages\Page;
-use Filament\Support\Icons\Heroicon;
-use Illuminate\Support\Str;
+use App\Models\QuotationItem;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\Page;
+use Illuminate\Support\Str;
 
 class InvoiceBuilder extends Page
 {
@@ -25,17 +21,29 @@ class InvoiceBuilder extends Page
     protected static ?string $navigationLabel = 'Generate Invoice';
 
     public $customer_name = '';
+
     public $business_name = '';
+
     public $email = '';
+
     public $invoice_date;
+
     public $quotation_date;
+
     public $contact_person = '';
+
     public $payment_term = '';
+
     public $customer_po_ref = '';
+
     public $phone_number = '';
+
     public $fax_number = '';
+
     public $office_address = '';
+
     public $incoterm = '';
+
     public $currency = '';
 
     public $tables = []; // Using 'tables' to match QuotationBuilder structure
@@ -71,13 +79,22 @@ class InvoiceBuilder extends Page
 
         $this->tables = [];
         foreach ($invoice->items as $item) {
+            $ports = QuotationItem::where('product_id', $item->product_id)
+                ->whereNotNull('incoterm')
+                ->select('incoterm', 'final_unit_price')
+                ->distinct()
+                ->get()
+                ->toArray();
+
             $this->tables[] = [
                 'id' => Str::uuid()->toString(),
                 'product_id' => $item->product_id,
                 'name' => $item->product_name,
+                'port' => $item->port,
                 'quantity' => $item->quantity,
                 'uom' => $item->uom,
                 'unit_price' => $item->unit_price,
+                'available_ports' => $ports,
             ];
         }
     }
@@ -88,9 +105,11 @@ class InvoiceBuilder extends Page
             'id' => Str::uuid()->toString(),
             'product_id' => '',
             'name' => '',
+            'port' => '',
             'quantity' => 1,
             'uom' => 'UNIT',
             'unit_price' => 0,
+            'available_ports' => [],
         ];
     }
 
@@ -108,18 +127,35 @@ class InvoiceBuilder extends Page
 
             if ($product) {
                 $this->tables[$index]['name'] = $product->name;
-                
-                // Fetch price from quotation table
-                $latestQuotedItem = QuotationItem::where('product_id', $value)
-                    ->latest()
-                    ->first();
-                
-                if ($latestQuotedItem) {
-                    $this->tables[$index]['unit_price'] = $latestQuotedItem->final_unit_price ?? $latestQuotedItem->unit_price;
-                    $this->tables[$index]['uom'] = $latestQuotedItem->uom ?? 'UNIT';
+
+                // Fetch all unique ports (incoterms) and their prices for this product
+                $ports = QuotationItem::where('product_id', $value)
+                    ->whereNotNull('incoterm')
+                    ->select('incoterm', 'final_unit_price')
+                    ->distinct()
+                    ->get()
+                    ->toArray();
+
+                $this->tables[$index]['available_ports'] = $ports;
+
+                if (! empty($ports)) {
+                    // Set default to the latest one if available
+                    $latest = collect($ports)->last();
+                    $this->tables[$index]['port'] = $latest['incoterm'];
+                    $this->tables[$index]['unit_price'] = $latest['final_unit_price'];
                 } else {
+                    $this->tables[$index]['port'] = '';
                     $this->tables[$index]['unit_price'] = $product->price ?? 0;
                 }
+            }
+        }
+
+        if (Str::startsWith($property, 'tables.') && Str::endsWith($property, '.port')) {
+            $index = explode('.', $property)[1];
+            $selectedPort = collect($this->tables[$index]['available_ports'])->firstWhere('incoterm', $value);
+
+            if ($selectedPort) {
+                $this->tables[$index]['unit_price'] = $selectedPort['final_unit_price'];
             }
         }
     }
@@ -134,7 +170,7 @@ class InvoiceBuilder extends Page
             'tables.*.quantity' => 'required|numeric|min:0.0001',
         ]);
 
-        $subtotal = collect($this->tables)->sum(fn($t) => $t['quantity'] * $t['unit_price']);
+        $subtotal = collect($this->tables)->sum(fn ($t) => $t['quantity'] * $t['unit_price']);
         $grandTotal = $subtotal; // For now, grand total is subtotal
 
         $invoiceData = [
@@ -161,6 +197,7 @@ class InvoiceBuilder extends Page
         foreach ($this->tables as $table) {
             $invoice->items()->create([
                 'product_id' => $table['product_id'],
+                'port' => $table['port'] ?? null,
                 'product_name' => $table['name'],
                 'quantity' => $table['quantity'],
                 'uom' => $table['uom'],
