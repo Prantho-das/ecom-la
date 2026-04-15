@@ -4,6 +4,7 @@ namespace App\Filament\DarkAdmin\Resources\Invoices;
 
 use App\Filament\DarkAdmin\Resources\Invoices\Pages\InvoiceBuilder;
 use App\Filament\DarkAdmin\Resources\Invoices\Pages\ListInvoices;
+use App\Filament\DarkAdmin\Resources\Invoices\Pages\ViewInvoice;
 use App\Filament\DarkAdmin\Resources\Invoices\Tables\InvoicesTable;
 use App\Models\Invoice;
 use BackedEnum;
@@ -43,6 +44,7 @@ class InvoiceResource extends Resource
         return [
             'index' => ListInvoices::route('/'),
             'create' => InvoiceBuilder::route('/generate/{record?}'),
+            'view' => ViewInvoice::route('/{record}'),
             'edit' => InvoiceBuilder::route('/{record}/edit'),
         ];
     }
