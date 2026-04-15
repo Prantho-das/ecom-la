@@ -129,28 +129,31 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if(!empty($table['available_options']))
-                                        <flux:select wire:model.live="tables.{{ $idx }}.port" placeholder="Select Port...">
-                                            <flux:select.option value="">Manual / Default</flux:select.option>
-                                            @foreach($table['available_options'] as $opt)
-                                                <flux:select.option value="{{ $opt['incoterm'] }}">
-                                                    {{ $opt['incoterm'] }} - ({{ number_format($opt['final_unit_price'], 2) }})
-                                                </flux:select.option>
+                                    <flux:select wire:model.live="tables.{{ $idx }}.incoterm" placeholder="Incoterm...">
+                                        @if(!empty($table['available_incoterms']))
+                                            <flux:select.option value="">Choice Incoterm</flux:select.option>
+                                            @foreach($table['available_incoterms'] as $code)
+                                                <flux:select.option value="{{ $code }}">{{ $code }}</flux:select.option>
                                             @endforeach
-                                        </flux:select>
-                                    @else
-                                        <flux:select wire:model.live="tables.{{ $idx }}.incoterm" placeholder="Incoterm...">
+                                        @else
                                             @foreach(\App\Models\Incoterm::all() as $i)
                                                 <flux:select.option value="{{ $i->code }}">{{ $i->code }}</flux:select.option>
                                             @endforeach
-                                        </flux:select>
-                                    @endif
+                                        @endif
+                                    </flux:select>
                                 </td>
                                 <td class="px-6 py-4">
                                     <flux:select wire:model.live="tables.{{ $idx }}.currency" placeholder="Currency...">
-                                        @foreach(\App\Models\Currency::where('is_active', true)->get() as $c)
-                                            <flux:select.option value="{{ $c->code }}">{{ $c->code }}</flux:select.option>
-                                        @endforeach
+                                        @if(!empty($table['available_currencies']))
+                                            <flux:select.option value="">Choice Currency</flux:select.option>
+                                            @foreach($table['available_currencies'] as $symbol)
+                                                <flux:select.option value="{{ $symbol }}">{{ $symbol }}</flux:select.option>
+                                            @endforeach
+                                        @else
+                                            @foreach(\App\Models\Currency::where('is_active', true)->get() as $c)
+                                                <flux:select.option value="{{ $c->code }}">{{ $c->code }}</flux:select.option>
+                                            @endforeach
+                                        @endif
                                     </flux:select>
                                 </td>
                                 <td class="px-6 py-4">

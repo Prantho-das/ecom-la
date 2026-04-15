@@ -73,11 +73,18 @@ class InvoiceBuilder extends Page
 
         $this->tables = [];
         foreach ($invoice->items as $item) {
-            $options = QuotationItem::where('product_id', $item->product_id)
+            $incoterms = QuotationItem::where('product_id', $item->product_id)
                 ->whereNotNull('incoterm')
-                ->select('incoterm', 'currency', 'final_unit_price')
+                ->select('incoterm')
                 ->distinct()
-                ->get()
+                ->pluck('incoterm')
+                ->toArray();
+
+            $currencies = QuotationItem::where('product_id', $item->product_id)
+                ->where('incoterm', $item->incoterm)
+                ->select('currency')
+                ->distinct()
+                ->pluck('currency')
                 ->toArray();
 
             $this->tables[] = [
@@ -90,7 +97,8 @@ class InvoiceBuilder extends Page
                 'quantity' => $item->quantity,
                 'uom' => $item->uom,
                 'unit_price' => $item->unit_price,
-                'available_options' => $options,
+                'available_incoterms' => $incoterms,
+                'available_currencies' => $currencies,
             ];
         }
     }
@@ -107,7 +115,8 @@ class InvoiceBuilder extends Page
             'quantity' => 1,
             'uom' => 'UNIT',
             'unit_price' => 0,
-            'available_options' => [],
+            'available_incoterms' => [],
+            'available_currencies' => [],
         ];
     }
 
@@ -123,44 +132,67 @@ class InvoiceBuilder extends Page
             $index = explode('.', $property)[1];
             $product = Product::find($value);
 
+            // Reset dependent fields
+            $this->tables[$index]['incoterm'] = '';
+            $this->tables[$index]['currency'] = '';
+            $this->tables[$index]['unit_price'] = 0;
+            $this->tables[$index]['available_incoterms'] = [];
+            $this->tables[$index]['available_currencies'] = [];
+
             if ($product) {
                 $this->tables[$index]['name'] = $product->name;
+                $this->tables[$index]['unit_price'] = $product->price ?? 0;
 
-                // Fetch all unique quotation options for this product
-                $options = QuotationItem::where('product_id', $value)
+                // Fetch available incoterms for this product
+                $incoterms = QuotationItem::where('product_id', $value)
                     ->whereNotNull('incoterm')
-                    ->select('incoterm', 'currency', 'final_unit_price')
+                    ->select('incoterm')
                     ->distinct()
-                    ->get()
+                    ->pluck('incoterm')
                     ->toArray();
 
-                $this->tables[$index]['available_options'] = $options;
-
-                if (! empty($options)) {
-                    // Set default to the latest one if available
-                    $latest = collect($options)->last();
-                    $this->tables[$index]['port'] = $latest['incoterm']; // Mapping incoterm to port for backward compatibility if needed
-                    $this->tables[$index]['incoterm'] = $latest['incoterm'];
-                    $this->tables[$index]['currency'] = $latest['currency'] ?? 'USD';
-                    $this->tables[$index]['unit_price'] = $latest['final_unit_price'];
-                } else {
-                    $this->tables[$index]['port'] = '';
-                    $this->tables[$index]['incoterm'] = '';
-                    $this->tables[$index]['currency'] = 'USD';
-                    $this->tables[$index]['unit_price'] = $product->price ?? 0;
-                }
+                $this->tables[$index]['available_incoterms'] = $incoterms;
             }
         }
 
-        // Handle port change (which was using incoterm list)
-        if (Str::startsWith($property, 'tables.') && Str::endsWith($property, '.port')) {
+        // When Incoterm is updated, fetch available currencies
+        if (Str::startsWith($property, 'tables.') && Str::endsWith($property, '.incoterm')) {
             $index = explode('.', $property)[1];
-            $selected = collect($this->tables[$index]['available_options'])->firstWhere('incoterm', $value);
+            $productId = $this->tables[$index]['product_id'];
 
-            if ($selected) {
-                $this->tables[$index]['incoterm'] = $selected['incoterm'];
-                $this->tables[$index]['currency'] = $selected['currency'];
-                $this->tables[$index]['unit_price'] = $selected['final_unit_price'];
+            // Reset dependent fields
+            $this->tables[$index]['currency'] = '';
+            $this->tables[$index]['available_currencies'] = [];
+
+            if ($productId && $value) {
+                $currencies = QuotationItem::where('product_id', $productId)
+                    ->where('incoterm', $value)
+                    ->select('currency')
+                    ->distinct()
+                    ->pluck('currency')
+                    ->toArray();
+
+                $this->tables[$index]['available_currencies'] = $currencies;
+            }
+        }
+
+        // When Currency is updated, fetch the final unit price
+        if (Str::startsWith($property, 'tables.') && Str::endsWith($property, '.currency')) {
+            $index = explode('.', $property)[1];
+            $productId = $this->tables[$index]['product_id'];
+            $incoterm = $this->tables[$index]['incoterm'];
+
+            if ($productId && $incoterm && $value) {
+                $latest = QuotationItem::where('product_id', $productId)
+                    ->where('incoterm', $incoterm)
+                    ->where('currency', $value)
+                    ->latest()
+                    ->first();
+
+                if ($latest) {
+                    $this->tables[$index]['unit_price'] = $latest->final_unit_price;
+                    $this->tables[$index]['port'] = $latest->incoterm; // Fallback or sync
+                }
             }
         }
     }
