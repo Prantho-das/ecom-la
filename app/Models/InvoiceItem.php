@@ -13,6 +13,8 @@ class InvoiceItem extends Model
         'invoice_id',
         'product_id',
         'port',
+        'incoterm',
+        'currency',
         'product_name',
         'quantity',
         'uom',

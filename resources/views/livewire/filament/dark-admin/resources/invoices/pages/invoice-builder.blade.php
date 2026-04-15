@@ -132,7 +132,8 @@
                     <thead>
                         <tr class="bg-zinc-50 dark:bg-zinc-800/30 border-b border-zinc-200 dark:border-zinc-800">
                             <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500">Product Selection</th>
-                            <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500">Port Selection</th>
+                            <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500">Port (Incoterm)</th>
+                            <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500">Currency</th>
                             <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500 w-32 text-right">Quantity</th>
                             <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500 w-48 text-right">Unit Price</th>
                             <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500 w-48 text-right">Row Total</th>
@@ -155,18 +156,29 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if(!empty($table['available_ports']))
+                                    @if(!empty($table['available_options']))
                                         <flux:select wire:model.live="tables.{{ $idx }}.port" placeholder="Select Port...">
-                                            <flux:select.option value="">Manual Entry / Default</flux:select.option>
-                                            @foreach($table['available_ports'] as $opt)
+                                            <flux:select.option value="">Manual / Default</flux:select.option>
+                                            @foreach($table['available_options'] as $opt)
                                                 <flux:select.option value="{{ $opt['incoterm'] }}">
                                                     {{ $opt['incoterm'] }} - ({{ number_format($opt['final_unit_price'], 2) }})
                                                 </flux:select.option>
                                             @endforeach
                                         </flux:select>
                                     @else
-                                        <div class="text-[10px] text-zinc-400 font-bold uppercase py-2">No Quotations Found</div>
+                                        <flux:select wire:model.live="tables.{{ $idx }}.incoterm" placeholder="Incoterm...">
+                                            @foreach(\App\Models\Incoterm::all() as $i)
+                                                <flux:select.option value="{{ $i->code }}">{{ $i->code }}</flux:select.option>
+                                            @endforeach
+                                        </flux:select>
                                     @endif
+                                </td>
+                                <td class="px-6 py-4">
+                                    <flux:select wire:model.live="tables.{{ $idx }}.currency" placeholder="Currency...">
+                                        @foreach(\App\Models\Currency::where('is_active', true)->get() as $c)
+                                            <flux:select.option value="{{ $c->code }}">{{ $c->code }}</flux:select.option>
+                                        @endforeach
+                                    </flux:select>
                                 </td>
                                 <td class="px-6 py-4">
                                     <flux:input type="number" step="0.01" wire:model.live="tables.{{ $idx }}.quantity" class="text-right" />

@@ -79,9 +79,9 @@ class InvoiceBuilder extends Page
 
         $this->tables = [];
         foreach ($invoice->items as $item) {
-            $ports = QuotationItem::where('product_id', $item->product_id)
+            $options = QuotationItem::where('product_id', $item->product_id)
                 ->whereNotNull('incoterm')
-                ->select('incoterm', 'final_unit_price')
+                ->select('incoterm', 'currency', 'final_unit_price')
                 ->distinct()
                 ->get()
                 ->toArray();
@@ -91,10 +91,12 @@ class InvoiceBuilder extends Page
                 'product_id' => $item->product_id,
                 'name' => $item->product_name,
                 'port' => $item->port,
+                'incoterm' => $item->incoterm,
+                'currency' => $item->currency,
                 'quantity' => $item->quantity,
                 'uom' => $item->uom,
                 'unit_price' => $item->unit_price,
-                'available_ports' => $ports,
+                'available_options' => $options,
             ];
         }
     }
@@ -106,10 +108,12 @@ class InvoiceBuilder extends Page
             'product_id' => '',
             'name' => '',
             'port' => '',
+            'incoterm' => '',
+            'currency' => '',
             'quantity' => 1,
             'uom' => 'UNIT',
             'unit_price' => 0,
-            'available_ports' => [],
+            'available_options' => [],
         ];
     }
 
@@ -128,34 +132,41 @@ class InvoiceBuilder extends Page
             if ($product) {
                 $this->tables[$index]['name'] = $product->name;
 
-                // Fetch all unique ports (incoterms) and their prices for this product
-                $ports = QuotationItem::where('product_id', $value)
+                // Fetch all unique quotation options for this product
+                $options = QuotationItem::where('product_id', $value)
                     ->whereNotNull('incoterm')
-                    ->select('incoterm', 'final_unit_price')
+                    ->select('incoterm', 'currency', 'final_unit_price')
                     ->distinct()
                     ->get()
                     ->toArray();
 
-                $this->tables[$index]['available_ports'] = $ports;
+                $this->tables[$index]['available_options'] = $options;
 
-                if (! empty($ports)) {
+                if (! empty($options)) {
                     // Set default to the latest one if available
-                    $latest = collect($ports)->last();
-                    $this->tables[$index]['port'] = $latest['incoterm'];
+                    $latest = collect($options)->last();
+                    $this->tables[$index]['port'] = $latest['incoterm']; // Mapping incoterm to port for backward compatibility if needed
+                    $this->tables[$index]['incoterm'] = $latest['incoterm'];
+                    $this->tables[$index]['currency'] = $latest['currency'] ?? 'USD';
                     $this->tables[$index]['unit_price'] = $latest['final_unit_price'];
                 } else {
                     $this->tables[$index]['port'] = '';
+                    $this->tables[$index]['incoterm'] = '';
+                    $this->tables[$index]['currency'] = 'USD';
                     $this->tables[$index]['unit_price'] = $product->price ?? 0;
                 }
             }
         }
 
+        // Handle port change (which was using incoterm list)
         if (Str::startsWith($property, 'tables.') && Str::endsWith($property, '.port')) {
             $index = explode('.', $property)[1];
-            $selectedPort = collect($this->tables[$index]['available_ports'])->firstWhere('incoterm', $value);
+            $selected = collect($this->tables[$index]['available_options'])->firstWhere('incoterm', $value);
 
-            if ($selectedPort) {
-                $this->tables[$index]['unit_price'] = $selectedPort['final_unit_price'];
+            if ($selected) {
+                $this->tables[$index]['incoterm'] = $selected['incoterm'];
+                $this->tables[$index]['currency'] = $selected['currency'];
+                $this->tables[$index]['unit_price'] = $selected['final_unit_price'];
             }
         }
     }
@@ -198,6 +209,8 @@ class InvoiceBuilder extends Page
             $invoice->items()->create([
                 'product_id' => $table['product_id'],
                 'port' => $table['port'] ?? null,
+                'incoterm' => $table['incoterm'] ?? null,
+                'currency' => $table['currency'] ?? null,
                 'product_name' => $table['name'],
                 'quantity' => $table['quantity'],
                 'uom' => $table['uom'],
