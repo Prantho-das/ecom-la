@@ -91,34 +91,7 @@
             </div>
         </div>
 
-        {{-- Configuration Section --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                <div class="flex items-center gap-3 mb-6">
-                    <flux:icon icon="cog-6-tooth" class="w-5 h-5 text-zinc-400" />
-                    <h3 class="text-xs font-black uppercase tracking-widest text-zinc-500">Shipping & Currency</h3>
-                </div>
-                <div class="grid grid-cols-2 gap-6">
-                    <flux:field>
-                        <flux:label>Incoterm</flux:label>
-                        <flux:select wire:model="incoterm">
-                            <flux:select.option value="">Select Incoterm</flux:select.option>
-                            @foreach(\App\Models\Incoterm::all() as $i)
-                                <flux:select.option value="{{ $i->code }}">{{ $i->name }} ({{ $i->code }})</flux:select.option>
-                            @endforeach
-                        </flux:select>
-                    </flux:field>
-                    <flux:field>
-                        <flux:label>Currency</flux:label>
-                        <flux:select wire:model="currency">
-                            @foreach(\App\Models\Currency::where('is_active', true)->get() as $c)
-                                <flux:select.option value="{{ $c->code }}">{{ $c->code }}</flux:select.option>
-                            @endforeach
-                        </flux:select>
-                    </flux:field>
-                </div>
-            </div>
-        </div>
+
 
         {{-- Products Section --}}
         <div class="space-y-4">
@@ -132,6 +105,8 @@
                     <thead>
                         <tr class="bg-zinc-50 dark:bg-zinc-800/30 border-b border-zinc-200 dark:border-zinc-800">
                             <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500">Product Selection</th>
+                            <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500">Port (Incoterm)</th>
+                            <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500">Currency</th>
                             <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500 w-32 text-right">Quantity</th>
                             <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500 w-48 text-right">Unit Price</th>
                             <th class="px-6 py-4 text-xs font-black uppercase tracking-widest text-zinc-500 w-48 text-right">Row Total</th>
@@ -152,6 +127,34 @@
                                             <span class="text-[10px] text-zinc-400 font-bold uppercase pl-1">{{ $table['name'] }}</span>
                                         @endif
                                     </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <flux:select wire:model.live="tables.{{ $idx }}.incoterm" placeholder="Incoterm...">
+                                        @if(!empty($table['available_incoterms']))
+                                            <flux:select.option value="">Choice Incoterm</flux:select.option>
+                                            @foreach($table['available_incoterms'] as $code)
+                                                <flux:select.option value="{{ $code }}">{{ $code }}</flux:select.option>
+                                            @endforeach
+                                        @else
+                                            @foreach(\App\Models\Incoterm::all() as $i)
+                                                <flux:select.option value="{{ $i->code }}">{{ $i->code }}</flux:select.option>
+                                            @endforeach
+                                        @endif
+                                    </flux:select>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <flux:select wire:model.live="tables.{{ $idx }}.currency" placeholder="Currency...">
+                                        @if(!empty($table['available_currencies']))
+                                            <flux:select.option value="">Choice Currency</flux:select.option>
+                                            @foreach($table['available_currencies'] as $symbol)
+                                                <flux:select.option value="{{ $symbol }}">{{ $symbol }}</flux:select.option>
+                                            @endforeach
+                                        @else
+                                            @foreach(\App\Models\Currency::where('is_active', true)->get() as $c)
+                                                <flux:select.option value="{{ $c->code }}">{{ $c->code }}</flux:select.option>
+                                            @endforeach
+                                        @endif
+                                    </flux:select>
                                 </td>
                                 <td class="px-6 py-4">
                                     <flux:input type="number" step="0.01" wire:model.live="tables.{{ $idx }}.quantity" class="text-right" />

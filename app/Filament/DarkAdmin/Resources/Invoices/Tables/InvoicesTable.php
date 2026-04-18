@@ -2,15 +2,16 @@
 
 namespace App\Filament\DarkAdmin\Resources\Invoices\Tables;
 
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\BadgeColumn;
-use Filament\Tables\Table;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use App\Models\Invoice;
 use App\Filament\DarkAdmin\Resources\Invoices\InvoiceResource;
+use App\Models\Invoice;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class InvoicesTable
 {
@@ -45,7 +46,8 @@ class InvoicesTable
                 //
             ])
             ->actions([
-                \Filament\Actions\Action::make('edit_builder')
+                ViewAction::make(),
+                Action::make('edit_builder')
                     ->label('Edit')
                     ->icon('heroicon-o-pencil-square')
                     ->color('info')
