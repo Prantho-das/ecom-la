@@ -8,10 +8,10 @@ use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Filament\Actions\ViewAction;
 
 class QuotationsTable
 {
@@ -24,20 +24,10 @@ class QuotationsTable
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('customer_name')
-                    ->label('Customer')
-                    ->searchable()
-                    ->sortable(),
-
                 TextColumn::make('quotation_date')
                     ->label('Quotation Date')
                     ->date()
                     ->sortable(),
-
-                TextColumn::make('customer_email')
-                    ->label('Email')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
 
                 BadgeColumn::make('shipping_method')
                     ->label('Shipping')
@@ -102,10 +92,10 @@ class QuotationsTable
                 //
             ])
             ->actions([
-                ViewAction::make()
-                    ->label('View')
-                    ->icon('heroicon-o-eye')
-                    ->color('success'),
+                // ViewAction::make()
+                //     ->label('View')
+                //     ->icon('heroicon-o-eye')
+                //     ->color('success'),
                 Action::make('edit_builder')
                     ->label('Edit')
                     ->icon('heroicon-o-pencil-square')

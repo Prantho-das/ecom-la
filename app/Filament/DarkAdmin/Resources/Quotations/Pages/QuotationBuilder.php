@@ -23,22 +23,6 @@ class QuotationBuilder extends Page
 
     protected static ?int $navigationSort = -1;
 
-    public $customer_name = '';
-
-    public $customer_email = '';
-
-    public $customer_address = '';
-
-    public $customer_phone = '';
-
-    public $customer_fax = '';
-
-    public $attn = '';
-
-    public $payment_term = 'TT Before Delivery';
-
-    public $customer_po = '';
-
     public $quotation_date;
 
     public ?int $quotationId = null;
@@ -85,14 +69,6 @@ class QuotationBuilder extends Page
     {
         $quotation = \App\Models\Quotation::with('items')->findOrFail($id);
 
-        $this->customer_name = $quotation->customer_name;
-        $this->customer_email = $quotation->customer_email;
-        $this->customer_address = $quotation->customer_address;
-        $this->customer_phone = $quotation->customer_phone;
-        $this->customer_fax = $quotation->customer_fax;
-        $this->attn = $quotation->attn;
-        $this->payment_term = $quotation->payment_term ?? 'TT Before Delivery';
-        $this->customer_po = $quotation->customer_po;
         $this->quotation_date = $quotation->quotation_date?->format('Y-m-d') ?? now()->format('Y-m-d');
         $this->vat = (float) $quotation->vat_percentage;
         $this->discount_percentage = (float) $quotation->discount_percentage;
@@ -354,8 +330,6 @@ class QuotationBuilder extends Page
     public function save(): void
     {
         $this->validate([
-            'customer_name' => 'required|string|max:255',
-            'customer_email' => 'required|email|max:255',
             'tables' => 'required|array|min:1',
             'tables.*.currency' => 'required|string',
             'tables.*.quantity' => 'required|numeric|min:0',
@@ -369,14 +343,6 @@ class QuotationBuilder extends Page
         if ($this->quotationId) {
             $quotation = \App\Models\Quotation::findOrFail($this->quotationId);
             $quotation->update([
-                'customer_name' => $this->customer_name,
-                'customer_email' => $this->customer_email,
-                'customer_address' => $this->customer_address,
-                'customer_phone' => $this->customer_phone,
-                'customer_fax' => $this->customer_fax,
-                'attn' => $this->attn,
-                'payment_term' => $this->payment_term,
-                'customer_po' => $this->customer_po,
                 'quotation_date' => $this->quotation_date,
                 'margin_percentage' => $this->margin,
                 'tax_percentage' => $this->tax,
@@ -388,14 +354,6 @@ class QuotationBuilder extends Page
             $quotation->items()->delete();
         } else {
             $quotation = \App\Models\Quotation::create([
-                'customer_name' => $this->customer_name,
-                'customer_email' => $this->customer_email,
-                'customer_address' => $this->customer_address,
-                'customer_phone' => $this->customer_phone,
-                'customer_fax' => $this->customer_fax,
-                'attn' => $this->attn,
-                'payment_term' => $this->payment_term,
-                'customer_po' => $this->customer_po,
                 'quotation_date' => $this->quotation_date,
                 'margin_percentage' => $this->margin,
                 'tax_percentage' => $this->tax,

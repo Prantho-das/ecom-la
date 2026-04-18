@@ -9,8 +9,8 @@
                         <flux:icon icon="document-text" class="w-5 h-5" />
                     </div>
                     <div>
-                        <h3 class="text-sm font-black uppercase tracking-widest text-zinc-900 dark:text-zinc-100">Customer Metadata</h3>
-                        <p class="text-[10px] font-bold text-zinc-400 uppercase">Specify recipient & reference details</p>
+                        <h3 class="text-sm font-black uppercase tracking-widest text-zinc-900 dark:text-zinc-100">Quotation Details</h3>
+                        <p class="text-[10px] font-bold text-zinc-400 uppercase">Configuration & Date</p>
                     </div>
                 </div>
                 <div class="flex gap-3">
@@ -23,60 +23,11 @@
             </div>
 
             <div class="p-8">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    {{-- Basic Info --}}
-                    <div class="md:col-span-1 space-y-6">
-                        <flux:field>
-                            <flux:label>Customer Name <span class="text-red-500">*</span></flux:label>
-                            <flux:input wire:model="customer_name" placeholder="Business or Name" />
-                            @error('customer_name') <span class="text-red-500 text-[10px] font-bold">{{ $message }}</span> @enderror
-                        </flux:field>
-                        <flux:field>
-                            <flux:label>Email Address <span class="text-red-500">*</span></flux:label>
-                            <flux:input type="email" wire:model="customer_email" placeholder="email@example.com" />
-                            @error('customer_email') <span class="text-red-500 text-[10px] font-bold">{{ $message }}</span> @enderror
-                        </flux:field>
-                        <flux:field>
-                            <flux:label>Quotation Date <span class="text-red-500">*</span></flux:label>
-                            <flux:input type="date" wire:model="quotation_date" />
-                        </flux:field>
-                    </div>
-
-                    {{-- References --}}
-                    <div class="md:col-span-1 space-y-6">
-                        <flux:field>
-                            <flux:label>Attention To</flux:label>
-                            <flux:input wire:model="attn" placeholder="Contact Person" />
-                        </flux:field>
-                        <flux:field>
-                            <flux:label>Payment Term</flux:label>
-                            <flux:input wire:model="payment_term" placeholder="TT Before Delivery" />
-                        </flux:field>
-                        <flux:field>
-                            <flux:label>Customer PO Ref</flux:label>
-                            <flux:input wire:model="customer_po" placeholder="PO-12345" />
-                        </flux:field>
-                    </div>
-
-                    {{-- Communication --}}
-                    <div class="md:col-span-1 space-y-6">
-                        <flux:field>
-                            <flux:label>Phone Number</flux:label>
-                            <flux:input wire:model="customer_phone" placeholder="+00 000 0000" />
-                        </flux:field>
-                        <flux:field>
-                            <flux:label>Fax Number</flux:label>
-                            <flux:input wire:model="customer_fax" placeholder="+00 000 0000" />
-                        </flux:field>
-                    </div>
-
-                    {{-- Full Address --}}
-                    <div class="md:col-span-1">
-                        <flux:field class="h-full">
-                            <flux:label>Office Address</flux:label>
-                            <flux:textarea wire:model="customer_address" placeholder="Line 1, Line 2, Zip, Country" class="h-[calc(100%-2rem)]" rows="8" />
-                        </flux:field>
-                    </div>
+                <div class="max-w-xs">
+                    <flux:field>
+                        <flux:label>Quotation Date <span class="text-red-500">*</span></flux:label>
+                        <flux:input type="date" wire:model="quotation_date" />
+                    </flux:field>
                 </div>
             </div>
         </div>

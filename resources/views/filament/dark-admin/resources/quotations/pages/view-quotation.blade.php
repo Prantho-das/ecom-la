@@ -46,67 +46,24 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-16 mb-16">
-                    {{-- Customer Info Section --}}
+                <div class="grid grid-cols-2 gap-16 mb-16">
+                    {{-- General Info Section --}}
                     <section>
                         <h2 class="font-black text-[11px] uppercase text-indigo-600 dark:text-indigo-400 tracking-[0.2em] mb-4 flex items-center gap-2">
-                             Recipient Details
+                             Quotation Information
                         </h2>
-                        <div class="space-y-1">
-                            <div class="font-black text-xl tracking-tight mb-2">{{ $record->customer_name }}</div>
-                            <div class="text-xs font-bold text-zinc-500 mb-4">{{ $record->customer_email }}</div>
-                            
-                             @if($record->customer_address)
-                                <div class="text-sm border-l-4 border-indigo-100 dark:border-indigo-900/30 pl-4 whitespace-pre-line text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-[320px]">{{ $record->customer_address }}</div>
-                            @else
-                                <div class="text-zinc-300 dark:text-zinc-600 italic text-sm">No office address registered</div>
-                            @endif
-                        </div>
-                        
-                        <div class="mt-8 grid grid-cols-1 gap-3">
-                            @if($record->attn) 
-                                <div class="flex items-center gap-3">
-                                    <span class="text-[10px] font-black text-zinc-400 border border-zinc-200 dark:border-zinc-700 px-1.5 py-0.5 rounded uppercase">Attn</span>
-                                    <span class="text-xs font-black text-zinc-800 dark:text-zinc-100 uppercase tracking-tighter">{{ $record->attn }}</span>
-                                </div> 
-                            @endif
-                            @if($record->customer_phone) 
-                                <div class="flex items-center gap-3 border-l-2 border-indigo-100 dark:border-indigo-900/30 pl-3">
-                                    <span class="text-[10px] font-black text-zinc-400 uppercase">Tel</span>
-                                    <span class="text-xs font-bold text-zinc-700 dark:text-zinc-300">{{ $record->customer_phone }}</span>
-                                </div> 
-                            @endif
-                            @if($record->customer_fax) 
-                                <div class="flex items-center gap-3 border-l-2 border-zinc-100 dark:border-zinc-800 pl-3">
-                                    <span class="text-[10px] font-black text-zinc-400 uppercase">Fax</span>
-                                    <span class="text-xs font-bold text-zinc-700 dark:text-zinc-300">{{ $record->customer_fax }}</span>
-                                </div> 
-                            @endif
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3">
+                                <span class="text-[10px] font-black text-zinc-400 border border-zinc-200 dark:border-zinc-700 px-1.5 py-0.5 rounded uppercase">Reference</span>
+                                <span class="text-sm font-black text-zinc-800 dark:text-zinc-100 uppercase">{{ $record->reference_number }}</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-[10px] font-black text-zinc-400 border border-zinc-200 dark:border-zinc-700 px-1.5 py-0.5 rounded uppercase">Date</span>
+                                <span class="text-sm font-black text-zinc-800 dark:text-zinc-100 uppercase">{{ $record->quotation_date?->format('d M Y') ?? $record->created_at->format('d M Y') }}</span>
+                            </div>
                         </div>
                     </section>
-
-                    {{-- Invoice Metadata Section --}}
-                    <aside class="flex flex-col items-end">
-                        <div class="w-full max-w-[280px] bg-zinc-50 dark:bg-zinc-800/30 p-6 border border-zinc-100 dark:border-zinc-800 rounded-lg">
-                            <table class="w-full text-xs font-bold border-separate border-spacing-y-4">
-                                <tr>
-                                    <td class="text-zinc-400 uppercase tracking-widest text-[9px]">Invoice No.</td>
-                                    <td class="text-right font-black tracking-tight">{{ $record->reference_number }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-zinc-400 uppercase tracking-widest text-[9px]">Date</td>
-                                    <td class="text-right">{{ $record->quotation_date?->format('d M Y') ?? $record->created_at->format('d M Y') }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-zinc-400 uppercase tracking-widest text-[9px]">PO Ref.</td>
-                                    <td class="text-right text-indigo-600 dark:text-indigo-400">{{ $record->customer_po ?? '—' }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-zinc-400 uppercase tracking-widest text-[9px]">Terms</td>
-                                    <td class="text-right whitespace-nowrap">{{ $record->payment_term ?? 'TT BEFORE DELIVERY' }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </aside>
+                </div>
                 </div>
 
                 {{-- Product Table Section --}}
