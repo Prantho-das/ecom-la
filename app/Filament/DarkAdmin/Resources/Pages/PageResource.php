@@ -18,14 +18,16 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use UnitEnum;
+
 class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-duplicate';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Content';
+    protected static string|\UnitEnum|null $navigationGroup = 'Website Content';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

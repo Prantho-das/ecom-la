@@ -11,21 +11,24 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class SolutionCategoryResource extends Resource
 {
     protected static ?string $model = SolutionCategory::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-light-bulb';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Product Catalog';
+
+    protected static ?int $navigationSort = 7;
 
     protected static ?string $recordTitleAttribute = 'title';
 
@@ -51,7 +54,7 @@ class SolutionCategoryResource extends Resource
                     ->maxFiles(1)
                     ->enableOpen()
                     ->label('Solution Category Image')
-                    ->hint('Upload a representative image for the solution category.')
+                    ->hint('Upload a representative image for the solution category.'),
 
             ]);
     }
@@ -67,7 +70,7 @@ class SolutionCategoryResource extends Resource
                     ->searchable(),
                 IconColumn::make('published')
                     ->boolean(),
-                TextColumn::make('parent.title')
+                TextColumn::make('parent.title'),
 
             ])
             ->filters([

@@ -19,7 +19,11 @@ class SolutionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-puzzle-piece';
 
-    protected static ?string $recordTitleAttribute = 'titile';
+    protected static string|\UnitEnum|null $navigationGroup = 'Product Catalog';
+
+    protected static ?int $navigationSort = 6;
+
+    protected static ?string $recordTitleAttribute = 'title';
 
     public static function form(Schema $schema): Schema
     {

@@ -21,6 +21,10 @@ class InvoiceResource extends Resource
 
     protected static ?string $slug = 'generate-invoice';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'Sales & CRM';
+
+    protected static ?int $navigationSort = 1;
+
     public static function form(Schema $schema): Schema
     {
         return $schema; // Handled by InvoiceBuilder

@@ -8,6 +8,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
@@ -62,6 +63,23 @@ class DarkAdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-trash')
                     ->url(url: url('clear-cache'))
                     ->sort(999),
+            ])
+            ->navigationGroups([
+                NavigationGroup::make('Sales & CRM')
+                    ->icon('heroicon-o-currency-dollar')
+                    ->collapsible(),
+                NavigationGroup::make('Product Catalog')
+                    ->icon('heroicon-o-shopping-bag')
+                    ->collapsible(),
+                NavigationGroup::make('Inventory Management')
+                    ->icon('heroicon-o-archive-box')
+                    ->collapsible(),
+                NavigationGroup::make('Website Content')
+                    ->icon('heroicon-o-document-text')
+                    ->collapsible(),
+                NavigationGroup::make('System Settings')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->collapsible(),
             ])
             ->renderHook(
                 \Filament\View\PanelsRenderHook::HEAD_END,

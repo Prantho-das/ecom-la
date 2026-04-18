@@ -37,6 +37,7 @@ class InvoiceBuilder extends Page
     public $office_address = '';
     public $incoterm = '';
     public $currency = '';
+    public $products = [];
 
     public $tables = []; // Using 'tables' to match QuotationBuilder structure
 
@@ -49,6 +50,8 @@ class InvoiceBuilder extends Page
             $this->quotation_date = now()->format('Y-m-d');
             $this->addTable();
         }
+
+        $this->products = Product::whereHas('quotationItems')->get();
     }
 
     public function loadInvoice(int $id): void

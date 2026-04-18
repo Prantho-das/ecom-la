@@ -19,7 +19,7 @@ class CurrencyResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-currency-dollar';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Settings';
+    protected static string|\UnitEnum|null $navigationGroup = 'System Settings';
 
     public static function form(Schema $schema): Schema
     {

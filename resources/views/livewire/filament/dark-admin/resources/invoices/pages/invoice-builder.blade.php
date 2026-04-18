@@ -144,7 +144,7 @@
                                 <td class="px-6 py-4">
                                     <div class="flex flex-col gap-1">
                                         <flux:select wire:model.live="tables.{{ $idx }}.product_id" placeholder="Select a product...">
-                                            @foreach(\App\Models\Product::all() as $product)
+                                            @foreach($products as $product)
                                                 <flux:select.option value="{{ $product->id }}">{{ $product->name }}</flux:select.option>
                                             @endforeach
                                         </flux:select>

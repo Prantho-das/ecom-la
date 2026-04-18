@@ -21,14 +21,16 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
-use UnitEnum;
+
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Shop';
+    protected static string|\UnitEnum|null $navigationGroup = 'Product Catalog';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

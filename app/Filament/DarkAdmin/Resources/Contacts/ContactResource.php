@@ -17,6 +17,10 @@ class ContactResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'Sales & CRM';
+
+    protected static ?int $navigationSort = 5;
+
     public static function form(Schema $schema): Schema
     {
         return ContactForm::configure($schema);

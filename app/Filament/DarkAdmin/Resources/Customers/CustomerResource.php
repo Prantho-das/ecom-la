@@ -15,7 +15,6 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use UnitEnum;
 
 class CustomerResource extends Resource
 {
@@ -25,7 +24,9 @@ class CustomerResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-group';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Shop';
+    protected static string|\UnitEnum|null $navigationGroup = 'Sales & CRM';
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {

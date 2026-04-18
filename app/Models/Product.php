@@ -81,4 +81,10 @@ class Product extends Model
     {
         return $this->belongsTo(Currency::class);
     }
+
+    /** Product has many Quotation Items */
+    public function quotationItems()
+    {
+        return $this->hasMany(QuotationItem::class);
+    }
 }

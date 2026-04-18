@@ -19,6 +19,10 @@ class ResellerResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-briefcase';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'Sales & CRM';
+
+    protected static ?int $navigationSort = 4;
+
     public static function form(Schema $schema): Schema
     {
         return ResellerForm::configure($schema);

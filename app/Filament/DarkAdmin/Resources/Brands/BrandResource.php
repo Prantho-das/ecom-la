@@ -18,7 +18,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
-use UnitEnum;
 
 class BrandResource extends Resource
 {
@@ -26,7 +25,9 @@ class BrandResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-tag';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Shop';
+    protected static string|\UnitEnum|null $navigationGroup = 'Product Catalog';
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {
