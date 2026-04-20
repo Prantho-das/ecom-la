@@ -41,8 +41,11 @@ class InvoiceBuilder extends Page
     public $fax_number = '';
 
     public $office_address = '';
+
     public $incoterm = '';
+
     public $currency = '';
+
     public $products = [];
 
     public $tables = []; // Using 'tables' to match QuotationBuilder structure
@@ -212,7 +215,7 @@ class InvoiceBuilder extends Page
             'tables.*.quantity' => 'required|numeric|min:0.0001',
         ]);
 
-        $subtotal = collect($this->tables)->sum(fn ($t) => $t['quantity'] * $t['unit_price']);
+        $subtotal = collect($this->tables)->sum(fn ($t) => ((float) ($t['quantity'] ?? 0)) * ((float) ($t['unit_price'] ?? 0)));
         $grandTotal = $subtotal; // For now, grand total is subtotal
 
         $invoiceData = [
@@ -244,7 +247,7 @@ class InvoiceBuilder extends Page
                 'quantity' => $table['quantity'],
                 'uom' => $table['uom'],
                 'unit_price' => $table['unit_price'],
-                'row_total' => $table['quantity'] * $table['unit_price'],
+                'row_total' => ((float) ($table['quantity'] ?? 0)) * ((float) ($table['unit_price'] ?? 0)),
             ]);
         }
 

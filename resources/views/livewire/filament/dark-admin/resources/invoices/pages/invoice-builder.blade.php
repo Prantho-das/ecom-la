@@ -164,7 +164,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="text-sm font-black text-zinc-900 dark:text-zinc-100">
-                                        {{ number_format(($table['quantity'] ?? 0) * ($table['unit_price'] ?? 0), 2) }}
+                                        {{ number_format(((float)($table['quantity'] ?? 0)) * ((float)($table['unit_price'] ?? 0)), 2) }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
@@ -181,7 +181,7 @@
                     <div class="text-right">
                         <span class="text-[10px] font-black uppercase text-zinc-400 tracking-widest block">Grand Total</span>
                         <div class="text-3xl font-black text-emerald-600 dark:text-emerald-400">
-                            {{ number_format(collect($tables)->sum(fn($t) => ($t['quantity'] ?? 0) * ($t['unit_price'] ?? 0)), 2) }}
+                            {{ number_format(collect($tables)->sum(fn($t) => ((float)($t['quantity'] ?? 0)) * ((float)($t['unit_price'] ?? 0))), 2) }}
                         </div>
                     </div>
                 </div>
