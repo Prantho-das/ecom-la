@@ -103,10 +103,9 @@ Route::get('/debug-shield', function () {
 
         return [
             'filePath' => $filePath,
-            'permissionCount' => \Spatie\Permission\Models\Permission::count(),
-            'discoveredResources' => \BezhanSalleh\FilamentShield\Facades\FilamentShield::getResources(),
-            'discoveredPages' => \BezhanSalleh\FilamentShield\Facades\FilamentShield::getPages(),
-            'discoveredWidgets' => \BezhanSalleh\FilamentShield\Facades\FilamentShield::getWidgets(),
+            'filamentAuthGuard' => \BezhanSalleh\FilamentShield\Support\Utils::getFilamentAuthGuard(),
+            'samplePermissions' => \BezhanSalleh\FilamentShield\Facades\FilamentShield::getResourcePermissionsWithLabels('App\\Filament\\DarkAdmin\\Resources\\Brands\\BrandResource'),
+            'sampleDbPermission' => \Spatie\Permission\Models\Permission::first(),
         ];
     } catch (\Exception $e) {
         return 'Error: '.$e->getMessage();
