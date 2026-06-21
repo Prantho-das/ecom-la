@@ -90,3 +90,14 @@ Route::get('/details/{product:slug}', Details::class)->name('details');
 // BLOG POST DETAILS (Dynamic Route)
 Route::get('/blog/{post:slug}', App\Livewire\Frontend\BlogPostDetail::class)->name('blog.show');
 Route::get('/p/{page:slug}', App\Livewire\Frontend\PageDetail::class)->name('page.show');
+
+Route::get('/debug-shield', function () {
+    return [
+        'users_count' => \App\Models\User::count(),
+        'roles_count' => \Spatie\Permission\Models\Role::count(),
+        'permissions_count' => \Spatie\Permission\Models\Permission::count(),
+        'permissions_list_sample' => \Spatie\Permission\Models\Permission::take(30)->pluck('name')->toArray(),
+        'filament_panel_auth_guard' => \Filament\Facades\Filament::getCurrentPanel() ? \Filament\Facades\Filament::getCurrentPanel()->getAuthGuard() : 'no panel',
+        'default_auth_guard' => config('auth.defaults.guard'),
+    ];
+});
