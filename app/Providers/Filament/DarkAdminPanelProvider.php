@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\DarkAdmin\Pages\SiteSettings;
 use App\Filament\DarkAdmin\Widgets\StatsOverview;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -119,6 +120,7 @@ class DarkAdminPanelProvider extends PanelProvider
                 \App\Filament\DarkAdmin\Widgets\CategoryChart::class,
                 StatsOverview::class,
             ])
+            ->plugin(FilamentShieldPlugin::make())
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

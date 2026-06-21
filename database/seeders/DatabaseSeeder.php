@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // ContinentSeeder::class,
             // CountrySeeder::class,
-            ResellerSeeder::class,
+            // ResellerSeeder::class,
+            ShieldSeeder::class,
         ]);
 
         // User::factory()->create([
