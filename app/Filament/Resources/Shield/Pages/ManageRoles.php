@@ -13,7 +13,16 @@ class ManageRoles extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->mutateFormDataUsing(function (array $data): array {
+                    $data['guard_name'] = 'web';
+                    return $data;
+                })
+                ->after(function ($record, array $data) {
+                    if (isset($data['permissions'])) {
+                        $record->syncPermissions($data['permissions']);
+                    }
+                }),
         ];
     }
 }

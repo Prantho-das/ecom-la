@@ -4,8 +4,8 @@ namespace App\Filament\Resources\Shield;
 
 use App\Filament\Resources\Shield\Pages\ManageRoles;
 use BackedEnum;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -15,6 +15,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleResource extends Resource
@@ -42,11 +43,11 @@ class RoleResource extends Resource
                     ->default('web')
                     ->dehydrateStateUsing(fn () => 'web'),
 
-                Select::make('permissions')
+                CheckboxList::make('permissions')
                     ->label('Permissions')
-                    ->multiple()
-                    ->relationship('permissions', 'name')
-                    ->preload()
+                    ->options(fn () => Permission::pluck('name', 'id'))
+                    ->searchable()
+                    ->bulkToggleable()
                     ->columnSpanFull(),
             ]);
     }
@@ -64,7 +65,16 @@ class RoleResource extends Resource
             ])
             ->filters([])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['guard_name'] = 'web';
+                        return $data;
+                    })
+                    ->after(function ($record, array $data) {
+                        if (isset($data['permissions'])) {
+                            $record->syncPermissions($data['permissions']);
+                        }
+                    }),
                 DeleteAction::make(),
             ])
             ->toolbarActions([
