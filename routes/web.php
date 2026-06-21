@@ -98,13 +98,15 @@ Route::get('/debug-shield', function () {
     }
 
     try {
-        $result = $resourceClass::getShieldFormComponents();
+        $reflector = new \ReflectionClass($resourceClass);
+        $filePath = $reflector->getFileName();
+        $lines = file($filePath);
+        $codeSnippet = array_slice($lines, max(0, 75 - 1), 25);
 
         return [
-            'type' => gettype($result),
-            'class' => is_object($result) ? get_class($result) : null,
-            'is_array' => is_array($result),
-            'value_preview' => print_r($result, true),
+            'filePath' => $filePath,
+            'codeSnippet' => $codeSnippet,
+            'type' => gettype($resourceClass::getShieldFormComponents()),
         ];
     } catch (\Exception $e) {
         return 'Error: '.$e->getMessage();
