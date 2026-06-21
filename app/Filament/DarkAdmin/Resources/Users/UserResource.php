@@ -5,16 +5,16 @@ namespace App\Filament\DarkAdmin\Resources\Users;
 use App\Filament\DarkAdmin\Resources\Users\Pages\ManageUsers;
 use App\Models\User;
 use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 
 class UserResource extends Resource
 {
@@ -47,12 +47,10 @@ class UserResource extends Resource
                     ->required(fn (string $context) => $context === 'create'),
 
                 Select::make('roles')
-                    ->label('Roles')
                     ->multiple()
                     ->relationship('roles', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->columnSpanFull(),
+                    ->preload(),
+
             ]);
     }
 
