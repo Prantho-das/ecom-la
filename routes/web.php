@@ -92,19 +92,12 @@ Route::get('/blog/{post:slug}', App\Livewire\Frontend\BlogPostDetail::class)->na
 Route::get('/p/{page:slug}', App\Livewire\Frontend\PageDetail::class)->name('page.show');
 
 Route::get('/debug-shield', function () {
-    $paths = [
-        app_path('Filament/DarkAdmin/Resources/Shield/RoleResource.php'),
-        app_path('Filament/Resources/Shield/RoleResource.php'),
-        app_path('Filament/DarkAdmin/Resources/RoleResource.php'),
-        app_path('Filament/Resources/RoleResource.php'),
-    ];
-    $foundPath = 'None';
-    $fileContent = 'File not found';
-    foreach ($paths as $path) {
-        if (file_exists($path)) {
-            $foundPath = $path;
-            $fileContent = file_get_contents($path);
-            break;
+    $directory = new RecursiveDirectoryIterator(app_path('Filament'));
+    $iterator = new RecursiveIteratorIterator($directory);
+    $files = [];
+    foreach ($iterator as $info) {
+        if ($info->isFile() && $info->getFilename() === 'RoleResource.php') {
+            $files[] = $info->getPathname();
         }
     }
 
@@ -112,7 +105,6 @@ Route::get('/debug-shield', function () {
         'users_count' => \App\Models\User::count(),
         'roles_count' => \Spatie\Permission\Models\Role::count(),
         'permissions_count' => \Spatie\Permission\Models\Permission::count(),
-        'found_path' => $foundPath,
-        'file_content' => substr($fileContent, 0, 500),
+        'found_paths' => $files,
     ];
 });
