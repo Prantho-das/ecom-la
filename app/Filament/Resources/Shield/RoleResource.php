@@ -33,7 +33,7 @@ class RoleResource extends Resource
     public static function getGroupedPermissions(): array
     {
         $permissions = Permission::all();
-        $groups = [];
+        $flatPermissions = [];
 
         $resourcePrefixes = [
             'view_any', 'view', 'create', 'update',
@@ -61,13 +61,13 @@ class RoleResource extends Resource
 
             if (str_starts_with($name, 'page_')) {
                 $pageName = substr($name, 5);
-                $groups['Pages'][$permission->id] = $pageName;
+                $flatPermissions[$permission->id] = "Pages: {$pageName}";
                 continue;
             }
 
             if (str_starts_with($name, 'widget_')) {
                 $widgetName = substr($name, 7);
-                $groups['Widgets'][$permission->id] = $widgetName;
+                $flatPermissions[$permission->id] = "Widgets: {$widgetName}";
                 continue;
             }
 
@@ -78,20 +78,20 @@ class RoleResource extends Resource
                     $resource = substr($name, $prefixLen);
                     $resourceName = str($resource)->title()->toString();
                     $action = $actionLabels[$prefix] ?? $prefix;
-                    $groups[$resourceName][$permission->id] = "{$action}";
+                    $flatPermissions[$permission->id] = "{$resourceName}: {$action}";
                     $matched = true;
                     break;
                 }
             }
 
             if (!$matched) {
-                $groups['Other'][$permission->id] = $name;
+                $flatPermissions[$permission->id] = "Other: {$name}";
             }
         }
 
-        ksort($groups);
+        asort($flatPermissions);
 
-        return $groups;
+        return $flatPermissions;
     }
 
     public static function form(Schema $schema): Schema
