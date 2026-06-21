@@ -120,7 +120,9 @@ class DarkAdminPanelProvider extends PanelProvider
                 \App\Filament\DarkAdmin\Widgets\CategoryChart::class,
                 StatsOverview::class,
             ])
-            ->plugin(FilamentShieldPlugin::make())
+            ->plugins(
+                class_exists(FilamentShieldPlugin::class) ? [FilamentShieldPlugin::make()] : []
+            )
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
