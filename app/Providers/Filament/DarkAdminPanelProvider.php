@@ -3,7 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\DarkAdmin\Pages\SiteSettings;
-use App\Filament\Resources\Shield\RoleResource;
+use App\Filament\DarkAdmin\Resources\Roles\RoleResource;
 use App\Filament\DarkAdmin\Widgets\StatsOverview;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -124,7 +124,10 @@ class DarkAdminPanelProvider extends PanelProvider
             ->resources([
                 // RoleResource::class,
             ])
-            ->plugin(FilamentShieldPlugin::make())
+            ->plugin(FilamentShieldPlugin::make()
+            ->navigationGroup('System Settings')
+			->navigationLabel('Permission')
+            )
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

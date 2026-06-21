@@ -15,15 +15,16 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 use Rats\Zkteco\Lib\ZKTeco;
-Route::get('/test-finger',function(){
+
+Route::get('/test-finger', function () {
 
     //  1 s't parameter is string $ip Device IP Address
     //  2 nd  parameter is integer $port Default: 4370
 
-        $zk = new ZKTeco('192.168.0.145');
-        $zk->connect();
+    $zk = new ZKTeco('192.168.0.145');
+    $zk->connect();
 
-dd($zk);
+    dd($zk);
     //  or you can use with port
     //    $zk = new ZKTeco('192.168.1.201', 8080);
 });
@@ -74,7 +75,6 @@ Route::get('/services/{slug}', ServiceCategoryShow::class)->name('services.show'
 Route::get('/solutions', SolutionCategory::class)->name('solutions.index');
 Route::get('/solutions/{slug}', SolutionShow::class)->name('solutions.show');
 
-
 // CATEGORY
 Route::get('/category/{category_slug?}', Category::class)->name('category');
 
@@ -92,13 +92,21 @@ Route::get('/blog/{post:slug}', App\Livewire\Frontend\BlogPostDetail::class)->na
 Route::get('/p/{page:slug}', App\Livewire\Frontend\PageDetail::class)->name('page.show');
 
 Route::get('/debug-shield', function () {
-    $filePath = app_path('Filament/DarkAdmin/Resources/Roles/RoleResource.php');
-    $fileContent = file_exists($filePath) ? file_get_contents($filePath) : 'File not found at ' . $filePath;
+    $resourceClass = 'App\Filament\DarkAdmin\Resources\Roles\RoleResource';
+    if (! class_exists($resourceClass)) {
+        return 'RoleResource not found';
+    }
 
-    return [
-        'users_count' => \App\Models\User::count(),
-        'roles_count' => \Spatie\Permission\Models\Role::count(),
-        'permissions_count' => \Spatie\Permission\Models\Permission::count(),
-        'file_content' => $fileContent,
-    ];
+    try {
+        $result = $resourceClass::getShieldFormComponents();
+
+        return [
+            'type' => gettype($result),
+            'class' => is_object($result) ? get_class($result) : null,
+            'is_array' => is_array($result),
+            'value_preview' => print_r($result, true),
+        ];
+    } catch (\Exception $e) {
+        return 'Error: '.$e->getMessage();
+    }
 });
