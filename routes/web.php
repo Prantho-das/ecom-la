@@ -99,5 +99,8 @@ Route::get('/debug-shield', function () {
         'permissions_list_sample' => \Spatie\Permission\Models\Permission::take(30)->pluck('name')->toArray(),
         'filament_panel_auth_guard' => \Filament\Facades\Filament::getCurrentPanel() ? \Filament\Facades\Filament::getCurrentPanel()->getAuthGuard() : 'no panel',
         'default_auth_guard' => config('auth.defaults.guard'),
+        'loaded_shield_config' => config('filament-shield.permissions'),
+        'shield_discovered_resources' => class_exists(\BezhanSalleh\FilamentShield\Facades\FilamentShield::class) ? \BezhanSalleh\FilamentShield\Facades\FilamentShield::getResources() : 'not found',
+        'shield_discovered_pages' => class_exists(\BezhanSalleh\FilamentShield\Facades\FilamentShield::class) ? \BezhanSalleh\FilamentShield\Facades\FilamentShield::getPages() : 'not found',
     ];
 });
