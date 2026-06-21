@@ -92,15 +92,13 @@ Route::get('/blog/{post:slug}', App\Livewire\Frontend\BlogPostDetail::class)->na
 Route::get('/p/{page:slug}', App\Livewire\Frontend\PageDetail::class)->name('page.show');
 
 Route::get('/debug-shield', function () {
+    $filePath = app_path('Filament/DarkAdmin/Resources/Shield/RoleResource.php');
+    $fileContent = file_exists($filePath) ? file_get_contents($filePath) : 'File not found at ' . $filePath;
+
     return [
         'users_count' => \App\Models\User::count(),
         'roles_count' => \Spatie\Permission\Models\Role::count(),
         'permissions_count' => \Spatie\Permission\Models\Permission::count(),
-        'permissions_list_sample' => \Spatie\Permission\Models\Permission::take(30)->pluck('name')->toArray(),
-        'filament_panel_auth_guard' => \Filament\Facades\Filament::getCurrentPanel() ? \Filament\Facades\Filament::getCurrentPanel()->getAuthGuard() : 'no panel',
-        'default_auth_guard' => config('auth.defaults.guard'),
-        'loaded_shield_config' => config('filament-shield.permissions'),
-        'shield_discovered_resources' => class_exists(\BezhanSalleh\FilamentShield\Facades\FilamentShield::class) ? \BezhanSalleh\FilamentShield\Facades\FilamentShield::getResources() : 'not found',
-        'shield_discovered_pages' => class_exists(\BezhanSalleh\FilamentShield\Facades\FilamentShield::class) ? \BezhanSalleh\FilamentShield\Facades\FilamentShield::getPages() : 'not found',
+        'file_content' => $fileContent,
     ];
 });
