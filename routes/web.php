@@ -100,13 +100,13 @@ Route::get('/debug-shield', function () {
     try {
         $reflector = new \ReflectionClass($resourceClass);
         $filePath = $reflector->getFileName();
-        $lines = file($filePath);
-        $codeSnippet = array_slice($lines, max(0, 75 - 1), 25);
 
         return [
             'filePath' => $filePath,
-            'codeSnippet' => $codeSnippet,
-            'type' => gettype($resourceClass::getShieldFormComponents()),
+            'permissionCount' => \Spatie\Permission\Models\Permission::count(),
+            'discoveredResources' => \BezhanSalleh\FilamentShield\Facades\FilamentShield::getResources(),
+            'discoveredPages' => \BezhanSalleh\FilamentShield\Facades\FilamentShield::getPages(),
+            'discoveredWidgets' => \BezhanSalleh\FilamentShield\Facades\FilamentShield::getWidgets(),
         ];
     } catch (\Exception $e) {
         return 'Error: '.$e->getMessage();
