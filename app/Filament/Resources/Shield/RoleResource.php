@@ -30,6 +30,70 @@ class RoleResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    public static function getGroupedPermissions(): array
+    {
+        $permissions = Permission::all();
+        $groups = [];
+
+        $resourcePrefixes = [
+            'view_any', 'view', 'create', 'update',
+            'delete_any', 'delete',
+            'force_delete_any', 'force_delete',
+            'restore', 'replicate', 'reorder',
+        ];
+
+        $actionLabels = [
+            'view_any' => 'View Any',
+            'view' => 'View',
+            'create' => 'Create',
+            'update' => 'Update',
+            'delete_any' => 'Delete Any',
+            'delete' => 'Delete',
+            'force_delete_any' => 'Force Delete Any',
+            'force_delete' => 'Force Delete',
+            'restore' => 'Restore',
+            'replicate' => 'Replicate',
+            'reorder' => 'Reorder',
+        ];
+
+        foreach ($permissions as $permission) {
+            $name = $permission->name;
+
+            if (str_starts_with($name, 'page_')) {
+                $pageName = substr($name, 5);
+                $groups['Pages'][$permission->id] = $pageName;
+                continue;
+            }
+
+            if (str_starts_with($name, 'widget_')) {
+                $widgetName = substr($name, 7);
+                $groups['Widgets'][$permission->id] = $widgetName;
+                continue;
+            }
+
+            $matched = false;
+            foreach ($resourcePrefixes as $prefix) {
+                $prefixLen = strlen($prefix) + 1;
+                if (str_starts_with($name, $prefix . '_')) {
+                    $resource = substr($name, $prefixLen);
+                    $resourceName = str($resource)->title()->toString();
+                    $action = $actionLabels[$prefix] ?? $prefix;
+                    $groups[$resourceName][$permission->id] = "{$action}";
+                    $matched = true;
+                    break;
+                }
+            }
+
+            if (!$matched) {
+                $groups['Other'][$permission->id] = $name;
+            }
+        }
+
+        ksort($groups);
+
+        return $groups;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -45,9 +109,10 @@ class RoleResource extends Resource
 
                 CheckboxList::make('permissions')
                     ->label('Permissions')
-                    ->options(fn () => Permission::pluck('name', 'id'))
+                    ->options(fn () => static::getGroupedPermissions())
                     ->searchable()
                     ->bulkToggleable()
+                    ->columns(3)
                     ->columnSpanFull(),
             ]);
     }
