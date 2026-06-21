@@ -92,19 +92,13 @@ Route::get('/blog/{post:slug}', App\Livewire\Frontend\BlogPostDetail::class)->na
 Route::get('/p/{page:slug}', App\Livewire\Frontend\PageDetail::class)->name('page.show');
 
 Route::get('/debug-shield', function () {
-    $directory = new RecursiveDirectoryIterator(app_path('Filament'));
-    $iterator = new RecursiveIteratorIterator($directory);
-    $files = [];
-    foreach ($iterator as $info) {
-        if ($info->isFile() && $info->getFilename() === 'RoleResource.php') {
-            $files[] = $info->getPathname();
-        }
-    }
+    $filePath = app_path('Filament/DarkAdmin/Resources/Roles/RoleResource.php');
+    $fileContent = file_exists($filePath) ? file_get_contents($filePath) : 'File not found at ' . $filePath;
 
     return [
         'users_count' => \App\Models\User::count(),
         'roles_count' => \Spatie\Permission\Models\Role::count(),
         'permissions_count' => \Spatie\Permission\Models\Permission::count(),
-        'found_paths' => $files,
+        'file_content' => $fileContent,
     ];
 });
