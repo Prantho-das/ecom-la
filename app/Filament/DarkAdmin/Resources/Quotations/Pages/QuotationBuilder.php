@@ -318,7 +318,7 @@ class QuotationBuilder extends Page
 
         return $service->calculateMatrix(
             (float) (is_numeric($table['unit_product_price'] ?? null) ? $table['unit_product_price'] : 0),
-            $table['config'],
+            $table['config'] ?? [],
             (float) (is_numeric($table['conversion_rate'] ?? null) ? $table['conversion_rate'] : (is_numeric($this->conversion_rate) ? $this->conversion_rate : 1)),
             (float) (is_numeric($table['margin'] ?? null) ? $table['margin'] : 0),
             (float) (is_numeric($table['tax'] ?? null) ? $table['tax'] : 0),
