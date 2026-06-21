@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\DarkAdmin\Pages\SiteSettings;
+use App\Filament\Resources\Shield\RoleResource;
 use App\Filament\DarkAdmin\Widgets\StatsOverview;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -120,8 +121,13 @@ class DarkAdminPanelProvider extends PanelProvider
                 \App\Filament\DarkAdmin\Widgets\CategoryChart::class,
                 StatsOverview::class,
             ])
+            ->resources([
+                RoleResource::class,
+            ])
             ->plugins(
-                class_exists(FilamentShieldPlugin::class) ? [FilamentShieldPlugin::make()] : []
+                class_exists(FilamentShieldPlugin::class)
+                    ? [FilamentShieldPlugin::make()]
+                    : []
             )
             ->middleware([
                 EncryptCookies::class,
