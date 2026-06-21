@@ -17,11 +17,6 @@ class ManageUsers extends ManageRecords
                 ->mutateFormDataUsing(function (array $data): array {
                     $data['role'] = 'customer';
                     return $data;
-                })
-                ->after(function ($record, array $data) {
-                    if (isset($data['roles'])) {
-                        $record->syncRoles($data['roles']);
-                    }
                 }),
         ];
     }

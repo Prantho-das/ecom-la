@@ -15,7 +15,6 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Spatie\Permission\Models\Role;
 
 class UserResource extends Resource
 {
@@ -50,7 +49,7 @@ class UserResource extends Resource
                 Select::make('roles')
                     ->label('Roles')
                     ->multiple()
-                    ->options(fn () => Role::pluck('name', 'id'))
+                    ->relationship('roles', 'name')
                     ->searchable()
                     ->preload()
                     ->columnSpanFull(),
@@ -71,12 +70,7 @@ class UserResource extends Resource
             ])
             ->filters([])
             ->recordActions([
-                EditAction::make()
-                    ->after(function ($record, array $data) {
-                        if (isset($data['roles'])) {
-                            $record->syncRoles($data['roles']);
-                        }
-                    }),
+                EditAction::make(),
                 DeleteAction::make(),
             ])
             ->toolbarActions([
