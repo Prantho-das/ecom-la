@@ -122,13 +122,9 @@ class DarkAdminPanelProvider extends PanelProvider
                 StatsOverview::class,
             ])
             ->resources([
-                RoleResource::class,
+                // RoleResource::class,
             ])
-            ->plugins(
-                class_exists(FilamentShieldPlugin::class)
-                    ? [FilamentShieldPlugin::make()]
-                    : []
-            )
+            ->plugin(FilamentShieldPlugin::make())
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
