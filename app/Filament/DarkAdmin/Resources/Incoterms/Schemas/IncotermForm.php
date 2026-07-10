@@ -72,6 +72,10 @@ class IncotermForm
                             ->label('Inland Transport')
                             ->helperText('From port to store')
                             ->default(false),
+                        Toggle::make('has_custom_cost_factor')
+                            ->label('Cost Factor')
+                            ->helperText('Custom cost factor')
+                            ->default(false),
                     ]),
 
                 Section::make('Pricing Configuration Defaults')
@@ -135,6 +139,10 @@ class IncotermForm
                                     ->default(0),
                                 TextInput::make('inland_transport_global')
                                     ->label('Inland transport (From port to store)')
+                                    ->numeric()
+                                    ->default(0),
+                                TextInput::make('custom_cost_factor_rate')
+                                    ->label('Cost Factor')
                                     ->numeric()
                                     ->default(0),
 

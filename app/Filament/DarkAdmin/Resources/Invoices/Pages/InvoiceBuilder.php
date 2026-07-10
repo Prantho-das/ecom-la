@@ -46,6 +46,10 @@ class InvoiceBuilder extends Page
 
     public $currency = '';
 
+    public $cost_factor = 0;
+
+    public $global_discount = 0;
+
     public $products = [];
 
     public $tables = []; // Using 'tables' to match QuotationBuilder structure
@@ -78,6 +82,8 @@ class InvoiceBuilder extends Page
         $this->phone_number = $invoice->phone_number;
         $this->fax_number = $invoice->fax_number;
         $this->office_address = $invoice->office_address;
+        $this->cost_factor = $invoice->cost_factor ?? 0;
+        $this->global_discount = $invoice->global_discount ?? 0;
 
         $this->tables = [];
         foreach ($invoice->items as $item) {
@@ -132,6 +138,26 @@ class InvoiceBuilder extends Page
     {
         $this->tables = collect($this->tables)->filter(fn ($t) => $t['id'] !== $id)->toArray();
         $this->tables = array_values($this->tables);
+        $this->cost_factor = $this->calculateCostFactor();
+    }
+
+    public function calculateCostFactor(): float
+    {
+        $total = 0;
+        foreach ($this->tables as $table) {
+            if (empty($table['product_id']) || empty($table['incoterm']) || empty($table['currency'])) {
+                continue;
+            }
+            $latest = QuotationItem::where('product_id', $table['product_id'])
+                ->where('incoterm', $table['incoterm'])
+                ->where('currency', $table['currency'])
+                ->latest()
+                ->first();
+            $itemCostFactor = $latest ? (float) $latest->cost_factor : 0;
+            $total += $itemCostFactor * (float) ($table['quantity'] ?? 0);
+        }
+
+        return $total;
     }
 
     public function updated($property, $value): void
@@ -203,6 +229,8 @@ class InvoiceBuilder extends Page
                 }
             }
         }
+
+        $this->cost_factor = $this->calculateCostFactor();
     }
 
     public function save(): void
@@ -213,10 +241,12 @@ class InvoiceBuilder extends Page
             'tables' => 'required|array|min:1',
             'tables.*.product_id' => 'required',
             'tables.*.quantity' => 'required|numeric|min:0.0001',
+            'cost_factor' => 'nullable|numeric|min:0',
+            'global_discount' => 'nullable|numeric|min:0',
         ]);
 
         $subtotal = collect($this->tables)->sum(fn ($t) => ((float) ($t['quantity'] ?? 0)) * ((float) ($t['unit_price'] ?? 0)));
-        $grandTotal = $subtotal; // For now, grand total is subtotal
+        $grandTotal = $subtotal + (float) $this->cost_factor - (float) $this->global_discount;
 
         $invoiceData = [
             'customer_name' => $this->customer_name,
@@ -231,6 +261,8 @@ class InvoiceBuilder extends Page
             'fax_number' => $this->fax_number,
             'office_address' => $this->office_address,
             'subtotal' => $subtotal,
+            'cost_factor' => (float) $this->cost_factor,
+            'global_discount' => (float) $this->global_discount,
             'grand_total' => $grandTotal,
             'status' => 'draft',
         ];

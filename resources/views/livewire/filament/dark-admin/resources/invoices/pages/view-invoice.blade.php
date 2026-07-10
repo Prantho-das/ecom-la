@@ -167,8 +167,30 @@
                                 <tr><td colspan="6" class="py-2"></td></tr>
                             @endforeach
 
+                            @if($record->cost_factor > 0)
+                                <tr>
+                                    <td colspan="4" class="py-2"></td>
+                                    <td class="py-2 px-4 text-right font-black uppercase text-[10px] text-zinc-400 tracking-widest">Cost Factor</td>
+                                    <td class="py-2 px-2 text-right font-black text-xl border-b-2 border-zinc-100 dark:border-zinc-800 leading-none">
+                                        {{ number_format($record->cost_factor, 2) }}
+                                    </td>
+                                </tr>
+                                <tr><td colspan="6" class="py-2"></td></tr>
+                            @endif
+
+                            @if($record->global_discount > 0)
+                                <tr>
+                                    <td colspan="4" class="py-2"></td>
+                                    <td class="py-2 px-4 text-right font-black uppercase text-[10px] text-zinc-400 tracking-widest">Global Discount</td>
+                                    <td class="py-2 px-2 text-right font-black text-xl border-b-2 border-zinc-100 dark:border-zinc-800 leading-none text-red-600 dark:text-red-400">
+                                        -{{ number_format($record->global_discount, 2) }}
+                                    </td>
+                                </tr>
+                                <tr><td colspan="6" class="py-2"></td></tr>
+                            @endif
+
                             {{-- Grand Total Section (If multiple items are in BDT or single currency sum) --}}
-                            <tr class="bg-zinc-50/50 dark:bg-zinc-800/30">
+                            <tr class="bg-zinc-50/50 dark:bg-zinc-800/30" style="display: none;">
                                 <td colspan="4" class="py-8 rounded-l-xl"></td>
                                 <td class="py-8 px-4 text-right font-black uppercase text-[12px] text-indigo-600 dark:text-indigo-400 tracking-[0.2em]">Grand Total</td>
                                 <td class="py-8 px-2 text-right font-black text-4xl border-b-[4px] border-double border-zinc-900 dark:border-zinc-100 leading-none rounded-r-xl">
@@ -229,5 +251,42 @@
 
             </article>
         </div>
+
+        {{-- Edit Log History --}}
+        @if($record->editLogs->count() > 0)
+            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 max-w-[850px] mx-auto w-full shadow-sm">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-md">
+                        <flux:icon icon="clock" class="w-4 h-4" />
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black uppercase tracking-widest text-zinc-900 dark:text-zinc-100">Edit Log History</h3>
+                        <p class="text-[9px] font-bold text-zinc-400 uppercase">Changes made to cost factor and global discount</p>
+                    </div>
+                </div>
+                <div class="divide-y divide-zinc-100 dark:divide-zinc-800">
+                    @foreach($record->editLogs()->with('user')->latest()->get() as $log)
+                        <div class="py-4 flex justify-between items-center text-xs">
+                            <div class="space-y-1">
+                                <div class="font-bold text-zinc-800 dark:text-zinc-200">
+                                    {{ $log->user?->name ?? 'System User' }}
+                                </div>
+                                <div class="text-zinc-500">
+                                    @if(isset($log->changed_to['cost_factor']) && isset($log->changed_from['cost_factor']) && $log->changed_to['cost_factor'] != $log->changed_from['cost_factor'])
+                                        <div>Cost Factor: <span class="font-mono line-through text-zinc-400">{{ number_format($log->changed_from['cost_factor'], 2) }}</span> &rarr; <span class="font-mono text-emerald-600 dark:text-emerald-400 font-bold">{{ number_format($log->changed_to['cost_factor'], 2) }}</span></div>
+                                    @endif
+                                    @if(isset($log->changed_to['global_discount']) && isset($log->changed_from['global_discount']) && $log->changed_to['global_discount'] != $log->changed_from['global_discount'])
+                                        <div>Global Discount: <span class="font-mono line-through text-zinc-400">{{ number_format($log->changed_from['global_discount'], 2) }}</span> &rarr; <span class="font-mono text-red-600 dark:text-red-400 font-bold">{{ number_format($log->changed_to['global_discount'], 2) }}</span></div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="text-[10px] text-zinc-400 font-mono">
+                                {{ $log->created_at->format('d M Y h:i A') }}
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
     </div>
 </x-filament-panels::page>

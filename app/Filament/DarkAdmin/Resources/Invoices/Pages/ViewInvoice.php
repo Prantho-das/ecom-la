@@ -3,6 +3,8 @@
 namespace App\Filament\DarkAdmin\Resources\Invoices\Pages;
 
 use App\Filament\DarkAdmin\Resources\Invoices\InvoiceResource;
+use Filament\Actions\Action;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewInvoice extends ViewRecord
@@ -17,7 +19,30 @@ class ViewInvoice extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            // Actions like Edit can be added here
+            Action::make('edit_costs')
+                ->label('Edit Cost & Discount')
+                ->icon('heroicon-m-pencil-square')
+                ->form([
+                    TextInput::make('cost_factor')
+                        ->numeric()
+                        ->default(fn ($record) => $record->cost_factor)
+                        ->required(),
+                    TextInput::make('global_discount')
+                        ->numeric()
+                        ->default(fn ($record) => $record->global_discount)
+                        ->required(),
+                ])
+                ->action(function (array $data, $record): void {
+                    $record->cost_factor = $data['cost_factor'];
+                    $record->global_discount = $data['global_discount'];
+                    $record->save();
+
+                    \Filament\Notifications\Notification::make()
+                        ->success()
+                        ->title('Invoice Updated')
+                        ->body('Cost factor and global discount have been updated.')
+                        ->send();
+                }),
         ];
     }
 }

@@ -64,6 +64,7 @@ class QuotationCalculationService
 
         $hc_global = (float) ($conf['handling_charges_global'] ?? 0);
         $it_global = (float) ($conf['inland_transport_global'] ?? 0);
+        $ccf_global = (float) ($conf['custom_cost_factor_rate'] ?? 0);
 
         // Build incoterm cost map from DB active records
         $dbIncoterms = \App\Models\Incoterm::where('is_active', true)->get();
@@ -79,6 +80,7 @@ class QuotationCalculationService
                 'id' => $incoterm->has_import_duties ? $c_id : 0,
                 'hc' => $incoterm->has_handling_charges ? $hc_global : 0,
                 'it' => $incoterm->has_inland_transport ? $it_global : 0,
+                'ccf' => $incoterm->has_custom_cost_factor ? $ccf_global : 0,
             ];
         }
 
@@ -86,10 +88,11 @@ class QuotationCalculationService
         $ddpCosts = $incotermsConfig['DDP'] ?? [
             'ef' => $c_ef, 'ec' => $c_ec, 'oh' => $c_oh, 'inf' => $c_if,
             'ins' => $c_ins, 'id' => $c_id, 'hc' => $hc_global, 'it' => $it_global,
+            'ccf' => 0,
         ];
 
         $incotermsConfig['BDT'] = array_merge($ddpCosts, ['is_bdt' => true]);
-        $incotermsConfig['BDT (Local)'] = ['is_local' => true, 'ef' => 0, 'ec' => 0, 'oh' => 0, 'inf' => 0, 'ins' => 0, 'id' => 0, 'hc' => 0, 'it' => 0];
+        $incotermsConfig['BDT (Local)'] = ['is_local' => true, 'ef' => 0, 'ec' => 0, 'oh' => 0, 'inf' => 0, 'ins' => 0, 'id' => 0, 'hc' => 0, 'it' => 0, 'ccf' => 0];
 
         $results = [];
 
@@ -99,7 +102,7 @@ class QuotationCalculationService
                 $up = $base * $conversionRate;
                 $cf_disp = '—';
             } else {
-                $cf = $v['ef'] + $v['ec'] + $v['oh'] + $v['inf'] + $v['ins'] + $v['id'] + $v['hc'] + $v['it'];
+                $cf = $v['ef'] + $v['ec'] + $v['oh'] + $v['inf'] + $v['ins'] + $v['id'] + $v['hc'] + $v['it'] + $v['ccf'];
                 $up = $base + $cf;
                 $cf_disp = number_format($cf, 0);
             }
@@ -130,6 +133,7 @@ class QuotationCalculationService
                     'Import Duties' => 'Fixed ('.($conf['import_duties_fixed'] ?? 0).') * Mult ('.($conf['import_duties_multiplier'] ?? 1).') = '.number_format($v['id'], 2),
                     'Handling' => number_format($v['hc'], 2),
                     'Inland' => number_format($v['it'], 2),
+                    'Cost Factor Option' => number_format($v['ccf'], 2),
                     'Total CF' => implode(' + ', array_filter([
                         $v['ef'] ? number_format($v['ef'], 2) : null,
                         $v['ec'] ? number_format($v['ec'], 2) : null,
@@ -139,6 +143,7 @@ class QuotationCalculationService
                         $v['id'] ? number_format($v['id'], 2) : null,
                         $v['hc'] ? number_format($v['hc'], 2) : null,
                         $v['it'] ? number_format($v['it'], 2) : null,
+                        $v['ccf'] ? number_format($v['ccf'], 2) : null,
                     ])).' = '.number_format($cf, 2),
                     'Unit Price' => "Base ($base) + CF (".number_format($cf, 2).') = '.number_format($up, 2),
                     'Price + MG' => 'UP ('.number_format($up, 2).") * (1 + $margin/100) = ".number_format($up_mg, 2),

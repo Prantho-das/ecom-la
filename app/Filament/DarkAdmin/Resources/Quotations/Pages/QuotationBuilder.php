@@ -50,6 +50,7 @@ class QuotationBuilder extends Page
         'import_duties_multiplier' => 0,
         'handling_charges_global' => 0,
         'inland_transport_global' => 0,
+        'custom_cost_factor_rate' => 0,
     ];
 
     public $tables = [];
@@ -103,6 +104,7 @@ class QuotationBuilder extends Page
                     'import_duties_multiplier' => (float) $item->import_duties_multiplier,
                     'handling_charges_global' => (float) $item->handling_charges_global,
                     'inland_transport_global' => (float) $item->inland_transport_global,
+                    'custom_cost_factor_rate' => (float) $item->custom_cost_factor_rate,
                 ],
                 'conversion_rate' => (float) ($item->conversion_rate ?? $this->conversion_rate),
             ];
@@ -263,6 +265,7 @@ class QuotationBuilder extends Page
             'import_duties_multiplier' => 1,
             'handling_charges_global' => 0,
             'inland_transport_global' => 0,
+            'custom_cost_factor_rate' => 0,
             'margin' => 0,
             'tax' => 0,
             'vat' => 0,
@@ -296,6 +299,7 @@ class QuotationBuilder extends Page
             'import_duties_multiplier' => (float) ($match['import_duties_multiplier'] ?? 1),
             'handling_charges_global' => (float) ($match['handling_charges_global'] ?? 0),
             'inland_transport_global' => (float) ($match['inland_transport_global'] ?? 0),
+            'custom_cost_factor_rate' => (float) ($match['custom_cost_factor_rate'] ?? 0),
             'margin' => (float) ($match['margin'] ?? 0),
             'tax' => (float) ($match['tax'] ?? 0),
             'vat' => (float) ($match['vat'] ?? 0),
@@ -397,8 +401,10 @@ class QuotationBuilder extends Page
                 'import_duties_multiplier' => $tableData['config']['import_duties_multiplier'] ?? 1,
                 'handling_charges_global' => $tableData['config']['handling_charges_global'] ?? 0,
                 'inland_transport_global' => $tableData['config']['inland_transport_global'] ?? 0,
+                'custom_cost_factor_rate' => $tableData['config']['custom_cost_factor_rate'] ?? 0,
                 'conversion_rate' => $tableData['conversion_rate'] ?? $this->conversion_rate,
                 'cost_factor' => $breakdown['cf'],
+                'custom_cost_factor' => $costs['ccf'] ?? 0,
                 'mg_amount' => (float) $breakdown['up_mg'] - (float) $breakdown['up'], // Corrected: price_with_mg - cost_factor_total_price
                 'tax_percent' => ($tableData['tax'] ?? 0) / 100,
                 'vat_percent' => ($tableData['vat'] ?? 0) / 100,

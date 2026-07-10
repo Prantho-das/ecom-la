@@ -83,6 +83,14 @@
                             <flux:input wire:model="payment_term" placeholder="TT Before Delivery" />
                         </flux:field>
                         <flux:field>
+                            <flux:label>Cost Factor</flux:label>
+                            <flux:input type="number" step="0.01" wire:model="cost_factor" placeholder="0.00" readonly disabled />
+                        </flux:field>
+                        <flux:field>
+                            <flux:label>Global Discount</flux:label>
+                            <flux:input type="number" step="0.01" wire:model="global_discount" placeholder="0.00" />
+                        </flux:field>
+                        <flux:field>
                             <flux:label>Office Address</flux:label>
                             <flux:textarea wire:model="office_address" placeholder="Address..." rows="4" />
                         </flux:field>
@@ -178,7 +186,7 @@
                 <div class="p-6 bg-zinc-50 dark:bg-zinc-800/40 flex justify-between items-center border-t border-zinc-200 dark:border-zinc-800">
                     <flux:button wire:click="addTable" icon="plus" variant="subtle" size="sm" class="font-black uppercase text-[10px] tracking-widest">Add Another Item</flux:button>
                     
-                    <div class="text-right">
+                    <div class="text-right" style="display: none;">
                         <span class="text-[10px] font-black uppercase text-zinc-400 tracking-widest block">Grand Total</span>
                         <div class="text-3xl font-black text-emerald-600 dark:text-emerald-400">
                             {{ number_format(collect($tables)->sum(fn($t) => ((float)($t['quantity'] ?? 0)) * ((float)($t['unit_price'] ?? 0))), 2) }}

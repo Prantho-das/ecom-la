@@ -18,6 +18,7 @@ class Incoterm extends Model
         'has_import_duties',
         'has_handling_charges',
         'has_inland_transport',
+        'has_custom_cost_factor',
         'currency_defaults',
     ];
 
@@ -31,6 +32,7 @@ class Incoterm extends Model
         'has_import_duties' => 'boolean',
         'has_handling_charges' => 'boolean',
         'has_inland_transport' => 'boolean',
+        'has_custom_cost_factor' => 'boolean',
         'currency_defaults' => 'array',
     ];
 }

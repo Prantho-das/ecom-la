@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class QuotationItem extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'quotation_id',
         'product_id',
@@ -48,6 +49,8 @@ class QuotationItem extends Model
         'import_duties_multiplier',
         'handling_charges_global',
         'inland_transport_global',
+        'custom_cost_factor',
+        'custom_cost_factor_rate',
     ];
 
     protected function casts(): array
@@ -84,6 +87,8 @@ class QuotationItem extends Model
             'import_duties_multiplier' => 'decimal:4',
             'handling_charges_global' => 'decimal:2',
             'inland_transport_global' => 'decimal:2',
+            'custom_cost_factor' => 'decimal:6',
+            'custom_cost_factor_rate' => 'decimal:6',
         ];
     }
 
@@ -139,11 +144,18 @@ class QuotationItem extends Model
                 break;
         }
 
+        // Calculate custom cost factor
+        $incotermObj = Incoterm::where('code', $this->incoterm)->first();
+        if ($incotermObj && $incotermObj->has_custom_cost_factor) {
+            $this->custom_cost_factor = (float) $this->custom_cost_factor_rate;
+        }
+
         // Calculate cost factor (sum of all additional costs)
         $this->cost_factor = $this->export_freight_local + $this->export_clearance +
             $this->origin_thc + $this->international_freight +
             $this->insurance + $this->import_duties_taxes +
-            $this->handling_charges_import + $this->inland_transport;
+            $this->handling_charges_import + $this->inland_transport +
+            $this->custom_cost_factor;
 
         // Unit price with all costs
         $this->unit_price_exwork = $basePrice + $this->cost_factor;
@@ -152,7 +164,7 @@ class QuotationItem extends Model
         $this->unit_price_with_mg = $this->unit_price_exwork * (1 + $marginPercentage / 100);
 
         // Apply tax and VAT
-        $this->final_unit_price = round($this->unit_price_with_mg * (1 + $taxPercentage + $vatPercentage), 0);
+        $this->final_unit_price = round($this->unit_price_with_mg * (1 + $taxPercentage / 100 + $vatPercentage / 100), 0);
         $this->row_total = $this->final_unit_price * ($this->quantity ?? 1);
 
         $this->save();
@@ -171,6 +183,7 @@ class QuotationItem extends Model
         $this->import_duties_taxes = 0;
         $this->handling_charges_import = 0;
         $this->inland_transport = 0;
+        $this->custom_cost_factor = 0;
     }
 
     /**

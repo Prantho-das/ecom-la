@@ -30,6 +30,7 @@ class IncotermTable
                 IconColumn::make('has_import_duties')->label('ID')->boolean()->alignCenter(),
                 IconColumn::make('has_handling_charges')->label('HC')->boolean()->alignCenter(),
                 IconColumn::make('has_inland_transport')->label('IT')->boolean()->alignCenter(),
+                IconColumn::make('has_custom_cost_factor')->label('CF')->boolean()->alignCenter(),
                 IconColumn::make('is_active')
                     ->label('Active')
                     ->boolean()
