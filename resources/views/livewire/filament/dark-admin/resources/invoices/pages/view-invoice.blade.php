@@ -12,7 +12,7 @@
                         <span class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Invoice Status</span>
                     </div>
                     <h2 class="text-lg font-black text-zinc-800 dark:text-zinc-100 uppercase tracking-tight">
-                        INV-{{ str_pad($record->id, 5, '0', STR_PAD_LEFT) }}
+                        {{ $record->reference_number }}
                     </h2>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                             <table class="w-full text-xs font-bold border-separate border-spacing-y-4">
                                 <tr>
                                     <td class="text-zinc-400 uppercase tracking-widest text-[9px]">Invoice No.</td>
-                                    <td class="text-right font-black tracking-tight">INV-{{ str_pad($record->id, 5, '0', STR_PAD_LEFT) }}</td>
+                                    <td class="text-right font-black tracking-tight">{{ $record->reference_number }}</td>
                                 </tr>
                                 <tr>
                                     <td class="text-zinc-400 uppercase tracking-widest text-[9px]">Date</td>
